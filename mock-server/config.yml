@@ -24,5 +24,6 @@ auth:
   enabled: true
   publicPaths:
     - /auth/login
+    - /opportunities
   tokenHeader: "Authorization"
   tokenPrefix: "Bearer "

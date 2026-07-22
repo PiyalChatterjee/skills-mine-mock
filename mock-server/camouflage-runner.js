@@ -312,6 +312,7 @@ app.listen(PORT, () => {
   console.log('║  POST  /api/auth/login        (public)            ║');
   console.log('║  GET   /api/auth/me                               ║');
   console.log('║  POST  /api/auth/logout                           ║');
+  console.log('║  GET   /api/opportunities     (public)            ║');
   console.log('║  GET   /api/candidates  /api/jobs                 ║');
   console.log('║  POST  /api/jobs  /api/mandates  /api/crm         ║');
   console.log('║  GET   /api/pipeline  /api/mandates  /api/crm     ║');

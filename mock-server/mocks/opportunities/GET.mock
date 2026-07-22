@@ -1,0 +1,71 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+  {
+    "id": "1",
+    "title": "Senior Logistics Manager",
+    "tags": ["Manufacturing", "Johannesburg"],
+    "description": "We're looking for an experienced Senior Logistics Manager to lead and optimise our end-to-end supply chain operations. In this role, you'll oversee production scheduling, inventory planning, warehousing, and national distribution to ensure our glass products reach customers efficiently and on time.",
+    "employerName": "PG Glass",
+    "employerOrbColor": "#30b4bf",
+    "employerOrbGlow": "rgba(48, 180, 191, 0.35)",
+    "blurredEmployer": true,
+    "tallCard": true
+  },
+  {
+    "id": "2",
+    "title": "Compliance Analyst",
+    "tags": ["Legal", "Johannesburg", "Full time"],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim mi a odio elementum, maximus luctus tortor iaculis. Ut auctor euismod leo egestas elementum. Vestibulum dignissim tincidunt tincidunt.",
+    "employerName": "Webber Wentzel",
+    "employerOrbColor": "#df7f2f",
+    "employerOrbGlow": "rgba(223, 127, 47, 0.35)",
+    "blurredEmployer": true,
+    "tallCard": true
+  },
+  {
+    "id": "3",
+    "title": "Cyber Compliance Specialist",
+    "tags": ["Legal", "Financial Services", "Johannesburg"],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim mi a odio elementum, maximus luctus tortor iaculis. Ut auctor euismod leo egestas elementum. Vestibulum dignissim tincidunt tincidunt.",
+    "employerName": "TymeBank",
+    "employerOrbColor": "#444f59",
+    "employerOrbGlow": "rgba(68, 79, 89, 0.35)",
+    "blurredEmployer": true,
+    "tallCard": false
+  },
+  {
+    "id": "4",
+    "title": "12-month Digital Marketing Learnership",
+    "tags": ["Digital Marketing", "Cape Town", "Learnership"],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim mi a odio elementum, maximus luctus tortor iaculis. Ut auctor euismod leo egestas elementum. Vestibulum dignissim tincidunt tincidunt.",
+    "employerName": "Helm",
+    "employerOrbColor": "#4f64e8",
+    "employerOrbGlow": "rgba(79, 100, 232, 0.35)",
+    "blurredEmployer": true,
+    "tallCard": false
+  },
+  {
+    "id": "5",
+    "title": "Business Development Consultant",
+    "tags": ["Legal", "Cape Town"],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim mi a odio elementum, maximus luctus tortor iaculis. Ut auctor euismod leo egestas elementum. Vestibulum dignissim tincidunt tincidunt.",
+    "employerName": "Webber Wentzel",
+    "employerOrbColor": "#df7f2f",
+    "employerOrbGlow": "rgba(223, 127, 47, 0.35)",
+    "blurredEmployer": true,
+    "tallCard": false
+  },
+  {
+    "id": "6",
+    "title": "Business Development Consultant",
+    "tags": ["Legal", "Cape Town"],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam dignissim mi a odio elementum, maximus luctus tortor iaculis. Ut auctor euismod leo egestas elementum. Vestibulum dignissim tincidunt tincidunt.",
+    "employerName": "Webber Wentzel",
+    "employerOrbColor": "#df7f2f",
+    "employerOrbGlow": "rgba(223, 127, 47, 0.35)",
+    "blurredEmployer": true,
+    "tallCard": false
+  }
+]
