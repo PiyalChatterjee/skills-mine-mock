@@ -5,14 +5,23 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "mock": "node server.js",
+    "mock": "node mock-server/camouflage-runner.js",
+    "mock:start": "node mock-server/camouflage-runner.js",
+    "mock:dev": "node --watch mock-server/camouflage-runner.js",
     "mock:watch": "node --watch server.js"
   },
   "dependencies": {
+    "chokidar": "^5.0.0",
+    "express": "^4.22.2",
+    "handlebars": "^4.7.9",
+    "js-yaml": "^5.2.1",
     "json-server": "^1.0.0-beta.15",
     "lowdb": "^7.0.1"
   },
   "engines": {
     "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "camouflage-server": "^0.15.0"
   }
 }

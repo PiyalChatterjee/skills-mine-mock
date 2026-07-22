@@ -1,0 +1,53 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+  {
+    "id": "app1",
+    "candidateId": "c1",
+    "jobId": "j1",
+    "candidateName": "Michael Smith",
+    "jobTitle": "Senior React Developer",
+    "company": "TechCorp SA",
+    "currentStage": "INTERVIEW",
+    "appliedDate": "2024-11-02",
+    "matchScore": 92,
+    "statusMessage": "Interview scheduled for 25 Nov at 10:00am"
+  },
+  {
+    "id": "app2",
+    "candidateId": "c2",
+    "jobId": "j3",
+    "candidateName": "Ayesha Patel",
+    "jobTitle": "Product Manager – Digital",
+    "company": "RetailPlus",
+    "currentStage": "SCREENING",
+    "appliedDate": "2024-11-09",
+    "matchScore": 87,
+    "statusMessage": "CV under review by recruiter"
+  },
+  {
+    "id": "app3",
+    "candidateId": "c3",
+    "jobId": "j2",
+    "candidateName": "Thabo Nkosi",
+    "jobTitle": "Data Engineer",
+    "company": "FinServ Analytics",
+    "currentStage": "ASSESSMENT",
+    "appliedDate": "2024-11-06",
+    "matchScore": 84,
+    "statusMessage": "Technical assessment sent"
+  },
+  {
+    "id": "app4",
+    "candidateId": "c5",
+    "jobId": "j4",
+    "candidateName": "Sipho Dlamini",
+    "jobTitle": "Cloud Solutions Architect",
+    "company": "NexaCloud",
+    "currentStage": "OFFER",
+    "appliedDate": "2024-11-11",
+    "matchScore": 95,
+    "statusMessage": "Offer letter sent – awaiting acceptance"
+  }
+]

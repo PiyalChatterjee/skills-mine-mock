@@ -1,0 +1,14 @@
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": "m-{{randomInt 100 999}}",
+  "company": "{{request.body.company}}",
+  "positionTitle": "{{request.body.positionTitle}}",
+  "salaryRange": "{{request.body.salaryRange}}",
+  "postedDate": "{{now 'YYYY-MM-DD'}}",
+  "status": "ACTIVE",
+  "applicantCount": 0,
+  "transformationApplicants": 0,
+  "message": "Mandate created successfully."
+}

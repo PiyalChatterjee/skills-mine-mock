@@ -1,0 +1,28 @@
+## SkillsMine Camouflage-style Mock Server Configuration
+## Compatible runner: mock-server/camouflage-runner.js (Node >= 22)
+
+server:
+  port: 4000
+  mocksDir: "./mock-server/mocks"
+  logLevel: "info"      # debug | info | warn | error
+
+delay:
+  min: 500              # ms – simulates real network latency
+  max: 1500             # ms
+
+errorSimulation:
+  enabled: true
+  rate: 0.05            # 5 % of authenticated requests get a random error
+
+cors:
+  enabled: true
+  origins: "*"
+  headers: "Authorization, Content-Type"
+  methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+
+auth:
+  enabled: true
+  publicPaths:
+    - /auth/login
+  tokenHeader: "Authorization"
+  tokenPrefix: "Bearer "

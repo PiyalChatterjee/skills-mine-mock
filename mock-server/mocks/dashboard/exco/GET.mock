@@ -1,0 +1,43 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "placementsYTD": 87,
+  "revenueYTD": 4350000,
+  "revenueTarget": 8000000,
+  "avgContractValue": 50000,
+  "costPerPlacement": 12000,
+  "repeatPlacementRate": 62,
+  "referralRate": 28,
+  "techMarketShare": 14,
+  "clientChurn": 8,
+  "recruiterRetention": 91,
+  "topRecruiters": [
+    { "name": "Bongani Cele", "placements": 24, "revenue": 1200000 },
+    { "name": "Sarah Johnson", "placements": 21, "revenue": 1050000 },
+    { "name": "Michelle van Wyk", "placements": 19, "revenue": 950000 },
+    { "name": "Siphamandla Dube", "placements": 14, "revenue": 700000 },
+    { "name": "Carla Rossouw", "placements": 9, "revenue": 450000 }
+  ],
+  "topIndustries": [
+    { "industry": "Technology", "revenue": 1800000, "share": 41 },
+    { "industry": "Financial Services", "revenue": 1100000, "share": 25 },
+    { "industry": "Retail", "revenue": 700000, "share": 16 },
+    { "industry": "Healthcare", "revenue": 450000, "share": 10 },
+    { "industry": "Creative", "revenue": 300000, "share": 7 }
+  ],
+  "revenueForecast": [
+    { "month": "Jan", "actual": 310000, "forecast": 320000 },
+    { "month": "Feb", "actual": 295000, "forecast": 310000 },
+    { "month": "Mar", "actual": 420000, "forecast": 400000 },
+    { "month": "Apr", "actual": 380000, "forecast": 370000 },
+    { "month": "May", "actual": 450000, "forecast": 430000 },
+    { "month": "Jun", "actual": 410000, "forecast": 420000 },
+    { "month": "Jul", "actual": 500000, "forecast": 480000 },
+    { "month": "Aug", "actual": 465000, "forecast": 460000 },
+    { "month": "Sep", "actual": 390000, "forecast": 410000 },
+    { "month": "Oct", "actual": 475000, "forecast": 450000 },
+    { "month": "Nov", "actual": null, "forecast": 480000 },
+    { "month": "Dec", "actual": null, "forecast": 510000 }
+  ]
+}

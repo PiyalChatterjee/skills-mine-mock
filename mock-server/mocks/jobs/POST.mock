@@ -1,0 +1,15 @@
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": "j-{{randomInt 1000 9999}}",
+  "title": "{{request.body.title}}",
+  "company": "{{request.body.company}}",
+  "location": "{{request.body.location}}",
+  "industry": "{{request.body.industry}}",
+  "employmentType": "{{request.body.employmentType}}",
+  "workType": "{{request.body.workType}}",
+  "status": "ACTIVE",
+  "postedDate": "{{now 'YYYY-MM-DD'}}",
+  "message": "Job posting created successfully."
+}
