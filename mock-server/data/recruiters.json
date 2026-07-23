@@ -1,0 +1,362 @@
+[
+  {
+    "recruiterId": "r001",
+    "fullName": "Sarah Johnson",
+    "email": "sarah.johnson@skillsmine.com",
+    "phone": "+27 82 100 0001",
+    "agency": "SkillsMine",
+    "specialisation": ["Technology", "Financial Services"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-01-15T08:00:00Z",
+    "metrics": {
+      "placements": 21,
+      "activeRoles": 8,
+      "candidates": 142,
+      "conversionRate": 14.8,
+      "avgDaysToPlace": 19,
+      "revenueYTD": 1050000
+    }
+  },
+  {
+    "recruiterId": "r002",
+    "fullName": "Bongani Cele",
+    "email": "bongani.cele@skillsmine.com",
+    "phone": "+27 82 100 0002",
+    "agency": "SkillsMine",
+    "specialisation": ["Financial Services", "Retail"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-02-01T08:00:00Z",
+    "metrics": {
+      "placements": 24,
+      "activeRoles": 6,
+      "candidates": 167,
+      "conversionRate": 14.4,
+      "avgDaysToPlace": 23,
+      "revenueYTD": 1200000
+    }
+  },
+  {
+    "recruiterId": "r003",
+    "fullName": "Michelle van Wyk",
+    "email": "michelle.vanwyk@skillsmine.com",
+    "phone": "+27 82 100 0003",
+    "agency": "SkillsMine",
+    "specialisation": ["Creative", "Marketing", "Design"],
+    "location": "Cape Town, Western Cape",
+    "registeredAt": "2023-03-10T08:00:00Z",
+    "metrics": {
+      "placements": 19,
+      "activeRoles": 5,
+      "candidates": 128,
+      "conversionRate": 14.8,
+      "avgDaysToPlace": 21,
+      "revenueYTD": 950000
+    }
+  },
+  {
+    "recruiterId": "r004",
+    "fullName": "Siphamandla Dube",
+    "email": "siphamandla.dube@skillsmine.com",
+    "phone": "+27 82 100 0004",
+    "agency": "SkillsMine",
+    "specialisation": ["Technology", "Cloud", "DevOps"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-04-05T08:00:00Z",
+    "metrics": {
+      "placements": 14,
+      "activeRoles": 7,
+      "candidates": 95,
+      "conversionRate": 14.7,
+      "avgDaysToPlace": 26,
+      "revenueYTD": 700000
+    }
+  },
+  {
+    "recruiterId": "r005",
+    "fullName": "Carla Rossouw",
+    "email": "carla.rossouw@skillsmine.com",
+    "phone": "+27 82 100 0005",
+    "agency": "SkillsMine",
+    "specialisation": ["Legal", "Compliance", "Risk"],
+    "location": "Cape Town, Western Cape",
+    "registeredAt": "2023-05-20T08:00:00Z",
+    "metrics": {
+      "placements": 9,
+      "activeRoles": 4,
+      "candidates": 61,
+      "conversionRate": 14.8,
+      "avgDaysToPlace": 28,
+      "revenueYTD": 450000
+    }
+  },
+  {
+    "recruiterId": "r006",
+    "fullName": "Lungelo Mthembu",
+    "email": "lungelo.mthembu@skillsmine.com",
+    "phone": "+27 82 100 0006",
+    "agency": "SkillsMine",
+    "specialisation": ["Mining", "Engineering", "Energy"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-06-01T08:00:00Z",
+    "metrics": {
+      "placements": 11,
+      "activeRoles": 3,
+      "candidates": 78,
+      "conversionRate": 14.1,
+      "avgDaysToPlace": 31,
+      "revenueYTD": 550000
+    }
+  },
+  {
+    "recruiterId": "r007",
+    "fullName": "Janine Fourie",
+    "email": "janine.fourie@skillsmine.com",
+    "phone": "+27 82 100 0007",
+    "agency": "SkillsMine",
+    "specialisation": ["Healthcare", "Pharmaceutical"],
+    "location": "Pretoria, Gauteng",
+    "registeredAt": "2023-07-15T08:00:00Z",
+    "metrics": {
+      "placements": 7,
+      "activeRoles": 3,
+      "candidates": 54,
+      "conversionRate": 13.0,
+      "avgDaysToPlace": 35,
+      "revenueYTD": 350000
+    }
+  },
+  {
+    "recruiterId": "r008",
+    "fullName": "Thabo Khumalo",
+    "email": "thabo.khumalo@skillsmine.com",
+    "phone": "+27 82 100 0008",
+    "agency": "SkillsMine",
+    "specialisation": ["Supply Chain", "Logistics", "Operations"],
+    "location": "Durban, KwaZulu-Natal",
+    "registeredAt": "2023-08-10T08:00:00Z",
+    "metrics": {
+      "placements": 8,
+      "activeRoles": 4,
+      "candidates": 62,
+      "conversionRate": 12.9,
+      "avgDaysToPlace": 29,
+      "revenueYTD": 400000
+    }
+  },
+  {
+    "recruiterId": "r009",
+    "fullName": "Anri Swart",
+    "email": "anri.swart@skillsmine.com",
+    "phone": "+27 82 100 0009",
+    "agency": "SkillsMine",
+    "specialisation": ["Data Science", "AI/ML", "Analytics"],
+    "location": "Cape Town, Western Cape",
+    "registeredAt": "2023-09-01T08:00:00Z",
+    "metrics": {
+      "placements": 12,
+      "activeRoles": 5,
+      "candidates": 88,
+      "conversionRate": 13.6,
+      "avgDaysToPlace": 24,
+      "revenueYTD": 600000
+    }
+  },
+  {
+    "recruiterId": "r010",
+    "fullName": "Vuyo Ndaba",
+    "email": "vuyo.ndaba@skillsmine.com",
+    "phone": "+27 82 100 0010",
+    "agency": "SkillsMine",
+    "specialisation": ["Finance", "Accounting", "Tax"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-10-05T08:00:00Z",
+    "metrics": {
+      "placements": 10,
+      "activeRoles": 4,
+      "candidates": 72,
+      "conversionRate": 13.9,
+      "avgDaysToPlace": 27,
+      "revenueYTD": 500000
+    }
+  },
+  {
+    "recruiterId": "r011",
+    "fullName": "Chrisna de Beer",
+    "email": "chrisna.debeer@skillsmine.com",
+    "phone": "+27 82 100 0011",
+    "agency": "SkillsMine",
+    "specialisation": ["HR", "Talent", "L&D"],
+    "location": "Pretoria, Gauteng",
+    "registeredAt": "2023-10-20T08:00:00Z",
+    "metrics": {
+      "placements": 6,
+      "activeRoles": 2,
+      "candidates": 45,
+      "conversionRate": 13.3,
+      "avgDaysToPlace": 30,
+      "revenueYTD": 300000
+    }
+  },
+  {
+    "recruiterId": "r012",
+    "fullName": "Neo Mokoena",
+    "email": "neo.mokoena@skillsmine.com",
+    "phone": "+27 82 100 0012",
+    "agency": "SkillsMine",
+    "specialisation": ["Telecommunications", "Media"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-11-01T08:00:00Z",
+    "metrics": {
+      "placements": 5,
+      "activeRoles": 3,
+      "candidates": 39,
+      "conversionRate": 12.8,
+      "avgDaysToPlace": 32,
+      "revenueYTD": 250000
+    }
+  },
+  {
+    "recruiterId": "r013",
+    "fullName": "Louis Harmse",
+    "email": "louis.harmse@skillsmine.com",
+    "phone": "+27 82 100 0013",
+    "agency": "SkillsMine",
+    "specialisation": ["Cybersecurity", "Information Security"],
+    "location": "Cape Town, Western Cape",
+    "registeredAt": "2023-11-15T08:00:00Z",
+    "metrics": {
+      "placements": 8,
+      "activeRoles": 3,
+      "candidates": 57,
+      "conversionRate": 14.0,
+      "avgDaysToPlace": 25,
+      "revenueYTD": 400000
+    }
+  },
+  {
+    "recruiterId": "r014",
+    "fullName": "Zandile Mhlongo",
+    "email": "zandile.mhlongo@skillsmine.com",
+    "phone": "+27 82 100 0014",
+    "agency": "SkillsMine",
+    "specialisation": ["Education", "Non-Profit"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2023-12-01T08:00:00Z",
+    "metrics": {
+      "placements": 4,
+      "activeRoles": 2,
+      "candidates": 31,
+      "conversionRate": 12.9,
+      "avgDaysToPlace": 38,
+      "revenueYTD": 200000
+    }
+  },
+  {
+    "recruiterId": "r015",
+    "fullName": "Garth Booysen",
+    "email": "garth.booysen@skillsmine.com",
+    "phone": "+27 82 100 0015",
+    "agency": "SkillsMine",
+    "specialisation": ["Construction", "Property", "Facilities"],
+    "location": "Pretoria, Gauteng",
+    "registeredAt": "2024-01-10T08:00:00Z",
+    "metrics": {
+      "placements": 5,
+      "activeRoles": 2,
+      "candidates": 36,
+      "conversionRate": 13.9,
+      "avgDaysToPlace": 33,
+      "revenueYTD": 250000
+    }
+  },
+  {
+    "recruiterId": "r016",
+    "fullName": "Nokwanda Cele",
+    "email": "nokwanda.cele@skillsmine.com",
+    "phone": "+27 82 100 0016",
+    "agency": "SkillsMine",
+    "specialisation": ["Sales", "Business Development"],
+    "location": "Durban, KwaZulu-Natal",
+    "registeredAt": "2024-02-01T08:00:00Z",
+    "metrics": {
+      "placements": 6,
+      "activeRoles": 3,
+      "candidates": 48,
+      "conversionRate": 12.5,
+      "avgDaysToPlace": 29,
+      "revenueYTD": 300000
+    }
+  },
+  {
+    "recruiterId": "r017",
+    "fullName": "Anton du Preez",
+    "email": "anton.dupreez@skillsmine.com",
+    "phone": "+27 82 100 0017",
+    "agency": "SkillsMine",
+    "specialisation": ["Embedded Systems", "Electrical Engineering"],
+    "location": "Pretoria, Gauteng",
+    "registeredAt": "2024-03-01T08:00:00Z",
+    "metrics": {
+      "placements": 3,
+      "activeRoles": 2,
+      "candidates": 24,
+      "conversionRate": 12.5,
+      "avgDaysToPlace": 42,
+      "revenueYTD": 150000
+    }
+  },
+  {
+    "recruiterId": "r018",
+    "fullName": "Pinky Nkosi",
+    "email": "pinky.nkosi@skillsmine.com",
+    "phone": "+27 82 100 0018",
+    "agency": "SkillsMine",
+    "specialisation": ["Public Sector", "Government"],
+    "location": "Pretoria, Gauteng",
+    "registeredAt": "2024-04-01T08:00:00Z",
+    "metrics": {
+      "placements": 2,
+      "activeRoles": 1,
+      "candidates": 18,
+      "conversionRate": 11.1,
+      "avgDaysToPlace": 45,
+      "revenueYTD": 100000
+    }
+  },
+  {
+    "recruiterId": "r019",
+    "fullName": "Liezel Jansen",
+    "email": "liezel.jansen@skillsmine.com",
+    "phone": "+27 82 100 0019",
+    "agency": "SkillsMine",
+    "specialisation": ["FinTech", "Payments", "Digital Banking"],
+    "location": "Cape Town, Western Cape",
+    "registeredAt": "2024-05-15T08:00:00Z",
+    "metrics": {
+      "placements": 7,
+      "activeRoles": 4,
+      "candidates": 53,
+      "conversionRate": 13.2,
+      "avgDaysToPlace": 22,
+      "revenueYTD": 350000
+    }
+  },
+  {
+    "recruiterId": "r020",
+    "fullName": "Mpho Dlamini",
+    "email": "mpho.dlamini@skillsmine.com",
+    "phone": "+27 82 100 0020",
+    "agency": "SkillsMine",
+    "specialisation": ["Retail", "Consumer Goods", "FMCG"],
+    "location": "Johannesburg, Gauteng",
+    "registeredAt": "2024-06-01T08:00:00Z",
+    "metrics": {
+      "placements": 4,
+      "activeRoles": 3,
+      "candidates": 29,
+      "conversionRate": 13.8,
+      "avgDaysToPlace": 28,
+      "revenueYTD": 200000
+    }
+  }
+]

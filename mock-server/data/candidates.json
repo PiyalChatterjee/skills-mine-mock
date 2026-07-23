@@ -1,0 +1,981 @@
+[
+  {
+    "candidateId": "c001",
+    "fullName": "Michael Smith",
+    "email": "michael.smith@email.com",
+    "phone": "+27 82 123 4567",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Senior Software Engineer",
+    "currentCompany": "Accenture",
+    "experienceYears": 8,
+    "skills": ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BSc Computer Science", "year": 2016 }],
+    "experience": [
+      { "company": "Accenture", "title": "Senior Software Engineer", "from": "2020-03", "to": "Present" },
+      { "company": "Standard Bank", "title": "Software Engineer", "from": "2017-01", "to": "2020-02" }
+    ],
+    "documents": [{ "docId": "doc-c001-1", "type": "CV", "uploadedAt": "2024-10-15" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 88,
+    "applications": ["app-c001-j001", "app-c001-j004"]
+  },
+  {
+    "candidateId": "c002",
+    "fullName": "Ayesha Patel",
+    "email": "ayesha.patel@email.com",
+    "phone": "+27 71 234 5678",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Product Manager",
+    "currentCompany": "Discovery",
+    "experienceYears": 5,
+    "skills": ["Product Strategy", "Agile", "Jira", "Figma", "SQL", "Roadmapping"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "BCom Information Systems", "year": 2019 }],
+    "experience": [
+      { "company": "Discovery", "title": "Product Manager", "from": "2021-06", "to": "Present" },
+      { "company": "Takealot", "title": "Business Analyst", "from": "2019-07", "to": "2021-05" }
+    ],
+    "documents": [{ "docId": "doc-c002-1", "type": "CV", "uploadedAt": "2024-10-20" }],
+    "languages": ["English", "Hindi", "Afrikaans"],
+    "profileComplete": 92,
+    "applications": ["app-c002-j003"]
+  },
+  {
+    "candidateId": "c003",
+    "fullName": "Thabo Nkosi",
+    "email": "thabo.nkosi@email.com",
+    "phone": "+27 83 345 6789",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "Data Engineer",
+    "currentCompany": "Standard Bank",
+    "experienceYears": 6,
+    "skills": ["Python", "Apache Spark", "Kafka", "dbt", "Snowflake", "Airflow"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2018 }],
+    "experience": [
+      { "company": "Standard Bank", "title": "Data Engineer", "from": "2021-01", "to": "Present" },
+      { "company": "FNB", "title": "Junior Data Analyst", "from": "2018-07", "to": "2020-12" }
+    ],
+    "documents": [{ "docId": "doc-c003-1", "type": "CV", "uploadedAt": "2024-11-01" }],
+    "languages": ["English", "Sotho", "Zulu"],
+    "profileComplete": 85,
+    "applications": ["app-c003-j002"]
+  },
+  {
+    "candidateId": "c004",
+    "fullName": "Lisa van der Merwe",
+    "email": "lisa.vdm@email.com",
+    "phone": "+27 64 456 7890",
+    "location": "Durban, KwaZulu-Natal",
+    "currentTitle": "UX Designer",
+    "currentCompany": "Vodacom",
+    "experienceYears": 4,
+    "skills": ["Figma", "Adobe XD", "User Research", "Prototyping", "Design Systems", "HTML/CSS"],
+    "education": [{ "institution": "Durban University of Technology", "qualification": "BA Design", "year": 2020 }],
+    "experience": [
+      { "company": "Vodacom", "title": "UX Designer", "from": "2022-03", "to": "Present" },
+      { "company": "Freelance", "title": "UI Designer", "from": "2020-06", "to": "2022-02" }
+    ],
+    "documents": [{ "docId": "doc-c004-1", "type": "CV", "uploadedAt": "2024-10-28" }],
+    "languages": ["English", "Afrikaans", "Zulu"],
+    "profileComplete": 79,
+    "applications": ["app-c004-j005"]
+  },
+  {
+    "candidateId": "c005",
+    "fullName": "Sipho Dlamini",
+    "email": "sipho.dlamini@email.com",
+    "phone": "+27 72 567 8901",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Cloud Architect",
+    "currentCompany": "Deloitte",
+    "experienceYears": 10,
+    "skills": ["Azure", "AWS", "Terraform", "Kubernetes", "DevOps", "CI/CD"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BEng Computer Engineering", "year": 2014 }],
+    "experience": [
+      { "company": "Deloitte", "title": "Cloud Architect", "from": "2019-04", "to": "Present" },
+      { "company": "IBM", "title": "Cloud Solutions Engineer", "from": "2015-01", "to": "2019-03" }
+    ],
+    "documents": [{ "docId": "doc-c005-1", "type": "CV", "uploadedAt": "2024-11-05" }],
+    "languages": ["English", "Zulu", "Xhosa"],
+    "profileComplete": 95,
+    "applications": ["app-c005-j004"]
+  },
+  {
+    "candidateId": "c006",
+    "fullName": "Kagiso Sithole",
+    "email": "kagiso.sithole@email.com",
+    "phone": "+27 81 678 9012",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Backend Developer",
+    "currentCompany": "Absa",
+    "experienceYears": 5,
+    "skills": ["Java", "Spring Boot", "Microservices", "Kafka", "MySQL", "Docker"],
+    "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Information Technology", "year": 2019 }],
+    "experience": [
+      { "company": "Absa", "title": "Backend Developer", "from": "2021-02", "to": "Present" },
+      { "company": "Entelect", "title": "Java Developer", "from": "2019-08", "to": "2021-01" }
+    ],
+    "documents": [],
+    "languages": ["English", "Sotho", "Tswana"],
+    "profileComplete": 72,
+    "applications": []
+  },
+  {
+    "candidateId": "c007",
+    "fullName": "Zanele Mokoena",
+    "email": "zanele.mokoena@email.com",
+    "phone": "+27 73 789 0123",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "QA Engineer",
+    "currentCompany": "Vodacom",
+    "experienceYears": 4,
+    "skills": ["Selenium", "Cypress", "Jest", "API Testing", "Postman", "JIRA"],
+    "education": [{ "institution": "Tshwane University of Technology", "qualification": "NDip Information Technology", "year": 2020 }],
+    "experience": [
+      { "company": "Vodacom", "title": "QA Engineer", "from": "2022-01", "to": "Present" },
+      { "company": "BCX", "title": "Junior Tester", "from": "2020-07", "to": "2021-12" }
+    ],
+    "documents": [{ "docId": "doc-c007-1", "type": "CV", "uploadedAt": "2024-10-10" }],
+    "languages": ["English", "Zulu", "Sotho"],
+    "profileComplete": 80,
+    "applications": []
+  },
+  {
+    "candidateId": "c008",
+    "fullName": "Ruan Joubert",
+    "email": "ruan.joubert@email.com",
+    "phone": "+27 84 890 1234",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "DevOps Engineer",
+    "currentCompany": "Standard Bank",
+    "experienceYears": 6,
+    "skills": ["Jenkins", "GitHub Actions", "Docker", "Kubernetes", "Terraform", "AWS"],
+    "education": [{ "institution": "Stellenbosch University", "qualification": "BEng Electrical Engineering", "year": 2018 }],
+    "experience": [
+      { "company": "Standard Bank", "title": "DevOps Engineer", "from": "2021-03", "to": "Present" },
+      { "company": "Entelect", "title": "Systems Engineer", "from": "2018-07", "to": "2021-02" }
+    ],
+    "documents": [{ "docId": "doc-c008-1", "type": "CV", "uploadedAt": "2024-09-30" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 83,
+    "applications": []
+  },
+  {
+    "candidateId": "c009",
+    "fullName": "Naledi Khumalo",
+    "email": "naledi.khumalo@email.com",
+    "phone": "+27 65 901 2345",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Data Analyst",
+    "currentCompany": "FNB",
+    "experienceYears": 3,
+    "skills": ["Python", "SQL", "Power BI", "Tableau", "Excel", "Statistics"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BSc Statistics", "year": 2021 }],
+    "experience": [
+      { "company": "FNB", "title": "Data Analyst", "from": "2022-02", "to": "Present" },
+      { "company": "PwC", "title": "Graduate Analyst", "from": "2021-07", "to": "2022-01" }
+    ],
+    "documents": [{ "docId": "doc-c009-1", "type": "CV", "uploadedAt": "2024-11-03" }],
+    "languages": ["English", "Zulu", "Xhosa"],
+    "profileComplete": 76,
+    "applications": []
+  },
+  {
+    "candidateId": "c010",
+    "fullName": "Pieter van Rensburg",
+    "email": "pieter.vr@email.com",
+    "phone": "+27 82 012 3456",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "Front-End Developer",
+    "currentCompany": "Entelect",
+    "experienceYears": 3,
+    "skills": ["Vue.js", "React", "TypeScript", "SASS", "REST APIs", "Figma"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2021 }],
+    "experience": [
+      { "company": "Entelect", "title": "Front-End Developer", "from": "2021-08", "to": "Present" }
+    ],
+    "documents": [],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 65,
+    "applications": []
+  },
+  {
+    "candidateId": "c011",
+    "fullName": "Fatima Essop",
+    "email": "fatima.essop@email.com",
+    "phone": "+27 71 123 9876",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Graphic Designer",
+    "currentCompany": "Ogilvy",
+    "experienceYears": 5,
+    "skills": ["Adobe Illustrator", "Adobe Photoshop", "InDesign", "Figma", "Brand Identity"],
+    "education": [{ "institution": "Cape Town Creative Academy", "qualification": "Diploma Graphic Design", "year": 2019 }],
+    "experience": [
+      { "company": "Ogilvy", "title": "Graphic Designer", "from": "2021-01", "to": "Present" },
+      { "company": "Freelance", "title": "Designer", "from": "2019-04", "to": "2020-12" }
+    ],
+    "documents": [{ "docId": "doc-c011-1", "type": "CV", "uploadedAt": "2024-10-18" }],
+    "languages": ["English", "Afrikaans", "Xhosa"],
+    "profileComplete": 88,
+    "applications": []
+  },
+  {
+    "candidateId": "c012",
+    "fullName": "Sibongile Dube",
+    "email": "sibongile.dube@email.com",
+    "phone": "+27 83 234 5670",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Project Manager",
+    "currentCompany": "PwC",
+    "experienceYears": 7,
+    "skills": ["PMP", "Agile", "Scrum", "MS Project", "Stakeholder Management", "PRINCE2"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Business Management", "year": 2017 }],
+    "experience": [
+      { "company": "PwC", "title": "Project Manager", "from": "2020-03", "to": "Present" },
+      { "company": "Deloitte", "title": "Business Analyst", "from": "2017-08", "to": "2020-02" }
+    ],
+    "documents": [{ "docId": "doc-c012-1", "type": "CV", "uploadedAt": "2024-11-07" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 91,
+    "applications": []
+  },
+  {
+    "candidateId": "c013",
+    "fullName": "Andile Mthembu",
+    "email": "andile.mthembu@email.com",
+    "phone": "+27 72 345 6781",
+    "location": "Durban, KwaZulu-Natal",
+    "currentTitle": "Software Developer",
+    "currentCompany": "Capitec",
+    "experienceYears": 4,
+    "skills": ["C#", ".NET Core", "SQL Server", "Azure", "REST APIs"],
+    "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BSc Computer Science", "year": 2020 }],
+    "experience": [
+      { "company": "Capitec", "title": "Software Developer", "from": "2021-06", "to": "Present" },
+      { "company": "BCX", "title": "Graduate Developer", "from": "2020-07", "to": "2021-05" }
+    ],
+    "documents": [{ "docId": "doc-c013-1", "type": "CV", "uploadedAt": "2024-10-25" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 77,
+    "applications": []
+  },
+  {
+    "candidateId": "c014",
+    "fullName": "Carla Rossouw",
+    "email": "carla.rossouw@email.com",
+    "phone": "+27 84 456 7892",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Product Designer",
+    "currentCompany": "Woolworths",
+    "experienceYears": 6,
+    "skills": ["Figma", "Sketch", "User Testing", "Design Thinking", "Prototyping", "UX Research"],
+    "education": [{ "institution": "University of Johannesburg", "qualification": "BA Fine Arts", "year": 2018 }],
+    "experience": [
+      { "company": "Woolworths", "title": "Product Designer", "from": "2020-09", "to": "Present" },
+      { "company": "BBDO", "title": "UI Designer", "from": "2018-07", "to": "2020-08" }
+    ],
+    "documents": [{ "docId": "doc-c014-1", "type": "CV", "uploadedAt": "2024-10-12" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 90,
+    "applications": []
+  },
+  {
+    "candidateId": "c015",
+    "fullName": "Bongani Cele",
+    "email": "bongani.cele@email.com",
+    "phone": "+27 65 567 8903",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Machine Learning Engineer",
+    "currentCompany": "Naspers",
+    "experienceYears": 5,
+    "skills": ["Python", "TensorFlow", "PyTorch", "Scikit-learn", "MLflow", "AWS SageMaker"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "MSc Data Science", "year": 2019 }],
+    "experience": [
+      { "company": "Naspers", "title": "ML Engineer", "from": "2020-02", "to": "Present" },
+      { "company": "DataProphet", "title": "Data Scientist", "from": "2019-07", "to": "2020-01" }
+    ],
+    "documents": [{ "docId": "doc-c015-1", "type": "CV", "uploadedAt": "2024-11-08" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 94,
+    "applications": []
+  },
+  {
+    "candidateId": "c016",
+    "fullName": "Yolanda Nkwanyana",
+    "email": "yolanda.nkwanyana@email.com",
+    "phone": "+27 73 678 9014",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Compliance Analyst",
+    "currentCompany": "Webber Wentzel",
+    "experienceYears": 4,
+    "skills": ["Regulatory Compliance", "GDPR", "POPIA", "Risk Management", "Legal Research"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "LLB", "year": 2020 }],
+    "experience": [
+      { "company": "Webber Wentzel", "title": "Compliance Analyst", "from": "2021-03", "to": "Present" },
+      { "company": "FNB", "title": "Risk Analyst", "from": "2020-07", "to": "2021-02" }
+    ],
+    "documents": [{ "docId": "doc-c016-1", "type": "CV", "uploadedAt": "2024-10-30" }],
+    "languages": ["English", "Zulu", "Xhosa"],
+    "profileComplete": 84,
+    "applications": []
+  },
+  {
+    "candidateId": "c017",
+    "fullName": "Deon Pretorius",
+    "email": "deon.pretorius@email.com",
+    "phone": "+27 81 789 0125",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "Network Engineer",
+    "currentCompany": "Telkom",
+    "experienceYears": 9,
+    "skills": ["Cisco", "CCNP", "BGP", "MPLS", "Firewall", "Network Security"],
+    "education": [{ "institution": "Tshwane University of Technology", "qualification": "BSc Network Engineering", "year": 2015 }],
+    "experience": [
+      { "company": "Telkom", "title": "Network Engineer", "from": "2018-05", "to": "Present" },
+      { "company": "Dimension Data", "title": "Network Technician", "from": "2015-08", "to": "2018-04" }
+    ],
+    "documents": [{ "docId": "doc-c017-1", "type": "CV", "uploadedAt": "2024-09-20" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 82,
+    "applications": []
+  },
+  {
+    "candidateId": "c018",
+    "fullName": "Priya Naidoo",
+    "email": "priya.naidoo@email.com",
+    "phone": "+27 82 890 1236",
+    "location": "Durban, KwaZulu-Natal",
+    "currentTitle": "Business Analyst",
+    "currentCompany": "Investec",
+    "experienceYears": 6,
+    "skills": ["BPMN", "UML", "SQL", "Jira", "Confluence", "Agile", "Process Mapping"],
+    "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BCom Information Management", "year": 2018 }],
+    "experience": [
+      { "company": "Investec", "title": "Senior Business Analyst", "from": "2021-06", "to": "Present" },
+      { "company": "Accenture", "title": "Business Analyst", "from": "2018-08", "to": "2021-05" }
+    ],
+    "documents": [{ "docId": "doc-c018-1", "type": "CV", "uploadedAt": "2024-11-02" }],
+    "languages": ["English", "Hindi", "Zulu"],
+    "profileComplete": 87,
+    "applications": []
+  },
+  {
+    "candidateId": "c019",
+    "fullName": "Tebogo Molefe",
+    "email": "tebogo.molefe@email.com",
+    "phone": "+27 71 901 2347",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Full Stack Developer",
+    "currentCompany": "Multichoice",
+    "experienceYears": 5,
+    "skills": ["React", "Node.js", "Python", "PostgreSQL", "Docker", "REST APIs"],
+    "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2019 }],
+    "experience": [
+      { "company": "Multichoice", "title": "Full Stack Developer", "from": "2021-04", "to": "Present" },
+      { "company": "Synthesis", "title": "Software Developer", "from": "2019-08", "to": "2021-03" }
+    ],
+    "documents": [{ "docId": "doc-c019-1", "type": "CV", "uploadedAt": "2024-10-22" }],
+    "languages": ["English", "Sotho", "Tswana"],
+    "profileComplete": 81,
+    "applications": []
+  },
+  {
+    "candidateId": "c020",
+    "fullName": "Melissa Botha",
+    "email": "melissa.botha@email.com",
+    "phone": "+27 83 012 3458",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Digital Marketing Manager",
+    "currentCompany": "Takealot",
+    "experienceYears": 7,
+    "skills": ["SEO", "Google Ads", "Meta Ads", "Content Strategy", "Analytics", "HubSpot"],
+    "education": [{ "institution": "University of Stellenbosch", "qualification": "BCom Marketing", "year": 2017 }],
+    "experience": [
+      { "company": "Takealot", "title": "Digital Marketing Manager", "from": "2020-01", "to": "Present" },
+      { "company": "Ogilvy", "title": "Digital Strategist", "from": "2017-08", "to": "2019-12" }
+    ],
+    "documents": [{ "docId": "doc-c020-1", "type": "CV", "uploadedAt": "2024-10-14" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 86,
+    "applications": []
+  },
+  {
+    "candidateId": "c021",
+    "fullName": "Lwazi Dlamini",
+    "email": "lwazi.dlamini@email.com",
+    "phone": "+27 72 234 5679",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Scrum Master",
+    "currentCompany": "Rand Merchant Bank",
+    "experienceYears": 5,
+    "skills": ["Scrum", "SAFe", "Agile Coaching", "Jira", "Confluence", "Facilitation"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BSc Information Systems", "year": 2019 }],
+    "experience": [
+      { "company": "Rand Merchant Bank", "title": "Scrum Master", "from": "2021-09", "to": "Present" },
+      { "company": "Entelect", "title": "Agile Coach", "from": "2019-07", "to": "2021-08" }
+    ],
+    "documents": [{ "docId": "doc-c021-1", "type": "CV", "uploadedAt": "2024-11-04" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 79,
+    "applications": []
+  },
+  {
+    "candidateId": "c022",
+    "fullName": "Chantal du Plessis",
+    "email": "chantal.dup@email.com",
+    "phone": "+27 84 345 6780",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "HR Business Partner",
+    "currentCompany": "Anglo American",
+    "experienceYears": 8,
+    "skills": ["Talent Acquisition", "Performance Management", "Labour Law", "HRIS", "SAP HR"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BCom Human Resources", "year": 2016 }],
+    "experience": [
+      { "company": "Anglo American", "title": "HR Business Partner", "from": "2019-05", "to": "Present" },
+      { "company": "Old Mutual", "title": "HR Generalist", "from": "2016-08", "to": "2019-04" }
+    ],
+    "documents": [{ "docId": "doc-c022-1", "type": "CV", "uploadedAt": "2024-10-08" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 89,
+    "applications": []
+  },
+  {
+    "candidateId": "c023",
+    "fullName": "Siphamandla Dube",
+    "email": "siphamandla.dube@email.com",
+    "phone": "+27 65 456 7891",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Solutions Architect",
+    "currentCompany": "IBM",
+    "experienceYears": 12,
+    "skills": ["Enterprise Architecture", "AWS", "Azure", "GCP", "Microservices", "TOGAF"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BEng Computer Engineering", "year": 2012 }],
+    "experience": [
+      { "company": "IBM", "title": "Solutions Architect", "from": "2018-01", "to": "Present" },
+      { "company": "Accenture", "title": "Senior Developer", "from": "2014-03", "to": "2017-12" }
+    ],
+    "documents": [{ "docId": "doc-c023-1", "type": "CV", "uploadedAt": "2024-11-06" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 97,
+    "applications": []
+  },
+  {
+    "candidateId": "c024",
+    "fullName": "Tamaryn Adams",
+    "email": "tamaryn.adams@email.com",
+    "phone": "+27 73 567 8902",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Content Strategist",
+    "currentCompany": "Helm",
+    "experienceYears": 4,
+    "skills": ["Content Writing", "SEO", "Copywriting", "Content Marketing", "WordPress", "Analytics"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "BA English", "year": 2020 }],
+    "experience": [
+      { "company": "Helm", "title": "Content Strategist", "from": "2021-07", "to": "Present" },
+      { "company": "Ogilvy", "title": "Copywriter", "from": "2020-08", "to": "2021-06" }
+    ],
+    "documents": [{ "docId": "doc-c024-1", "type": "CV", "uploadedAt": "2024-10-26" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 74,
+    "applications": []
+  },
+  {
+    "candidateId": "c025",
+    "fullName": "Nkosinathi Zulu",
+    "email": "nkosinathi.zulu@email.com",
+    "phone": "+27 81 678 9013",
+    "location": "Durban, KwaZulu-Natal",
+    "currentTitle": "Financial Analyst",
+    "currentCompany": "Nedbank",
+    "experienceYears": 5,
+    "skills": ["Financial Modelling", "Excel", "Power BI", "SQL", "IFRS", "Bloomberg"],
+    "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BCom Finance", "year": 2019 }],
+    "experience": [
+      { "company": "Nedbank", "title": "Financial Analyst", "from": "2021-02", "to": "Present" },
+      { "company": "Ernst & Young", "title": "Associate", "from": "2019-07", "to": "2021-01" }
+    ],
+    "documents": [{ "docId": "doc-c025-1", "type": "CV", "uploadedAt": "2024-11-01" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 83,
+    "applications": []
+  },
+  {
+    "candidateId": "c026",
+    "fullName": "Kefilwe Sithole",
+    "email": "kefilwe.sithole@email.com",
+    "phone": "+27 82 789 0124",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Mobile Developer",
+    "currentCompany": "Capitec",
+    "experienceYears": 4,
+    "skills": ["React Native", "Flutter", "Swift", "Kotlin", "Firebase", "REST APIs"],
+    "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2020 }],
+    "experience": [
+      { "company": "Capitec", "title": "Mobile Developer", "from": "2021-04", "to": "Present" },
+      { "company": "Synthesis", "title": "Junior Developer", "from": "2020-08", "to": "2021-03" }
+    ],
+    "documents": [{ "docId": "doc-c026-1", "type": "CV", "uploadedAt": "2024-10-17" }],
+    "languages": ["English", "Sotho", "Tswana"],
+    "profileComplete": 76,
+    "applications": []
+  },
+  {
+    "candidateId": "c027",
+    "fullName": "Warren Hendricks",
+    "email": "warren.hendricks@email.com",
+    "phone": "+27 71 890 1235",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Cybersecurity Analyst",
+    "currentCompany": "TymeBank",
+    "experienceYears": 6,
+    "skills": ["Penetration Testing", "SIEM", "OWASP", "ISO 27001", "Incident Response", "Splunk"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "BSc Computer Science", "year": 2018 }],
+    "experience": [
+      { "company": "TymeBank", "title": "Cybersecurity Analyst", "from": "2021-06", "to": "Present" },
+      { "company": "KPMG", "title": "Security Consultant", "from": "2018-08", "to": "2021-05" }
+    ],
+    "documents": [{ "docId": "doc-c027-1", "type": "CV", "uploadedAt": "2024-11-09" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 88,
+    "applications": []
+  },
+  {
+    "candidateId": "c028",
+    "fullName": "Nokuthula Ngubane",
+    "email": "nokuthula.ngubane@email.com",
+    "phone": "+27 83 901 2346",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "UX Researcher",
+    "currentCompany": "Discovery",
+    "experienceYears": 4,
+    "skills": ["User Research", "Usability Testing", "Affinity Mapping", "Figma", "Survey Design"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BA Psychology", "year": 2020 }],
+    "experience": [
+      { "company": "Discovery", "title": "UX Researcher", "from": "2022-03", "to": "Present" },
+      { "company": "FNB Digital", "title": "Research Assistant", "from": "2020-07", "to": "2022-02" }
+    ],
+    "documents": [{ "docId": "doc-c028-1", "type": "CV", "uploadedAt": "2024-10-29" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 78,
+    "applications": []
+  },
+  {
+    "candidateId": "c029",
+    "fullName": "Charl van Wyk",
+    "email": "charl.vanwyk@email.com",
+    "phone": "+27 72 012 3457",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "Database Administrator",
+    "currentCompany": "Sasol",
+    "experienceYears": 9,
+    "skills": ["Oracle", "SQL Server", "PostgreSQL", "MySQL", "Performance Tuning", "Backup & Recovery"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2015 }],
+    "experience": [
+      { "company": "Sasol", "title": "Senior DBA", "from": "2019-01", "to": "Present" },
+      { "company": "Deloitte", "title": "Database Developer", "from": "2015-08", "to": "2018-12" }
+    ],
+    "documents": [{ "docId": "doc-c029-1", "type": "CV", "uploadedAt": "2024-10-05" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 85,
+    "applications": []
+  },
+  {
+    "candidateId": "c030",
+    "fullName": "Mpho Sithole",
+    "email": "mpho.sithole@email.com",
+    "phone": "+27 84 123 4568",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Account Manager",
+    "currentCompany": "Salesforce",
+    "experienceYears": 6,
+    "skills": ["Sales", "CRM", "Salesforce", "Pipeline Management", "Client Relationship", "B2B Sales"],
+    "education": [{ "institution": "University of Johannesburg", "qualification": "BCom Marketing", "year": 2018 }],
+    "experience": [
+      { "company": "Salesforce", "title": "Account Manager", "from": "2020-09", "to": "Present" },
+      { "company": "SAP", "title": "Sales Development Rep", "from": "2018-08", "to": "2020-08" }
+    ],
+    "documents": [{ "docId": "doc-c030-1", "type": "CV", "uploadedAt": "2024-10-21" }],
+    "languages": ["English", "Zulu", "Sotho"],
+    "profileComplete": 80,
+    "applications": []
+  },
+  {
+    "candidateId": "c031",
+    "fullName": "Adaeze Okonkwo",
+    "email": "adaeze.okonkwo@email.com",
+    "phone": "+27 65 234 5680",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Software Engineer",
+    "currentCompany": "Amazon",
+    "experienceYears": 5,
+    "skills": ["Java", "Go", "AWS", "DynamoDB", "Microservices", "System Design"],
+    "education": [{ "institution": "University of Lagos", "qualification": "BSc Computer Engineering", "year": 2019 }],
+    "experience": [
+      { "company": "Amazon", "title": "Software Engineer", "from": "2022-01", "to": "Present" },
+      { "company": "Flutterwave", "title": "Backend Developer", "from": "2019-07", "to": "2021-12" }
+    ],
+    "documents": [{ "docId": "doc-c031-1", "type": "CV", "uploadedAt": "2024-11-05" }],
+    "languages": ["English", "Igbo", "Yoruba"],
+    "profileComplete": 93,
+    "applications": []
+  },
+  {
+    "candidateId": "c032",
+    "fullName": "Jacques Barnard",
+    "email": "jacques.barnard@email.com",
+    "phone": "+27 73 345 6782",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "IT Project Manager",
+    "currentCompany": "Allan Gray",
+    "experienceYears": 10,
+    "skills": ["PMI", "PMP", "Agile", "Waterfall", "Budget Management", "Risk Management", "MS Project"],
+    "education": [{ "institution": "Stellenbosch University", "qualification": "BCom Information Systems", "year": 2014 }],
+    "experience": [
+      { "company": "Allan Gray", "title": "IT Project Manager", "from": "2018-06", "to": "Present" },
+      { "company": "ABSA", "title": "Project Lead", "from": "2014-08", "to": "2018-05" }
+    ],
+    "documents": [{ "docId": "doc-c032-1", "type": "CV", "uploadedAt": "2024-09-28" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 91,
+    "applications": []
+  },
+  {
+    "candidateId": "c033",
+    "fullName": "Sindisiwe Mkhize",
+    "email": "sindisiwe.mkhize@email.com",
+    "phone": "+27 81 456 7893",
+    "location": "Durban, KwaZulu-Natal",
+    "currentTitle": "Social Media Manager",
+    "currentCompany": "Cell C",
+    "experienceYears": 4,
+    "skills": ["Social Media Strategy", "Content Creation", "Community Management", "Analytics", "Canva"],
+    "education": [{ "institution": "Durban University of Technology", "qualification": "BTech Marketing", "year": 2020 }],
+    "experience": [
+      { "company": "Cell C", "title": "Social Media Manager", "from": "2022-03", "to": "Present" },
+      { "company": "Freelance", "title": "Social Media Consultant", "from": "2020-06", "to": "2022-02" }
+    ],
+    "documents": [],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 68,
+    "applications": []
+  },
+  {
+    "candidateId": "c034",
+    "fullName": "Gerhard Olivier",
+    "email": "gerhard.olivier@email.com",
+    "phone": "+27 82 567 8904",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "Embedded Systems Engineer",
+    "currentCompany": "Armscor",
+    "experienceYears": 7,
+    "skills": ["C", "C++", "RTOS", "FPGA", "PCB Design", "ARM Cortex"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BEng Electronic Engineering", "year": 2017 }],
+    "experience": [
+      { "company": "Armscor", "title": "Embedded Systems Engineer", "from": "2019-03", "to": "Present" },
+      { "company": "Reutech", "title": "Graduate Engineer", "from": "2017-08", "to": "2019-02" }
+    ],
+    "documents": [{ "docId": "doc-c034-1", "type": "CV", "uploadedAt": "2024-10-11" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 82,
+    "applications": []
+  },
+  {
+    "candidateId": "c035",
+    "fullName": "Tandiwe Mahlangu",
+    "email": "tandiwe.mahlangu@email.com",
+    "phone": "+27 71 678 9015",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "Talent Acquisition Specialist",
+    "currentCompany": "Vodacom",
+    "experienceYears": 5,
+    "skills": ["Sourcing", "LinkedIn Recruiter", "ATS", "Employer Branding", "Interviewing", "HR Analytics"],
+    "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Human Resources", "year": 2019 }],
+    "experience": [
+      { "company": "Vodacom", "title": "Talent Acquisition Specialist", "from": "2021-06", "to": "Present" },
+      { "company": "Deloitte", "title": "HR Associate", "from": "2019-08", "to": "2021-05" }
+    ],
+    "documents": [{ "docId": "doc-c035-1", "type": "CV", "uploadedAt": "2024-11-03" }],
+    "languages": ["English", "Zulu", "Sotho"],
+    "profileComplete": 85,
+    "applications": []
+  },
+  {
+    "candidateId": "c036",
+    "fullName": "Ryan Abrahams",
+    "email": "ryan.abrahams@email.com",
+    "phone": "+27 83 789 0126",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Growth Hacker",
+    "currentCompany": "Yoco",
+    "experienceYears": 4,
+    "skills": ["Growth Strategy", "A/B Testing", "Google Analytics", "Python", "SQL", "CRO"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "BCom Economics", "year": 2020 }],
+    "experience": [
+      { "company": "Yoco", "title": "Growth Hacker", "from": "2022-01", "to": "Present" },
+      { "company": "Nomanini", "title": "Growth Analyst", "from": "2020-07", "to": "2021-12" }
+    ],
+    "documents": [{ "docId": "doc-c036-1", "type": "CV", "uploadedAt": "2024-10-24" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 73,
+    "applications": []
+  },
+  {
+    "candidateId": "c037",
+    "fullName": "Vusi Ndlovu",
+    "email": "vusi.ndlovu@email.com",
+    "phone": "+27 72 890 1237",
+    "location": "Johannesburg, Gauteng",
+    "currentTitle": "SAP Consultant",
+    "currentCompany": "Accenture",
+    "experienceYears": 8,
+    "skills": ["SAP FICO", "SAP MM", "SAP SD", "ABAP", "S/4HANA", "Implementation"],
+    "education": [{ "institution": "University of Johannesburg", "qualification": "BCom Accounting", "year": 2016 }],
+    "experience": [
+      { "company": "Accenture", "title": "SAP Senior Consultant", "from": "2020-04", "to": "Present" },
+      { "company": "SAP", "title": "SAP Associate Consultant", "from": "2016-08", "to": "2020-03" }
+    ],
+    "documents": [{ "docId": "doc-c037-1", "type": "CV", "uploadedAt": "2024-10-16" }],
+    "languages": ["English", "Zulu"],
+    "profileComplete": 90,
+    "applications": []
+  },
+  {
+    "candidateId": "c038",
+    "fullName": "Michelle van Wyk",
+    "email": "michelle.vanwyk@email.com",
+    "phone": "+27 84 901 2348",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "Operations Manager",
+    "currentCompany": "PG Glass",
+    "experienceYears": 10,
+    "skills": ["Operations", "Supply Chain", "Process Improvement", "Lean", "Six Sigma", "ERP"],
+    "education": [{ "institution": "Stellenbosch University", "qualification": "BCom Logistics", "year": 2014 }],
+    "experience": [
+      { "company": "PG Glass", "title": "Operations Manager", "from": "2018-09", "to": "Present" },
+      { "company": "DHL", "title": "Logistics Coordinator", "from": "2014-07", "to": "2018-08" }
+    ],
+    "documents": [{ "docId": "doc-c038-1", "type": "CV", "uploadedAt": "2024-09-25" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 92,
+    "applications": []
+  },
+  {
+    "candidateId": "c039",
+    "fullName": "Kgomotso Ramaphosa",
+    "email": "kgomotso.r@email.com",
+    "phone": "+27 65 012 3459",
+    "location": "Pretoria, Gauteng",
+    "currentTitle": "Penetration Tester",
+    "currentCompany": "KPMG",
+    "experienceYears": 4,
+    "skills": ["Kali Linux", "Metasploit", "Burp Suite", "OSCP", "Network Security", "Web Security"],
+    "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2020 }],
+    "experience": [
+      { "company": "KPMG", "title": "Penetration Tester", "from": "2021-06", "to": "Present" },
+      { "company": "Bytes", "title": "Security Analyst", "from": "2020-08", "to": "2021-05" }
+    ],
+    "documents": [{ "docId": "doc-c039-1", "type": "CV", "uploadedAt": "2024-11-06" }],
+    "languages": ["English", "Sotho", "Tswana"],
+    "profileComplete": 84,
+    "applications": []
+  },
+  {
+    "candidateId": "c040",
+    "fullName": "Deborah Coetzee",
+    "email": "deborah.coetzee@email.com",
+    "phone": "+27 73 123 4569",
+    "location": "Cape Town, Western Cape",
+    "currentTitle": "E-Commerce Manager",
+    "currentCompany": "Woolworths",
+    "experienceYears": 7,
+    "skills": ["E-Commerce", "Shopify", "Google Analytics", "CRO", "Performance Marketing", "SQL"],
+    "education": [{ "institution": "University of Cape Town", "qualification": "BCom Marketing", "year": 2017 }],
+    "experience": [
+      { "company": "Woolworths", "title": "E-Commerce Manager", "from": "2020-03", "to": "Present" },
+      { "company": "Superbalist", "title": "Digital Marketing Lead", "from": "2017-08", "to": "2020-02" }
+    ],
+    "documents": [{ "docId": "doc-c040-1", "type": "CV", "uploadedAt": "2024-10-19" }],
+    "languages": ["English", "Afrikaans"],
+    "profileComplete": 87,
+    "applications": []
+  },
+  {
+    "candidateId": "c041", "fullName": "Siyanda Madlala", "email": "siyanda.madlala@email.com", "phone": "+27 81 234 5671", "location": "Durban, KwaZulu-Natal", "currentTitle": "iOS Developer", "currentCompany": "Standard Bank", "experienceYears": 4, "skills": ["Swift", "SwiftUI", "Xcode", "REST APIs", "Firebase", "CocoaPods"], "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BSc Computer Science", "year": 2020 }], "experience": [{ "company": "Standard Bank", "title": "iOS Developer", "from": "2021-03", "to": "Present" }], "documents": [], "languages": ["English", "Zulu"], "profileComplete": 71, "applications": []
+  },
+  {
+    "candidateId": "c042", "fullName": "Amanda Smit", "email": "amanda.smit@email.com", "phone": "+27 82 345 6782", "location": "Johannesburg, Gauteng", "currentTitle": "Copywriter", "currentCompany": "JWT", "experienceYears": 5, "skills": ["Copywriting", "Brand Voice", "Content Strategy", "Social Media", "Email Marketing"], "education": [{ "institution": "University of Johannesburg", "qualification": "BA Journalism", "year": 2019 }], "experience": [{ "company": "JWT", "title": "Senior Copywriter", "from": "2021-05", "to": "Present" }, { "company": "Ogilvy", "title": "Junior Copywriter", "from": "2019-08", "to": "2021-04" }], "documents": [{ "docId": "doc-c042-1", "type": "CV", "uploadedAt": "2024-10-27" }], "languages": ["English", "Afrikaans"], "profileComplete": 77, "applications": []
+  },
+  {
+    "candidateId": "c043", "fullName": "Ntombi Dlamini", "email": "ntombi.dlamini@email.com", "phone": "+27 71 456 7893", "location": "Johannesburg, Gauteng", "currentTitle": "Risk Manager", "currentCompany": "Nedbank", "experienceYears": 7, "skills": ["Credit Risk", "Operational Risk", "Basel III", "Python", "SAS", "Risk Modelling"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Quantitative Finance", "year": 2017 }], "experience": [{ "company": "Nedbank", "title": "Risk Manager", "from": "2020-02", "to": "Present" }, { "company": "FNB", "title": "Risk Analyst", "from": "2017-08", "to": "2020-01" }], "documents": [{ "docId": "doc-c043-1", "type": "CV", "uploadedAt": "2024-11-01" }], "languages": ["English", "Zulu"], "profileComplete": 86, "applications": []
+  },
+  {
+    "candidateId": "c044", "fullName": "Gareth Lewis", "email": "gareth.lewis@email.com", "phone": "+27 83 567 8905", "location": "Cape Town, Western Cape", "currentTitle": "Machine Learning Ops Engineer", "currentCompany": "Naspers", "experienceYears": 5, "skills": ["MLOps", "Kubeflow", "MLflow", "Docker", "Kubernetes", "Python"], "education": [{ "institution": "Stellenbosch University", "qualification": "BSc Engineering", "year": 2019 }], "experience": [{ "company": "Naspers", "title": "MLOps Engineer", "from": "2021-08", "to": "Present" }, { "company": "DataProphet", "title": "Data Engineer", "from": "2019-07", "to": "2021-07" }], "documents": [{ "docId": "doc-c044-1", "type": "CV", "uploadedAt": "2024-11-05" }], "languages": ["English", "Afrikaans"], "profileComplete": 88, "applications": []
+  },
+  {
+    "candidateId": "c045", "fullName": "Zodwa Mahlangu", "email": "zodwa.mahlangu@email.com", "phone": "+27 72 678 9016", "location": "Johannesburg, Gauteng", "currentTitle": "Legal Advisor", "currentCompany": "Anglo American", "experienceYears": 6, "skills": ["Contract Law", "Corporate Law", "Compliance", "POPIA", "Drafting", "Negotiation"], "education": [{ "institution": "University of Pretoria", "qualification": "LLB", "year": 2018 }], "experience": [{ "company": "Anglo American", "title": "Legal Advisor", "from": "2021-01", "to": "Present" }, { "company": "Webber Wentzel", "title": "Associate Attorney", "from": "2018-08", "to": "2020-12" }], "documents": [{ "docId": "doc-c045-1", "type": "CV", "uploadedAt": "2024-10-23" }], "languages": ["English", "Zulu", "Sotho"], "profileComplete": 90, "applications": []
+  },
+  {
+    "candidateId": "c046", "fullName": "Kyle Fourie", "email": "kyle.fourie@email.com", "phone": "+27 84 789 0127", "location": "Pretoria, Gauteng", "currentTitle": "Test Automation Engineer", "currentCompany": "Accenture", "experienceYears": 5, "skills": ["Selenium", "TestNG", "Cypress", "BDD", "Gherkin", "CI/CD", "Java"], "education": [{ "institution": "Tshwane University of Technology", "qualification": "BSc Computer Science", "year": 2019 }], "experience": [{ "company": "Accenture", "title": "Test Automation Engineer", "from": "2021-03", "to": "Present" }, { "company": "BCX", "title": "QA Engineer", "from": "2019-07", "to": "2021-02" }], "documents": [{ "docId": "doc-c046-1", "type": "CV", "uploadedAt": "2024-10-31" }], "languages": ["English", "Afrikaans"], "profileComplete": 79, "applications": []
+  },
+  {
+    "candidateId": "c047", "fullName": "Palesa Molapo", "email": "palesa.molapo@email.com", "phone": "+27 65 890 1238", "location": "Johannesburg, Gauteng", "currentTitle": "Brand Manager", "currentCompany": "Unilever", "experienceYears": 6, "skills": ["Brand Management", "BTL/ATL", "Market Research", "Consumer Insights", "NPD", "P&L"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Marketing", "year": 2018 }], "experience": [{ "company": "Unilever", "title": "Brand Manager", "from": "2020-07", "to": "Present" }, { "company": "Tiger Brands", "title": "Marketing Coordinator", "from": "2018-08", "to": "2020-06" }], "documents": [{ "docId": "doc-c047-1", "type": "CV", "uploadedAt": "2024-11-04" }], "languages": ["English", "Sotho"], "profileComplete": 84, "applications": []
+  },
+  {
+    "candidateId": "c048", "fullName": "Heinrich Swart", "email": "heinrich.swart@email.com", "phone": "+27 73 901 2349", "location": "Cape Town, Western Cape", "currentTitle": "Platform Engineer", "currentCompany": "Shoprite", "experienceYears": 7, "skills": ["GCP", "Terraform", "Helm", "Kubernetes", "CI/CD", "Site Reliability"], "education": [{ "institution": "University of Stellenbosch", "qualification": "BSc Computer Science", "year": 2017 }], "experience": [{ "company": "Shoprite", "title": "Platform Engineer", "from": "2020-06", "to": "Present" }, { "company": "Amazon", "title": "Cloud Engineer", "from": "2017-08", "to": "2020-05" }], "documents": [{ "docId": "doc-c048-1", "type": "CV", "uploadedAt": "2024-10-07" }], "languages": ["English", "Afrikaans"], "profileComplete": 89, "applications": []
+  },
+  {
+    "candidateId": "c049", "fullName": "Nomsa Khumalo", "email": "nomsa.khumalo@email.com", "phone": "+27 81 012 3460", "location": "Durban, KwaZulu-Natal", "currentTitle": "Supply Chain Analyst", "currentCompany": "Toyota SA", "experienceYears": 5, "skills": ["SAP MM", "Demand Planning", "Inventory Management", "Excel", "Power BI", "Procurement"], "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BCom Logistics", "year": 2019 }], "experience": [{ "company": "Toyota SA", "title": "Supply Chain Analyst", "from": "2021-04", "to": "Present" }, { "company": "Transnet", "title": "Logistics Coordinator", "from": "2019-08", "to": "2021-03" }], "documents": [{ "docId": "doc-c049-1", "type": "CV", "uploadedAt": "2024-10-15" }], "languages": ["English", "Zulu"], "profileComplete": 81, "applications": []
+  },
+  {
+    "candidateId": "c050", "fullName": "Dirk van Niekerk", "email": "dirk.vn@email.com", "phone": "+27 82 123 4570", "location": "Johannesburg, Gauteng", "currentTitle": "Enterprise Architect", "currentCompany": "Old Mutual", "experienceYears": 14, "skills": ["TOGAF", "Enterprise Architecture", "ITIL", "Service Mesh", "Cloud Native", "Digital Transformation"], "education": [{ "institution": "University of Pretoria", "qualification": "MEng Computer Engineering", "year": 2010 }], "experience": [{ "company": "Old Mutual", "title": "Enterprise Architect", "from": "2017-01", "to": "Present" }, { "company": "Dimension Data", "title": "Solutions Architect", "from": "2012-03", "to": "2016-12" }], "documents": [{ "docId": "doc-c050-1", "type": "CV", "uploadedAt": "2024-11-08" }], "languages": ["English", "Afrikaans"], "profileComplete": 96, "applications": []
+  },
+  {
+    "candidateId": "c051", "fullName": "Sphiwe Gumede", "email": "sphiwe.gumede@email.com", "phone": "+27 71 234 5681", "location": "Durban, KwaZulu-Natal", "currentTitle": "Logistics Manager", "currentCompany": "PG Glass", "experienceYears": 8, "skills": ["Logistics", "Fleet Management", "Warehouse Management", "ERP", "Team Leadership"], "education": [{ "institution": "Durban University of Technology", "qualification": "NDip Logistics", "year": 2016 }], "experience": [{ "company": "PG Glass", "title": "Logistics Manager", "from": "2019-02", "to": "Present" }], "documents": [{ "docId": "doc-c051-1", "type": "CV", "uploadedAt": "2024-10-20" }], "languages": ["English", "Zulu"], "profileComplete": 78, "applications": []
+  },
+  {
+    "candidateId": "c052", "fullName": "Elzabe Kruger", "email": "elzabe.kruger@email.com", "phone": "+27 83 345 6783", "location": "Pretoria, Gauteng", "currentTitle": "Financial Controller", "currentCompany": "Absa", "experienceYears": 9, "skills": ["IFRS", "Management Accounts", "Oracle Financials", "Financial Reporting", "Budgeting", "Tax"], "education": [{ "institution": "University of Pretoria", "qualification": "BCom Accounting", "year": 2015 }], "experience": [{ "company": "Absa", "title": "Financial Controller", "from": "2019-03", "to": "Present" }, { "company": "Deloitte", "title": "Audit Senior", "from": "2015-08", "to": "2019-02" }], "documents": [{ "docId": "doc-c052-1", "type": "CV", "uploadedAt": "2024-09-18" }], "languages": ["English", "Afrikaans"], "profileComplete": 94, "applications": []
+  },
+  {
+    "candidateId": "c053", "fullName": "Buyani Mhlanga", "email": "buyani.mhlanga@email.com", "phone": "+27 72 456 7894", "location": "Johannesburg, Gauteng", "currentTitle": "API Developer", "currentCompany": "FNB", "experienceYears": 5, "skills": ["REST", "GraphQL", "Node.js", "Express", "OpenAPI", "Postman"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2019 }], "experience": [{ "company": "FNB", "title": "API Developer", "from": "2021-01", "to": "Present" }, { "company": "Entelect", "title": "Developer", "from": "2019-08", "to": "2020-12" }], "documents": [{ "docId": "doc-c053-1", "type": "CV", "uploadedAt": "2024-11-02" }], "languages": ["English", "Zulu", "Xhosa"], "profileComplete": 80, "applications": []
+  },
+  {
+    "candidateId": "c054", "fullName": "Riaan Swanepoel", "email": "riaan.swanepoel@email.com", "phone": "+27 84 567 8906", "location": "Cape Town, Western Cape", "currentTitle": "Angular Developer", "currentCompany": "Capitec", "experienceYears": 6, "skills": ["Angular", "TypeScript", "RxJS", "NgRx", "REST APIs", "Unit Testing"], "education": [{ "institution": "Stellenbosch University", "qualification": "BSc Computer Science", "year": 2018 }], "experience": [{ "company": "Capitec", "title": "Angular Developer", "from": "2020-04", "to": "Present" }, { "company": "Synthesis", "title": "Front-End Developer", "from": "2018-08", "to": "2020-03" }], "documents": [{ "docId": "doc-c054-1", "type": "CV", "uploadedAt": "2024-10-13" }], "languages": ["English", "Afrikaans"], "profileComplete": 83, "applications": []
+  },
+  {
+    "candidateId": "c055", "fullName": "Thembi Nxumalo", "email": "thembi.nxumalo@email.com", "phone": "+27 65 678 9017", "location": "Johannesburg, Gauteng", "currentTitle": "Instructional Designer", "currentCompany": "University of Pretoria", "experienceYears": 5, "skills": ["Articulate Storyline", "Instructional Design", "LMS", "Moodle", "eLearning", "Curriculum Design"], "education": [{ "institution": "University of Pretoria", "qualification": "BEd", "year": 2019 }], "experience": [{ "company": "University of Pretoria", "title": "Instructional Designer", "from": "2021-02", "to": "Present" }, { "company": "Unisa", "title": "Course Developer", "from": "2019-07", "to": "2021-01" }], "documents": [{ "docId": "doc-c055-1", "type": "CV", "uploadedAt": "2024-10-28" }], "languages": ["English", "Zulu", "Sotho"], "profileComplete": 74, "applications": []
+  },
+  {
+    "candidateId": "c056", "fullName": "Tristan Pillay", "email": "tristan.pillay@email.com", "phone": "+27 73 789 0128", "location": "Durban, KwaZulu-Natal", "currentTitle": "Data Scientist", "currentCompany": "Multichoice", "experienceYears": 4, "skills": ["Python", "R", "Machine Learning", "NLP", "SQL", "Tableau"], "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "MSc Statistics", "year": 2020 }], "experience": [{ "company": "Multichoice", "title": "Data Scientist", "from": "2021-04", "to": "Present" }, { "company": "DataProphet", "title": "Data Analyst", "from": "2020-07", "to": "2021-03" }], "documents": [{ "docId": "doc-c056-1", "type": "CV", "uploadedAt": "2024-11-07" }], "languages": ["English", "Hindi"], "profileComplete": 88, "applications": []
+  },
+  {
+    "candidateId": "c057", "fullName": "Lindiwe Cele", "email": "lindiwe.cele@email.com", "phone": "+27 81 890 1239", "location": "Pretoria, Gauteng", "currentTitle": "Change Manager", "currentCompany": "Deloitte", "experienceYears": 8, "skills": ["Change Management", "PROSCI", "Stakeholder Engagement", "Communications", "Training"], "education": [{ "institution": "University of Pretoria", "qualification": "BCom Business Management", "year": 2016 }], "experience": [{ "company": "Deloitte", "title": "Change Manager", "from": "2019-01", "to": "Present" }, { "company": "KPMG", "title": "Change Consultant", "from": "2016-08", "to": "2018-12" }], "documents": [{ "docId": "doc-c057-1", "type": "CV", "uploadedAt": "2024-10-09" }], "languages": ["English", "Zulu", "Sotho"], "profileComplete": 91, "applications": []
+  },
+  {
+    "candidateId": "c058", "fullName": "Brendan Swart", "email": "brendan.swart@email.com", "phone": "+27 82 901 2350", "location": "Cape Town, Western Cape", "currentTitle": "Blockchain Developer", "currentCompany": "Nuvei", "experienceYears": 4, "skills": ["Solidity", "Ethereum", "Web3.js", "Smart Contracts", "DeFi", "TypeScript"], "education": [{ "institution": "University of Cape Town", "qualification": "BSc Computer Science", "year": 2020 }], "experience": [{ "company": "Nuvei", "title": "Blockchain Developer", "from": "2022-03", "to": "Present" }, { "company": "Centbee", "title": "Junior Developer", "from": "2020-08", "to": "2022-02" }], "documents": [{ "docId": "doc-c058-1", "type": "CV", "uploadedAt": "2024-11-06" }], "languages": ["English", "Afrikaans"], "profileComplete": 77, "applications": []
+  },
+  {
+    "candidateId": "c059", "fullName": "Amahle Sithole", "email": "amahle.sithole@email.com", "phone": "+27 71 012 3461", "location": "Johannesburg, Gauteng", "currentTitle": "IT Auditor", "currentCompany": "PwC", "experienceYears": 5, "skills": ["IT Audit", "COBIT", "SOX", "ITGC", "Data Analytics", "ACL"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Informatics", "year": 2019 }], "experience": [{ "company": "PwC", "title": "IT Audit Senior", "from": "2021-01", "to": "Present" }, { "company": "EY", "title": "IT Auditor", "from": "2019-07", "to": "2020-12" }], "documents": [{ "docId": "doc-c059-1", "type": "CV", "uploadedAt": "2024-10-22" }], "languages": ["English", "Zulu"], "profileComplete": 85, "applications": []
+  },
+  {
+    "candidateId": "c060", "fullName": "Stephan Botha", "email": "stephan.botha@email.com", "phone": "+27 83 123 4571", "location": "Johannesburg, Gauteng", "currentTitle": "Senior React Developer", "currentCompany": "Rand Merchant Bank", "experienceYears": 7, "skills": ["React", "Redux", "TypeScript", "GraphQL", "Jest", "Storybook"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2017 }], "experience": [{ "company": "Rand Merchant Bank", "title": "Senior React Developer", "from": "2020-06", "to": "Present" }, { "company": "Entelect", "title": "React Developer", "from": "2017-08", "to": "2020-05" }], "documents": [{ "docId": "doc-c060-1", "type": "CV", "uploadedAt": "2024-11-08" }], "languages": ["English", "Afrikaans"], "profileComplete": 93, "applications": []
+  },
+  {
+    "candidateId": "c061", "fullName": "Mavis Ngwenya", "email": "mavis.ngwenya@email.com", "phone": "+27 72 234 5682", "location": "Johannesburg, Gauteng", "currentTitle": "Clinical Coder", "currentCompany": "Netcare", "experienceYears": 6, "skills": ["ICD-10", "Clinical Coding", "Medical Terminology", "HIMS", "Quality Assurance"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Health Information Management", "year": 2018 }], "experience": [{ "company": "Netcare", "title": "Senior Clinical Coder", "from": "2020-04", "to": "Present" }], "documents": [], "languages": ["English", "Zulu", "Sotho"], "profileComplete": 68, "applications": []
+  },
+  {
+    "candidateId": "c062", "fullName": "Thandi Mokoena", "email": "thandi.mokoena@email.com", "phone": "+27 84 345 6784", "location": "Pretoria, Gauteng", "currentTitle": "Digital Transformation Lead", "currentCompany": "Anglo American", "experienceYears": 9, "skills": ["Digital Strategy", "Change Management", "Agile", "Design Thinking", "Innovation Management"], "education": [{ "institution": "University of Pretoria", "qualification": "MBA", "year": 2018 }], "experience": [{ "company": "Anglo American", "title": "Digital Transformation Lead", "from": "2019-03", "to": "Present" }], "documents": [{ "docId": "doc-c062-1", "type": "CV", "uploadedAt": "2024-10-16" }], "languages": ["English", "Sotho", "Tswana"], "profileComplete": 93, "applications": []
+  },
+  {
+    "candidateId": "c063", "fullName": "Louis Venter", "email": "louis.venter@email.com", "phone": "+27 65 456 7895", "location": "Cape Town, Western Cape", "currentTitle": "Power BI Developer", "currentCompany": "Shoprite", "experienceYears": 5, "skills": ["Power BI", "DAX", "Power Query", "SQL", "Azure Synapse", "Data Modelling"], "education": [{ "institution": "University of Stellenbosch", "qualification": "BCom Statistics", "year": 2019 }], "experience": [{ "company": "Shoprite", "title": "BI Developer", "from": "2021-02", "to": "Present" }, { "company": "Deloitte", "title": "Data Analyst", "from": "2019-07", "to": "2021-01" }], "documents": [{ "docId": "doc-c063-1", "type": "CV", "uploadedAt": "2024-11-03" }], "languages": ["English", "Afrikaans"], "profileComplete": 82, "applications": []
+  },
+  {
+    "candidateId": "c064", "fullName": "Olwethu Ntuli", "email": "olwethu.ntuli@email.com", "phone": "+27 73 567 8907", "location": "Durban, KwaZulu-Natal", "currentTitle": "Recruitment Consultant", "currentCompany": "Michael Page", "experienceYears": 4, "skills": ["Sourcing", "Headhunting", "CRM", "Interviewing", "LinkedIn Recruiter", "Business Development"], "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BCom Human Resources", "year": 2020 }], "experience": [{ "company": "Michael Page", "title": "Recruitment Consultant", "from": "2021-05", "to": "Present" }], "documents": [], "languages": ["English", "Zulu"], "profileComplete": 69, "applications": []
+  },
+  {
+    "candidateId": "c065", "fullName": "Francois du Toit", "email": "francois.dutoit@email.com", "phone": "+27 81 678 9018", "location": "Pretoria, Gauteng", "currentTitle": "Cloud Security Engineer", "currentCompany": "Dimension Data", "experienceYears": 7, "skills": ["AWS Security", "Azure Security", "Zero Trust", "IAM", "SIEM", "SOC"], "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2017 }], "experience": [{ "company": "Dimension Data", "title": "Cloud Security Engineer", "from": "2019-08", "to": "Present" }, { "company": "Bytes", "title": "Security Analyst", "from": "2017-07", "to": "2019-07" }], "documents": [{ "docId": "doc-c065-1", "type": "CV", "uploadedAt": "2024-10-30" }], "languages": ["English", "Afrikaans"], "profileComplete": 88, "applications": []
+  },
+  {
+    "candidateId": "c066", "fullName": "Nozipho Dube", "email": "nozipho.dube@email.com", "phone": "+27 82 789 0129", "location": "Johannesburg, Gauteng", "currentTitle": "Payroll Specialist", "currentCompany": "Old Mutual", "experienceYears": 6, "skills": ["VIP Payroll", "SAP Payroll", "Labour Law", "PAYE", "UIF", "SARS e@syFile"], "education": [{ "institution": "University of Johannesburg", "qualification": "BCom Accounting", "year": 2018 }], "experience": [{ "company": "Old Mutual", "title": "Payroll Specialist", "from": "2020-06", "to": "Present" }, { "company": "EOH", "title": "Payroll Administrator", "from": "2018-08", "to": "2020-05" }], "documents": [{ "docId": "doc-c066-1", "type": "CV", "uploadedAt": "2024-10-04" }], "languages": ["English", "Zulu"], "profileComplete": 80, "applications": []
+  },
+  {
+    "candidateId": "c067", "fullName": "Stephan Meyer", "email": "stephan.meyer@email.com", "phone": "+27 71 890 1240", "location": "Cape Town, Western Cape", "currentTitle": "SRE Engineer", "currentCompany": "Google", "experienceYears": 6, "skills": ["SRE", "Prometheus", "Grafana", "Kubernetes", "Python", "Go"], "education": [{ "institution": "University of Cape Town", "qualification": "BSc Computer Science", "year": 2018 }], "experience": [{ "company": "Google", "title": "Site Reliability Engineer", "from": "2021-06", "to": "Present" }, { "company": "Naspers", "title": "Platform Engineer", "from": "2018-08", "to": "2021-05" }], "documents": [{ "docId": "doc-c067-1", "type": "CV", "uploadedAt": "2024-11-09" }], "languages": ["English", "Afrikaans"], "profileComplete": 96, "applications": []
+  },
+  {
+    "candidateId": "c068", "fullName": "Bongiwe Majola", "email": "bongiwe.majola@email.com", "phone": "+27 83 901 2351", "location": "Johannesburg, Gauteng", "currentTitle": "Social Impact Manager", "currentCompany": "Tyme Bank", "experienceYears": 5, "skills": ["CSI", "Project Management", "Community Development", "Stakeholder Relations", "Reporting"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BA Social Work", "year": 2019 }], "experience": [{ "company": "Tyme Bank", "title": "Social Impact Manager", "from": "2021-09", "to": "Present" }, { "company": "Gift of the Givers", "title": "Programme Coordinator", "from": "2019-08", "to": "2021-08" }], "documents": [], "languages": ["English", "Zulu", "Xhosa"], "profileComplete": 67, "applications": []
+  },
+  {
+    "candidateId": "c069", "fullName": "Christo van der Berg", "email": "christo.vdb@email.com", "phone": "+27 72 012 3462", "location": "Pretoria, Gauteng", "currentTitle": "SAP Basis Administrator", "currentCompany": "Eskom", "experienceYears": 9, "skills": ["SAP Basis", "HANA Administration", "Transport Management", "System Copy", "Patch Management"], "education": [{ "institution": "Tshwane University of Technology", "qualification": "NDip IT", "year": 2015 }], "experience": [{ "company": "Eskom", "title": "SAP Basis Admin", "from": "2018-03", "to": "Present" }, { "company": "EOH", "title": "SAP Basis Consultant", "from": "2015-08", "to": "2018-02" }], "documents": [{ "docId": "doc-c069-1", "type": "CV", "uploadedAt": "2024-09-22" }], "languages": ["English", "Afrikaans"], "profileComplete": 82, "applications": []
+  },
+  {
+    "candidateId": "c070", "fullName": "Nandipha Gcaba", "email": "nandipha.gcaba@email.com", "phone": "+27 84 123 4572", "location": "Durban, KwaZulu-Natal", "currentTitle": "Public Relations Manager", "currentCompany": "Multichoice", "experienceYears": 7, "skills": ["PR Strategy", "Media Relations", "Crisis Comms", "Press Releases", "Brand PR", "Event Management"], "education": [{ "institution": "Durban University of Technology", "qualification": "BTech Communication", "year": 2017 }], "experience": [{ "company": "Multichoice", "title": "PR Manager", "from": "2019-06", "to": "Present" }, { "company": "Y&R", "title": "PR Consultant", "from": "2017-08", "to": "2019-05" }], "documents": [{ "docId": "doc-c070-1", "type": "CV", "uploadedAt": "2024-10-24" }], "languages": ["English", "Zulu", "Xhosa"], "profileComplete": 84, "applications": []
+  },
+  {
+    "candidateId": "c071", "fullName": "Johan Steyn", "email": "johan.steyn@email.com", "phone": "+27 65 234 5683", "location": "Johannesburg, Gauteng", "currentTitle": "Kubernetes Engineer", "currentCompany": "Absa", "experienceYears": 5, "skills": ["Kubernetes", "Helm", "Istio", "Docker", "ArgoCD", "Linux"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2019 }], "experience": [{ "company": "Absa", "title": "Kubernetes Engineer", "from": "2021-03", "to": "Present" }], "documents": [{ "docId": "doc-c071-1", "type": "CV", "uploadedAt": "2024-11-05" }], "languages": ["English", "Afrikaans"], "profileComplete": 81, "applications": []
+  },
+  {
+    "candidateId": "c072", "fullName": "Sinenhlanhla Mthethwa", "email": "sinenhlanhla.m@email.com", "phone": "+27 73 345 6785", "location": "Johannesburg, Gauteng", "currentTitle": "UX Writer", "currentCompany": "Standard Bank", "experienceYears": 4, "skills": ["UX Writing", "Microcopy", "Content Design", "Figma", "User Research", "Accessibility"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BA English", "year": 2020 }], "experience": [{ "company": "Standard Bank", "title": "UX Writer", "from": "2022-01", "to": "Present" }, { "company": "Takealot", "title": "Content Writer", "from": "2020-08", "to": "2021-12" }], "documents": [{ "docId": "doc-c072-1", "type": "CV", "uploadedAt": "2024-10-27" }], "languages": ["English", "Zulu"], "profileComplete": 75, "applications": []
+  },
+  {
+    "candidateId": "c073", "fullName": "Pieter Smit", "email": "pieter.smit@email.com", "phone": "+27 81 456 7896", "location": "Cape Town, Western Cape", "currentTitle": "Python Developer", "currentCompany": "Naspers", "experienceYears": 6, "skills": ["Python", "Django", "FastAPI", "PostgreSQL", "Redis", "Docker"], "education": [{ "institution": "University of Stellenbosch", "qualification": "BSc Computer Science", "year": 2018 }], "experience": [{ "company": "Naspers", "title": "Python Developer", "from": "2020-07", "to": "Present" }, { "company": "DataProphet", "title": "Software Engineer", "from": "2018-08", "to": "2020-06" }], "documents": [{ "docId": "doc-c073-1", "type": "CV", "uploadedAt": "2024-11-01" }], "languages": ["English", "Afrikaans"], "profileComplete": 87, "applications": []
+  },
+  {
+    "candidateId": "c074", "fullName": "Gladys Moyo", "email": "gladys.moyo@email.com", "phone": "+27 82 567 8908", "location": "Johannesburg, Gauteng", "currentTitle": "Procurement Manager", "currentCompany": "Exxaro", "experienceYears": 9, "skills": ["Strategic Sourcing", "Contract Negotiation", "SAP MM", "CIPS", "Supplier Management", "Cost Reduction"], "education": [{ "institution": "University of Johannesburg", "qualification": "BCom Supply Chain", "year": 2015 }], "experience": [{ "company": "Exxaro", "title": "Procurement Manager", "from": "2019-01", "to": "Present" }, { "company": "Anglo American", "title": "Procurement Officer", "from": "2015-08", "to": "2018-12" }], "documents": [{ "docId": "doc-c074-1", "type": "CV", "uploadedAt": "2024-10-14" }], "languages": ["English", "Zulu", "Ndebele"], "profileComplete": 90, "applications": []
+  },
+  {
+    "candidateId": "c075", "fullName": "Lebo Molefe", "email": "lebo.molefe@email.com", "phone": "+27 71 678 9019", "location": "Pretoria, Gauteng", "currentTitle": "Junior UX Designer", "currentCompany": "Capitec", "experienceYears": 2, "skills": ["Figma", "User Research", "Wireframing", "HTML", "CSS"], "education": [{ "institution": "University of Pretoria", "qualification": "BSc Multimedia", "year": 2022 }], "experience": [{ "company": "Capitec", "title": "Junior UX Designer", "from": "2022-08", "to": "Present" }], "documents": [], "languages": ["English", "Sotho"], "profileComplete": 55, "applications": []
+  },
+  {
+    "candidateId": "c076", "fullName": "Tshepo Moloi", "email": "tshepo.moloi@email.com", "phone": "+27 83 789 0130", "location": "Johannesburg, Gauteng", "currentTitle": "Android Developer", "currentCompany": "Nedbank", "experienceYears": 4, "skills": ["Kotlin", "Android SDK", "Jetpack Compose", "MVVM", "Retrofit", "Firebase"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2020 }], "experience": [{ "company": "Nedbank", "title": "Android Developer", "from": "2021-06", "to": "Present" }], "documents": [{ "docId": "doc-c076-1", "type": "CV", "uploadedAt": "2024-10-31" }], "languages": ["English", "Sotho", "Tswana"], "profileComplete": 76, "applications": []
+  },
+  {
+    "candidateId": "c077", "fullName": "Nandi Vilakazi", "email": "nandi.vilakazi@email.com", "phone": "+27 72 890 1241", "location": "Durban, KwaZulu-Natal", "currentTitle": "Market Research Analyst", "currentCompany": "Nielsen", "experienceYears": 4, "skills": ["Market Research", "SPSS", "Quantitative Research", "Survey Design", "Data Visualisation"], "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "BCom Economics", "year": 2020 }], "experience": [{ "company": "Nielsen", "title": "Research Analyst", "from": "2021-04", "to": "Present" }], "documents": [{ "docId": "doc-c077-1", "type": "CV", "uploadedAt": "2024-11-04" }], "languages": ["English", "Zulu"], "profileComplete": 72, "applications": []
+  },
+  {
+    "candidateId": "c078", "fullName": "Ivan Jacobs", "email": "ivan.jacobs@email.com", "phone": "+27 84 901 2352", "location": "Cape Town, Western Cape", "currentTitle": "WordPress Developer", "currentCompany": "Freelance", "experienceYears": 5, "skills": ["WordPress", "PHP", "WooCommerce", "SEO", "Elementor", "JavaScript"], "education": [{ "institution": "Cape Peninsula University of Technology", "qualification": "NDip IT", "year": 2019 }], "experience": [{ "company": "Freelance", "title": "WordPress Developer", "from": "2019-06", "to": "Present" }], "documents": [], "languages": ["English", "Afrikaans"], "profileComplete": 60, "applications": []
+  },
+  {
+    "candidateId": "c079", "fullName": "Themba Ndaba", "email": "themba.ndaba@email.com", "phone": "+27 65 012 3463", "location": "Johannesburg, Gauteng", "currentTitle": "Infrastructure Engineer", "currentCompany": "Telkom", "experienceYears": 8, "skills": ["Linux", "VMware", "Storage", "Backup", "Active Directory", "Networking"], "education": [{ "institution": "Tshwane University of Technology", "qualification": "BTech IT", "year": 2016 }], "experience": [{ "company": "Telkom", "title": "Infrastructure Engineer", "from": "2019-04", "to": "Present" }, { "company": "Dimension Data", "title": "Systems Administrator", "from": "2016-08", "to": "2019-03" }], "documents": [{ "docId": "doc-c079-1", "type": "CV", "uploadedAt": "2024-10-06" }], "languages": ["English", "Zulu"], "profileComplete": 79, "applications": []
+  },
+  {
+    "candidateId": "c080", "fullName": "Simone Harmse", "email": "simone.harmse@email.com", "phone": "+27 73 123 4573", "location": "Pretoria, Gauteng", "currentTitle": "Junior Data Analyst", "currentCompany": "PwC", "experienceYears": 2, "skills": ["Excel", "SQL", "Python Basics", "Power BI", "Data Cleaning"], "education": [{ "institution": "University of Pretoria", "qualification": "BCom Economics", "year": 2022 }], "experience": [{ "company": "PwC", "title": "Junior Data Analyst", "from": "2022-09", "to": "Present" }], "documents": [], "languages": ["English", "Afrikaans"], "profileComplete": 52, "applications": []
+  },
+  {
+    "candidateId": "c081", "fullName": "Monique Ferreira", "email": "monique.ferreira@email.com", "phone": "+27 81 234 5684", "location": "Cape Town, Western Cape", "currentTitle": "CX Designer", "currentCompany": "Shoprite", "experienceYears": 5, "skills": ["CX Design", "Journey Mapping", "Service Design", "Figma", "Research", "Workshops"], "education": [{ "institution": "University of Cape Town", "qualification": "BA Interaction Design", "year": 2019 }], "experience": [{ "company": "Shoprite", "title": "CX Designer", "from": "2021-03", "to": "Present" }, { "company": "OfferZen", "title": "UX Designer", "from": "2019-08", "to": "2021-02" }], "documents": [{ "docId": "doc-c081-1", "type": "CV", "uploadedAt": "2024-11-07" }], "languages": ["English", "Afrikaans"], "profileComplete": 86, "applications": []
+  },
+  {
+    "candidateId": "c082", "fullName": "Lwando Mbatha", "email": "lwando.mbatha@email.com", "phone": "+27 82 345 6786", "location": "Johannesburg, Gauteng", "currentTitle": "Platform Architect", "currentCompany": "Standard Bank", "experienceYears": 11, "skills": ["Cloud Native", "Microservices", "Event-Driven Architecture", "AWS", "GCP", "Domain-Driven Design"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BEng Software Engineering", "year": 2013 }], "experience": [{ "company": "Standard Bank", "title": "Platform Architect", "from": "2018-02", "to": "Present" }], "documents": [{ "docId": "doc-c082-1", "type": "CV", "uploadedAt": "2024-11-06" }], "languages": ["English", "Zulu", "Xhosa"], "profileComplete": 98, "applications": []
+  },
+  {
+    "candidateId": "c083", "fullName": "Inge Visser", "email": "inge.visser@email.com", "phone": "+27 71 456 7897", "location": "Cape Town, Western Cape", "currentTitle": "Marketing Automation Specialist", "currentCompany": "Yuppiechef", "experienceYears": 5, "skills": ["HubSpot", "Marketo", "Email Marketing", "CRM", "A/B Testing", "Analytics"], "education": [{ "institution": "University of Stellenbosch", "qualification": "BCom Marketing", "year": 2019 }], "experience": [{ "company": "Yuppiechef", "title": "Marketing Automation Specialist", "from": "2021-05", "to": "Present" }, { "company": "Ogilvy", "title": "Digital Marketer", "from": "2019-08", "to": "2021-04" }], "documents": [{ "docId": "doc-c083-1", "type": "CV", "uploadedAt": "2024-10-25" }], "languages": ["English", "Afrikaans"], "profileComplete": 82, "applications": []
+  },
+  {
+    "candidateId": "c084", "fullName": "Themba Khumalo", "email": "themba.khumalo@email.com", "phone": "+27 83 567 8909", "location": "Johannesburg, Gauteng", "currentTitle": "Solution Sales Executive", "currentCompany": "SAP", "experienceYears": 8, "skills": ["Enterprise Sales", "SAP Solutions", "Solution Selling", "Negotiation", "CRM", "Pipeline Management"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Economics", "year": 2016 }], "experience": [{ "company": "SAP", "title": "Solution Sales Executive", "from": "2020-01", "to": "Present" }, { "company": "Oracle", "title": "Sales Manager", "from": "2016-08", "to": "2019-12" }], "documents": [{ "docId": "doc-c084-1", "type": "CV", "uploadedAt": "2024-10-18" }], "languages": ["English", "Zulu"], "profileComplete": 88, "applications": []
+  },
+  {
+    "candidateId": "c085", "fullName": "Liezel Cronje", "email": "liezel.cronje@email.com", "phone": "+27 72 678 9020", "location": "Pretoria, Gauteng", "currentTitle": "Incident Manager", "currentCompany": "Dimension Data", "experienceYears": 7, "skills": ["ITIL", "Incident Management", "Problem Management", "ServiceNow", "CMDB", "SLA Management"], "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2017 }], "experience": [{ "company": "Dimension Data", "title": "Incident Manager", "from": "2020-03", "to": "Present" }, { "company": "BCX", "title": "IT Operations", "from": "2017-08", "to": "2020-02" }], "documents": [{ "docId": "doc-c085-1", "type": "CV", "uploadedAt": "2024-10-10" }], "languages": ["English", "Afrikaans"], "profileComplete": 83, "applications": []
+  },
+  {
+    "candidateId": "c086", "fullName": "Xolani Ncube", "email": "xolani.ncube@email.com", "phone": "+27 84 789 0131", "location": "Johannesburg, Gauteng", "currentTitle": "Java Senior Developer", "currentCompany": "FNB", "experienceYears": 8, "skills": ["Java 17", "Spring Boot", "Hibernate", "Kafka", "PostgreSQL", "Microservices"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2016 }], "experience": [{ "company": "FNB", "title": "Java Senior Developer", "from": "2019-07", "to": "Present" }, { "company": "Accenture", "title": "Java Developer", "from": "2016-08", "to": "2019-06" }], "documents": [{ "docId": "doc-c086-1", "type": "CV", "uploadedAt": "2024-11-03" }], "languages": ["English", "Ndebele", "Zulu"], "profileComplete": 91, "applications": []
+  },
+  {
+    "candidateId": "c087", "fullName": "Claudia Ferreira", "email": "claudia.ferreira@email.com", "phone": "+27 65 890 1242", "location": "Cape Town, Western Cape", "currentTitle": "Web Accessibility Specialist", "currentCompany": "Allan Gray", "experienceYears": 5, "skills": ["WCAG 2.1", "Screen Readers", "ARIA", "HTML5", "CSS3", "Inclusive Design"], "education": [{ "institution": "University of Cape Town", "qualification": "BA Web Design", "year": 2019 }], "experience": [{ "company": "Allan Gray", "title": "Accessibility Specialist", "from": "2021-04", "to": "Present" }], "documents": [{ "docId": "doc-c087-1", "type": "CV", "uploadedAt": "2024-11-01" }], "languages": ["English", "Afrikaans", "Portuguese"], "profileComplete": 79, "applications": []
+  },
+  {
+    "candidateId": "c088", "fullName": "Ntabiseng Mokwena", "email": "ntabiseng.mokwena@email.com", "phone": "+27 73 901 2353", "location": "Johannesburg, Gauteng", "currentTitle": "Communications Officer", "currentCompany": "Eskom", "experienceYears": 6, "skills": ["Corporate Communications", "Internal Comms", "Press", "Social Media", "Event Planning", "Writing"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BA Communications", "year": 2018 }], "experience": [{ "company": "Eskom", "title": "Communications Officer", "from": "2020-05", "to": "Present" }, { "company": "Edelman", "title": "PR Executive", "from": "2018-08", "to": "2020-04" }], "documents": [], "languages": ["English", "Sotho", "Tswana"], "profileComplete": 73, "applications": []
+  },
+  {
+    "candidateId": "c089", "fullName": "Adriaan Louw", "email": "adriaan.louw@email.com", "phone": "+27 81 012 3464", "location": "Pretoria, Gauteng", "currentTitle": "React Native Developer", "currentCompany": "Investec", "experienceYears": 5, "skills": ["React Native", "TypeScript", "Redux", "iOS", "Android", "Expo"], "education": [{ "institution": "University of Pretoria", "qualification": "BSc Computer Science", "year": 2019 }], "experience": [{ "company": "Investec", "title": "Mobile Developer", "from": "2021-03", "to": "Present" }, { "company": "Synthesis", "title": "Developer", "from": "2019-08", "to": "2021-02" }], "documents": [{ "docId": "doc-c089-1", "type": "CV", "uploadedAt": "2024-10-29" }], "languages": ["English", "Afrikaans"], "profileComplete": 85, "applications": []
+  },
+  {
+    "candidateId": "c090", "fullName": "Precious Sibiya", "email": "precious.sibiya@email.com", "phone": "+27 82 123 4574", "location": "Johannesburg, Gauteng", "currentTitle": "Senior Product Manager", "currentCompany": "Multichoice", "experienceYears": 8, "skills": ["Product Strategy", "OKRs", "Roadmapping", "Stakeholder Management", "Agile", "Analytics"], "education": [{ "institution": "University of Witwatersrand", "qualification": "MBA", "year": 2019 }], "experience": [{ "company": "Multichoice", "title": "Senior Product Manager", "from": "2020-03", "to": "Present" }, { "company": "Naspers", "title": "Product Manager", "from": "2016-08", "to": "2020-02" }], "documents": [{ "docId": "doc-c090-1", "type": "CV", "uploadedAt": "2024-11-08" }], "languages": ["English", "Zulu", "Sotho"], "profileComplete": 95, "applications": []
+  },
+  {
+    "candidateId": "c091", "fullName": "Francine Nkosi", "email": "francine.nkosi@email.com", "phone": "+27 71 234 5685", "location": "Cape Town, Western Cape", "currentTitle": "Integration Engineer", "currentCompany": "Discovery", "experienceYears": 6, "skills": ["MuleSoft", "IBM MQ", "SOAP", "REST", "API Gateway", "Kafka"], "education": [{ "institution": "University of Cape Town", "qualification": "BSc Computer Science", "year": 2018 }], "experience": [{ "company": "Discovery", "title": "Integration Engineer", "from": "2020-09", "to": "Present" }, { "company": "Dimension Data", "title": "Developer", "from": "2018-08", "to": "2020-08" }], "documents": [{ "docId": "doc-c091-1", "type": "CV", "uploadedAt": "2024-10-21" }], "languages": ["English", "Zulu", "Xhosa"], "profileComplete": 84, "applications": []
+  },
+  {
+    "candidateId": "c092", "fullName": "Dawid Joubert", "email": "dawid.joubert@email.com", "phone": "+27 83 345 6787", "location": "Pretoria, Gauteng", "currentTitle": "Technical Writer", "currentCompany": "Huawei", "experienceYears": 5, "skills": ["Technical Documentation", "API Docs", "Markdown", "Confluence", "DITA", "AsciiDoc"], "education": [{ "institution": "University of Pretoria", "qualification": "BA English", "year": 2019 }], "experience": [{ "company": "Huawei", "title": "Technical Writer", "from": "2021-01", "to": "Present" }], "documents": [{ "docId": "doc-c092-1", "type": "CV", "uploadedAt": "2024-10-13" }], "languages": ["English", "Afrikaans", "Mandarin (basic)"], "profileComplete": 78, "applications": []
+  },
+  {
+    "candidateId": "c093", "fullName": "Sibu Khumalo", "email": "sibu.khumalo@email.com", "phone": "+27 72 456 7898", "location": "Johannesburg, Gauteng", "currentTitle": "Solutions Sales Engineer", "currentCompany": "Cisco", "experienceYears": 7, "skills": ["Pre-Sales", "Networking", "Security", "SD-WAN", "Presentations", "POC"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BSc Electrical Engineering", "year": 2017 }], "experience": [{ "company": "Cisco", "title": "Solutions Sales Engineer", "from": "2020-04", "to": "Present" }, { "company": "Telkom", "title": "Network Engineer", "from": "2017-08", "to": "2020-03" }], "documents": [{ "docId": "doc-c093-1", "type": "CV", "uploadedAt": "2024-11-02" }], "languages": ["English", "Zulu"], "profileComplete": 89, "applications": []
+  },
+  {
+    "candidateId": "c094", "fullName": "Hanlie Steenkamp", "email": "hanlie.steenkamp@email.com", "phone": "+27 84 567 8910", "location": "Cape Town, Western Cape", "currentTitle": "Product Owner", "currentCompany": "Pick n Pay", "experienceYears": 6, "skills": ["Product Ownership", "Backlog Management", "User Stories", "Sprint Planning", "SAFe", "Analytics"], "education": [{ "institution": "Stellenbosch University", "qualification": "BCom Business Management", "year": 2018 }], "experience": [{ "company": "Pick n Pay", "title": "Product Owner", "from": "2020-11", "to": "Present" }, { "company": "PwC", "title": "Business Analyst", "from": "2018-08", "to": "2020-10" }], "documents": [{ "docId": "doc-c094-1", "type": "CV", "uploadedAt": "2024-10-26" }], "languages": ["English", "Afrikaans"], "profileComplete": 87, "applications": []
+  },
+  {
+    "candidateId": "c095", "fullName": "Njabulo Nxumalo", "email": "njabulo.nxumalo@email.com", "phone": "+27 65 678 9021", "location": "Durban, KwaZulu-Natal", "currentTitle": "BI Analyst", "currentCompany": "Transnet", "experienceYears": 5, "skills": ["SSRS", "Power BI", "SQL Server", "SSIS", "Data Warehousing", "ETL"], "education": [{ "institution": "Durban University of Technology", "qualification": "BTech IT", "year": 2019 }], "experience": [{ "company": "Transnet", "title": "BI Analyst", "from": "2021-01", "to": "Present" }, { "company": "Deloitte", "title": "Data Analyst", "from": "2019-08", "to": "2020-12" }], "documents": [{ "docId": "doc-c095-1", "type": "CV", "uploadedAt": "2024-11-04" }], "languages": ["English", "Zulu"], "profileComplete": 80, "applications": []
+  },
+  {
+    "candidateId": "c096", "fullName": "Yusuf Moolla", "email": "yusuf.moolla@email.com", "phone": "+27 73 789 0132", "location": "Johannesburg, Gauteng", "currentTitle": "Finance Manager", "currentCompany": "TymeBank", "experienceYears": 10, "skills": ["Management Accounts", "IFRS", "Treasury", "Oracle", "Financial Modelling", "Tax"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BCom Accounting (CTA)", "year": 2014 }], "experience": [{ "company": "TymeBank", "title": "Finance Manager", "from": "2019-06", "to": "Present" }, { "company": "Investec", "title": "Financial Analyst", "from": "2014-08", "to": "2019-05" }], "documents": [{ "docId": "doc-c096-1", "type": "CV", "uploadedAt": "2024-10-17" }], "languages": ["English", "Urdu", "Afrikaans"], "profileComplete": 93, "applications": []
+  },
+  {
+    "candidateId": "c097", "fullName": "Luzuko Jacobs", "email": "luzuko.jacobs@email.com", "phone": "+27 81 890 1243", "location": "Cape Town, Western Cape", "currentTitle": "Front-End Developer", "currentCompany": "Yoco", "experienceYears": 3, "skills": ["React", "JavaScript", "CSS", "Tailwind", "Next.js", "REST APIs"], "education": [{ "institution": "Cape Town Creative Academy", "qualification": "Diploma Web Development", "year": 2021 }], "experience": [{ "company": "Yoco", "title": "Front-End Developer", "from": "2022-02", "to": "Present" }], "documents": [{ "docId": "doc-c097-1", "type": "CV", "uploadedAt": "2024-11-07" }], "languages": ["English", "Xhosa", "Afrikaans"], "profileComplete": 71, "applications": []
+  },
+  {
+    "candidateId": "c098", "fullName": "Aneesa Khan", "email": "aneesa.khan@email.com", "phone": "+27 82 901 2354", "location": "Durban, KwaZulu-Natal", "currentTitle": "HR Manager", "currentCompany": "Nedbank", "experienceYears": 9, "skills": ["HR Strategy", "Talent Management", "OD", "Labour Relations", "HRIS", "Coaching"], "education": [{ "institution": "University of KwaZulu-Natal", "qualification": "MCom Industrial Psychology", "year": 2015 }], "experience": [{ "company": "Nedbank", "title": "HR Manager", "from": "2018-08", "to": "Present" }, { "company": "Deloitte", "title": "HR Consultant", "from": "2015-09", "to": "2018-07" }], "documents": [{ "docId": "doc-c098-1", "type": "CV", "uploadedAt": "2024-09-30" }], "languages": ["English", "Urdu", "Hindi"], "profileComplete": 95, "applications": []
+  },
+  {
+    "candidateId": "c099", "fullName": "Moshe Cohen", "email": "moshe.cohen@email.com", "phone": "+27 71 012 3465", "location": "Johannesburg, Gauteng", "currentTitle": "Head of Engineering", "currentCompany": "Nuvei", "experienceYears": 15, "skills": ["Engineering Leadership", "Architecture", "Team Building", "Agile", "Cloud", "Go-to-Market"], "education": [{ "institution": "University of Witwatersrand", "qualification": "BSc Computer Science", "year": 2009 }], "experience": [{ "company": "Nuvei", "title": "Head of Engineering", "from": "2020-01", "to": "Present" }, { "company": "Amazon", "title": "Senior Engineering Manager", "from": "2015-06", "to": "2019-12" }], "documents": [{ "docId": "doc-c099-1", "type": "CV", "uploadedAt": "2024-11-09" }], "languages": ["English", "Hebrew"], "profileComplete": 99, "applications": []
+  },
+  {
+    "candidateId": "c100", "fullName": "Gugulethu Mthethwa", "email": "guguletu.mthethwa@email.com", "phone": "+27 83 123 4575", "location": "Johannesburg, Gauteng", "currentTitle": "Graduate Developer", "currentCompany": "Entelect", "experienceYears": 1, "skills": ["Java", "Python", "SQL", "Git", "Agile Basics"], "education": [{ "institution": "University of Johannesburg", "qualification": "BSc Computer Science", "year": 2023 }], "experience": [{ "company": "Entelect", "title": "Graduate Developer", "from": "2024-01", "to": "Present" }], "documents": [], "languages": ["English", "Zulu"], "profileComplete": 45, "applications": []
+  }
+]

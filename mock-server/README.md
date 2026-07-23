@@ -1,287 +1,238 @@
-# SkillsMine – Camouflage Mock Server
+# SkillsMine Mock Server
 
-A Camouflage-compatible mock backend for SkillsMine frontend development.
-Uses the standard Camouflage `.mock` file format with Handlebars templating,
-powered by a Node 22+ compatible Express runner.
+Camouflage-compatible mock API server for SkillsMine frontend development.
 
----
+**Single-domain, role-based access model** — all roles operate under `theskillsmine.com` with role-based route access. No separate subdomains.
 
 ## Quick Start
 
 ```bash
-# Install dependencies (once)
-npm install
-
-# Start mock server (one-shot)
-npm run mock:start
-
-# Start with file-watch / hot-reload
-npm run mock:dev
+npm start          # start server
+npm run mock:dev   # start with --watch (auto-restart on file changes)
 ```
 
-Server starts at **http://localhost:4000**
+Server runs at **http://localhost:4000**
+
+## Test Accounts
+
+All accounts use password `Password123`
+
+| Email | Role | Dashboard URL |
+|---|---|---|
+| `candidate@skillsmine.com` | Candidate | `/candidates/dashboard` |
+| `candidate2@skillsmine.com` | Candidate | `/candidates/dashboard` |
+| `recruiter@skillsmine.com` | Recruiter | `/recruiters/dashboard` |
+| `recruiter2@skillsmine.com` | Recruiter | `/recruiters/dashboard` |
+| `manco@skillsmine.com` | MANCO | `/manco/dashboard` |
+| `admin@skillsmine.com` | Admin | `/admin/dashboard` |
 
 ---
 
-## Folder Structure
+## API Endpoint Reference
 
-```
-mock-server/
-├── config.yml                       ← Server configuration
-├── camouflage-runner.js             ← Node 22+ compatible runner
-└── mocks/
-    ├── auth/
-    │   ├── login/POST.mock          ← POST /api/auth/login
-    │   ├── me/GET.mock              ← GET  /api/auth/me
-    │   └── logout/POST.mock         ← POST /api/auth/logout
-    ├── candidates/
-    │   └── GET.mock                 ← GET  /api/candidates
-    ├── jobs/
-    │   ├── GET.mock                 ← GET  /api/jobs
-    │   └── POST.mock                ← POST /api/jobs
-    ├── applications/
-    │   └── GET.mock                 ← GET  /api/applications
-    ├── mandates/
-    │   ├── GET.mock                 ← GET  /api/mandates
-    │   └── POST.mock                ← POST /api/mandates
-    ├── pipeline/
-    │   ├── GET.mock                 ← GET  /api/pipeline
-    │   └── PATCH.mock               ← PATCH /api/pipeline
-    ├── crm/
-    │   ├── GET.mock                 ← GET  /api/crm
-    │   └── POST.mock                ← POST /api/crm
-    └── dashboard/
-        ├── recruiter/GET.mock       ← GET  /api/dashboard/recruiter
-        ├── candidate/GET.mock       ← GET  /api/dashboard/candidate
-        ├── manco/GET.mock           ← GET  /api/dashboard/manco
-        └── exco/GET.mock            ← GET  /api/dashboard/exco
-```
+### Authentication
+All authenticated endpoints require `Authorization: Bearer <token>` header.
 
----
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/auth/login` | Public | Login – returns `userId`, `role`, `token`, `dashboardUrl` |
+| `GET` | `/api/auth/me` | Required | Get current user profile |
+| `POST` | `/api/auth/logout` | Optional | Invalidate token |
 
-## Authentication
-
-### Login
-
-```http
-POST http://localhost:4000/api/auth/login
-Content-Type: application/json
-
-{
-  "email": "recruiter@skillsmine.com",
-  "password": "Password123"
-}
-```
-
-**Response:**
+**Login response example:**
 ```json
 {
-  "token": "eyJhbGci...",
-  "user": {
-    "id": "u2",
-    "email": "recruiter@skillsmine.com",
-    "role": "recruiter",
-    "firstName": "Sarah",
-    "lastName": "Johnson",
-    "permissions": ["MANDATE_CREATE", "MANDATE_EDIT", "PIPELINE_ADVANCE", "CRM_EDIT", "CANDIDATE_VIEW"]
-  },
+  "userId": "u2",
+  "role": "recruiter",
+  "token": "<jwt>",
+  "dashboardUrl": "/recruiters/dashboard",
+  "user": { "id": "u2", "email": "...", "firstName": "Sarah", "permissions": [...] },
   "expiresIn": 86400
 }
 ```
 
-### Using the Token
+---
 
-All protected routes require:
-```
-Authorization: Bearer <token>
-```
-
-### Check Current User
-
-```http
-GET http://localhost:4000/api/auth/me
-Authorization: Bearer <token>
-```
-
-### Logout
-
-```http
-POST http://localhost:4000/api/auth/logout
-Authorization: Bearer <token>
-```
+### Public Job Board (`/opportunities`)
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/opportunities` | Public | Featured job listings for the marketing site |
+| `GET` | `/api/jobs` | Public | Full job list — supports `?status=`, `?industry=`, `?location=`, `?q=`, `?page=`, `?limit=` |
+| `GET` | `/api/jobs/:jobId` | Public | Single job detail |
 
 ---
 
-## Test Accounts
+### Candidate Module
 
-| Role        | Email                          | Password      | Permissions                                                                 |
-|-------------|--------------------------------|---------------|-----------------------------------------------------------------------------|
-| `candidate` | candidate@skillsmine.com       | Password123   | VIEW_JOBS, APPLY_JOB                                                        |
-| `recruiter` | recruiter@skillsmine.com       | Password123   | MANDATE_CREATE, MANDATE_EDIT, PIPELINE_ADVANCE, CRM_EDIT, CANDIDATE_VIEW   |
-| `manco`     | manco@skillsmine.com           | Password123   | PIPELINE_VIEW, REPORT_VIEW                                                  |
-| `exco`      | exco@skillsmine.com            | Password123   | REPORT_VIEW, EXECUTIVE_VIEW                                                 |
-| `admin`     | admin@skillsmine.com           | Password123   | ALL                                                                         |
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/candidates/register` | Public | Register a new candidate |
+| `POST` | `/api/jobs/:jobId/apply` | Optional* | Apply for a job (authenticated or guest) |
+| `POST` | `/api/candidates/cv/upload` | Required | Upload CV — returns OCR-extracted profile data |
+| `PUT` | `/api/candidates/cv-builder/:step` | Required | Save a CV builder step (`personal`, `skills`, `education`, `experience`, `summary`, `preferences`) |
+| `GET` | `/api/candidates/cv/preview` | Required | Get CV preview URL |
+| `GET` | `/api/candidates/dashboard` | Required | Candidate dashboard with recommended jobs & application status |
+| `GET` | `/api/candidates/applications` | Required | My applications list |
 
----
+*Guest applications require `fullName` and `email` in body.
 
-## API Reference
+**CV upload OCR response includes:**
+- `documentId`, `uploadedAt`
+- `ocrExtracted`: `fullName`, `email`, `phone`, `skills[]`, `education[]`, `experience[]`, `summary`
 
-### Auth
-
-| Method | Endpoint             | Auth? | Description           |
-|--------|----------------------|-------|-----------------------|
-| POST   | /api/auth/login      | ❌    | Login, receive token  |
-| GET    | /api/auth/me         | ✅    | Current user info     |
-| POST   | /api/auth/logout     | ✅    | Invalidate session    |
-
-### Resources
-
-| Method | Endpoint                       | Auth? | Description                   |
-|--------|--------------------------------|-------|-------------------------------|
-| GET    | /api/candidates                | ✅    | List all candidates           |
-| GET    | /api/jobs                      | ✅    | List all jobs                 |
-| POST   | /api/jobs                      | ✅    | Create a job posting          |
-| GET    | /api/applications              | ✅    | List all applications         |
-| GET    | /api/mandates                  | ✅    | List all mandates             |
-| POST   | /api/mandates                  | ✅    | Create a mandate              |
-| GET    | /api/pipeline                  | ✅    | Pipeline stages + candidates  |
-| PATCH  | /api/pipeline                  | ✅    | Advance candidate stage       |
-| GET    | /api/crm                       | ✅    | CRM records                   |
-| POST   | /api/crm                       | ✅    | Create CRM record             |
-
-### Dashboards
-
-| Method | Endpoint                       | Auth? | Role       |
-|--------|--------------------------------|-------|------------|
-| GET    | /api/dashboard/recruiter       | ✅    | recruiter  |
-| GET    | /api/dashboard/candidate       | ✅    | candidate  |
-| GET    | /api/dashboard/manco           | ✅    | manco      |
-| GET    | /api/dashboard/exco            | ✅    | exco       |
+**CV Builder steps (in order):**
+`personal` → `skills` → `education` → `experience` → `summary` → `preferences`
 
 ---
 
-## Recruitment Pipeline Stages
+### Jobs Module (Recruiter side)
 
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/jobs` | Recruiter | Create a new job posting (status defaults to `Draft`) |
+| `POST` | `/api/jobs/:jobId/pipeline/advance` | Recruiter | Advance a candidate to next pipeline stage |
+
+**Pipeline stages (in order):**
+`Applied` → `Screening` → `Assessment` → `Interview` → `Shortlisted` → `Offer` → `Closed`
+
+**Pipeline advance body:**
+```json
+{ "candidateId": "c001", "checklistComplete": true }
 ```
-INBOUND → SCREENING → ASSESSMENT → INTERVIEW → SHORTLIST → OFFER → CLOSED
-```
+Returns `422` with `requiredItems` if `checklistComplete: false`.
 
-### Advance a Candidate
-
-```http
-PATCH http://localhost:4000/api/pipeline
-Authorization: Bearer <token>
-Content-Type: application/json
-
+**Apply response includes `applicationCount`** (increments on each apply):
+```json
 {
-  "id": "app1",
-  "candidateId": "c1",
-  "previousStage": "INTERVIEW",
-  "newStage": "SHORTLIST"
+  "applicationId": "app-1234567890",
+  "jobId": "j001",
+  "currentStage": "Applied",
+  "applicationCount": 35,
+  "message": "Application submitted successfully."
 }
 ```
 
 ---
 
-## CRM Status Values
+### Recruiter Module
 
-| Status           | Meaning                         |
-|------------------|---------------------------------|
-| `HOT_LEAD`       | Active opportunity, high intent |
-| `WARM`           | Engaged, follow-up in progress  |
-| `NEEDS_ATTENTION`| Overdue, needs immediate action |
-| `COLD`           | Low engagement, low priority    |
-
----
-
-## Realistic Behaviour
-
-| Feature            | Value                                      |
-|--------------------|--------------------------------------------|
-| Network delay      | 500 – 1500 ms (random per request)         |
-| Error injection    | 5% of authenticated requests               |
-| Error types        | 401 Unauthorized, 403 Forbidden, 500 Error |
-
-> **Tip:** If you receive an unexpected 401/403/500, simply retry — it's simulated chaos.
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/recruiters/register` | Public | Register a new recruiter |
+| `GET` | `/api/recruiters/dashboard` | Recruiter | Recruiter dashboard with KPIs, pipeline counts, tasks |
+| `GET` | `/api/recruiters/jobs` | Recruiter | My job listings — supports `?status=` |
+| `GET` | `/api/recruiters/jobs/:jobId` | Recruiter | Job detail with pipeline breakdown |
+| `GET` | `/api/recruiters/candidates` | Recruiter | Search/browse candidates — supports `?q=`, `?skills=`, `?location=`, `?page=`, `?limit=` |
+| `GET` | `/api/recruiters/candidates/:id` | Recruiter | Candidate profile with application history |
+| `POST` | `/api/candidates/:id/actions/send-latest-matched-jobs` | Recruiter | AI action — send top matched jobs to candidate |
 
 ---
 
-## Adding a New Mock
+### MANCO Module
 
-1. Create the folder: `mock-server/mocks/<resource>/`
-2. Add a file: `<METHOD>.mock` (e.g. `GET.mock`, `POST.mock`)
-3. Use this format:
+> MANCO is read-only. Cannot perform recruiter operational actions.
 
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/manco/dashboard` | MANCO/Admin | Platform KPIs: pipeline summary, recruiter performance, compliance flags |
+| `GET` | `/api/manco/recruiters` | MANCO/Admin | All recruiter list with metrics |
+| `GET` | `/api/manco/recruiters/:id/performance` | MANCO/Admin | Individual recruiter KPI trend |
+| `GET` | `/api/manco/recruiters/:id/pipeline` | MANCO/Admin | Recruiter's pipeline breakdown |
+| `POST` | `/api/manco/recruiters/:id/resolve` | MANCO/Admin | Resolve a compliance flag (observational only) |
+
+---
+
+### CRM Module
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/api/crm/clients` | Recruiter/MANCO | All clients — supports `?status=needs_attention\|hot_lead\|warm_contact\|cold_lead` |
+| `POST` | `/api/crm/clients/:id/notes` | Recruiter | Add note and optionally update client status |
+
+**CRM Status values:** `hot_lead` → `warm_contact` → `cold_lead` / `needs_attention`
+
+**Add note body:**
+```json
+{ "note": "Spoke to James — budget approved", "newStatus": "hot_lead" }
 ```
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "key": "value",
-  "dynamic": "{{randomInt 1 100}}"
-}
-```
-
-### Available Handlebars Helpers
-
-| Helper                      | Example                        | Output                  |
-|-----------------------------|--------------------------------|-------------------------|
-| `{{randomInt min max}}`     | `{{randomInt 1 999}}`          | `427`                   |
-| `{{now 'YYYY-MM-DD'}}`      | `{{now 'YYYY-MM-DD'}}`         | `2024-11-15`            |
-| `{{request.body.field}}`    | `{{request.body.title}}`       | Value from POST body    |
-| `{{request.query.field}}`   | `{{request.query.page}}`       | Value from query string |
-| `{{user.role}}`             | `{{user.role}}`                | `recruiter`             |
-| `{{eq a b}}`                | `{{#if (eq x "foo")}}...{{/if}}`| Conditional check      |
 
 ---
 
-## Migration from json-server
+## Datasets
 
-| Old (json-server)             | New (Camouflage runner)               |
-|-------------------------------|---------------------------------------|
-| `db.json`                     | `mock-server/mocks/**/*.mock` files   |
-| `routes.json`                 | File-system routing (folder = path)   |
-| `server.js`                   | `mock-server/camouflage-runner.js`    |
-| `npm run mock:watch`          | `npm run mock:dev`                    |
-| `npm run mock`                | `npm run mock` or `npm run mock:start`|
+| Dataset | File | Count |
+|---|---|---|
+| Candidates | `mock-server/data/candidates.json` | **100** |
+| Jobs | `mock-server/data/jobs.json` | **40** (25 Open, 10 Closed, 5 Draft) |
+| Recruiters | `mock-server/data/recruiters.json` | **20** |
+| CRM Clients | `mock-server/data/crm-clients.json` | **50** |
+| Applications | `mock-server/data/applications.json` | **101** |
 
-The old `server.js` / `db.json` / `routes.json` are preserved for reference.
+Data is loaded into memory at startup. Mutations (apply, note, pipeline advance) persist in-memory for the session.
 
 ---
 
-## Configuration (`config.yml`)
+## Role Permissions
+
+| Permission | Candidate | Recruiter | MANCO | Admin |
+|---|---|---|---|---|
+| View public jobs | ✅ | ✅ | ✅ | ✅ |
+| Apply for jobs | ✅ | — | — | ✅ |
+| Upload CV | ✅ | — | — | ✅ |
+| Candidate dashboard | ✅ | — | — | ✅ |
+| Create jobs | — | ✅ | — | ✅ |
+| Manage pipeline | — | ✅ | — | ✅ |
+| View all candidates | — | ✅ | — | ✅ |
+| CRM edit | — | ✅ | — | ✅ |
+| MANCO dashboard | — | — | ✅ | ✅ |
+| View recruiter KPIs | — | — | ✅ | ✅ |
+| Resolve flags | — | — | ✅ | ✅ |
+
+---
+
+## State-Aware Behaviours
+
+| Behaviour | Description |
+|---|---|
+| `POST /jobs/:id/apply` | Increments `applicationCount` in the in-memory jobs store |
+| `POST /jobs/:id/pipeline/advance` | Advances `currentStage` through `Applied → Screening → Assessment → Interview → Shortlisted → Offer → Closed` |
+| `POST /crm/clients/:id/notes` | Appends note to client and optionally changes `status` |
+| `POST /candidates/register` | Creates candidate record and returns JWT |
+| Login `dashboardUrl` | Role-appropriate — candidate gets `/candidates/dashboard`, recruiter gets `/recruiters/dashboard`, etc. |
+
+---
+
+## Configuration
+
+`mock-server/config.yml`:
 
 ```yaml
 server:
   port: 4000
-  mocksDir: "./mock-server/mocks"
-
 delay:
-  min: 500    # ms
-  max: 1500   # ms
-
+  min: 300   # ms
+  max: 900   # ms
 errorSimulation:
   enabled: true
-  rate: 0.05  # 5%
-
-auth:
-  publicPaths:
-    - /auth/login
+  rate: 0.02   # 2% random 500 errors on authenticated routes
 ```
 
 ---
 
-## OpenAPI Alignment
+## .mock Files (Static Fallback)
 
-Each `.mock` file maps 1:1 to an OpenAPI path+operation:
+The server uses `.mock` files under `mock-server/mocks/` for the public opportunities endpoint. All other routes are handled by the Express router with live dataset queries.
 
-```
-mocks/candidates/GET.mock   →  GET /api/candidates
-mocks/jobs/POST.mock        →  POST /api/jobs
-```
-
-When the real backend is ready, replace `.mock` responses with the actual OpenAPI spec — no frontend code changes required.
+| Path | File |
+|---|---|
+| `GET /opportunities` | `mock-server/mocks/opportunities/GET.mock` |
 
 ---
 
-*SkillsMine Mock Server – for frontend development only. Do not deploy to production.*
+## Architecture Decisions
+
+- **Single domain** `theskillsmine.com` — no separate recruiter subdomain
+- **Role-based access** enforced in-process (not separate apps)
+- **JWT mock tokens** — decoded from base64url payload, no real crypto
+- **In-memory state** — mutations persist per server session, reset on restart
+- **Public paths** — `/auth/login`, `/jobs`, `/opportunities`, `/candidates/register` require no token
