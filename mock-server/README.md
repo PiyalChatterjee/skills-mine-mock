@@ -219,13 +219,18 @@ errorSimulation:
 
 ---
 
-## .mock Files (Static Fallback)
+## Architecture
 
-The server uses `.mock` files under `mock-server/mocks/` for the public opportunities endpoint. All other routes are handled by the Express router with live dataset queries.
+All routes are implemented as Express modules in `mock-server/routes/`. There are no `.mock` fallback files — the `mocks/` directory is empty and the catch-all only returns `404` for truly undefined paths.
 
-| Path | File |
-|---|---|
-| `GET /opportunities` | `mock-server/mocks/opportunities/GET.mock` |
+| Module | File | Routes |
+|---|---|---|
+| Auth | `routes/auth.js` | `/auth/login`, `/auth/me`, `/auth/logout` |
+| Candidates | `routes/candidates.js` | `/candidates/*` (8 routes) |
+| Jobs + Opportunities | `routes/jobs.js` | `/jobs/*` (5 routes) + `GET /opportunities` |
+| Recruiters | `routes/recruiters.js` | `/recruiters/*` (6 routes) + AI actions |
+| MANCO | `routes/manco.js` | `/manco/*` (5 routes, role-guarded) |
+| CRM | `routes/crm.js` | `/crm/*` (2 routes, role-guarded) |
 
 ---
 

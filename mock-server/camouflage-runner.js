@@ -6,13 +6,10 @@
  *
  *   routes/auth.js         POST /auth/login | GET /auth/me | POST /auth/logout
  *   routes/candidates.js   /candidates/*
- *   routes/jobs.js         /jobs/*
+ *   routes/jobs.js         /jobs/* + GET /opportunities
  *   routes/recruiters.js   /recruiters/*
  *   routes/manco.js        /manco/*
  *   routes/crm.js          /crm/*
- *
- * Static .mock files (Handlebars templates) live in mock-server/mocks/:
- *   mocks/opportunities/GET.mock   (public job-board display cards)
  *
  * Data files (loaded once at startup, mutated in-memory):
  *   data/candidates.json   data/jobs.json    data/recruiters.json
@@ -22,7 +19,7 @@
  */
 
 import express                                        from 'express';
-import { readFileSync, existsSync, readdirSync }      from 'node:fs';
+import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, dirname }                              from 'node:path';
 import { fileURLToPath }                              from 'node:url';
 import Handlebars                                     from 'handlebars';
@@ -30,7 +27,7 @@ import { load as yamlLoad }                           from 'js-yaml';
 
 import { authRouter }                                 from './routes/auth.js';
 import { candidatesRouter }                           from './routes/candidates.js';
-import { jobsRouter }                                 from './routes/jobs.js';
+import { jobsRouter, opportunitiesRouter }            from './routes/jobs.js';
 import { recruitersRouter, candidateActionsRouter }   from './routes/recruiters.js';
 import { mancoRouter }                                from './routes/manco.js';
 import { crmRouter }                                  from './routes/crm.js';
@@ -48,7 +45,7 @@ const MOCKS_DIR = join(__dirname, config.server.mocksDir.replace('./mock-server/
 const DELAY_MIN = config.delay.min   ?? 300;
 const DELAY_MAX = config.delay.max   ?? 900;
 const ERR_RATE  = config.errorSimulation.enabled ? (config.errorSimulation.rate ?? 0.02) : 0;
-const PUBLIC_PATHS = config.auth.publicPaths ?? ['/auth/login', '/jobs', '/opportunities', '/candidates/register'];
+const PUBLIC_PATHS = config.auth.publicPaths ?? ['/auth/login', '/auth/signup', '/jobs', '/opportunities', '/candidates/register'];
 
 // ─────────────────────────────────────────────────────────
 //  Datasets  — loaded once at startup, mutated in-memory
@@ -65,6 +62,11 @@ const DB = {
   clients:      loadDataset('crm-clients'),
   applications: loadDataset('applications'),
 };
+
+function saveDataset(name, data) {
+  const p = join(__dirname, 'data', `${name}.json`);
+  writeFileSync(p, JSON.stringify(data, null, 2) + '\n');
+}
 
 // Pipeline stage order (shared by jobs + recruiters + manco routes)
 const PIPELINE_STAGES = ['Applied', 'Screening', 'Assessment', 'Interview', 'Shortlisted', 'Offer', 'Closed'];
@@ -237,12 +239,13 @@ app.use(async (req, res, next) => {
 // ─────────────────────────────────────────────────────────
 //  Mount route modules
 // ─────────────────────────────────────────────────────────
-const routeCtx = { DB, PIPELINE_STAGES, sessions, generateToken };
+const routeCtx = { DB, PIPELINE_STAGES, sessions, generateToken, saveDataset };
 
-app.use('/auth',        authRouter({ ...routeCtx, USERS, PASSWORDS, ROLE_DASHBOARD }));
+app.use('/auth',        authRouter({ ...routeCtx, USERS, PASSWORDS, ROLE_DASHBOARD, DB }));
 app.use('/candidates',  candidatesRouter(routeCtx));
 app.use('/candidates',  candidateActionsRouter(routeCtx));   // :id/actions/send-latest-matched-jobs
 app.use('/jobs',        jobsRouter(routeCtx));
+app.use('/opportunities', opportunitiesRouter(routeCtx));
 app.use('/recruiters',  recruitersRouter(routeCtx));
 app.use('/manco',       mancoRouter(routeCtx));
 app.use('/crm',         crmRouter(routeCtx));
@@ -250,7 +253,6 @@ app.use('/crm',         crmRouter(routeCtx));
 // ─────────────────────────────────────────────────────────
 //  Catch-all → .mock file fallback
 //  Only reached if no named route above matched.
-//  Currently serves: GET /opportunities
 // ─────────────────────────────────────────────────────────
 app.all('*', (req, res) => {
   const resolved = resolveMock(req.path, req.method);
@@ -290,6 +292,7 @@ app.listen(PORT, () => {
   L(`║    http://localhost:${PORT}                                    ║`);
   L('╠══════════════════════════════════════════════════════════════╣');
   L('║  routes/auth.js         POST /auth/login                     ║');
+  L('║                         POST /auth/signup                    ║');
   L('║                         GET  /auth/me                        ║');
   L('║                         POST /auth/logout                    ║');
   L('║  routes/candidates.js   POST /candidates/register (public)   ║');
@@ -317,7 +320,8 @@ app.listen(PORT, () => {
   L('║                         POST /manco/recruiters/:id/resolve   ║');
   L('║  routes/crm.js          GET  /crm/clients                    ║');
   L('║                         POST /crm/clients/:id/notes          ║');
-  L('║  mocks/opportunities/   GET  /opportunities  (public)        ║');
+  L('║  routes/jobs.js         GET  /opportunities  (public)        ║');
+  L('║                         ?q=  ?tag=  ?workType=  ?limit=      ║');
   L(`║  Delay ${DELAY_MIN}–${DELAY_MAX} ms  ·  Error injection ${ERR_RATE * 100}%             ║`);
   L('╚══════════════════════════════════════════════════════════════╝');
   L('');

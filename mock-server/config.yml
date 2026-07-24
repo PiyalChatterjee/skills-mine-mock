@@ -25,6 +25,7 @@ auth:
   enabled: true
   publicPaths:
     - /auth/login
+    - /auth/signup
     - /jobs
     - /opportunities
     - /candidates/register
