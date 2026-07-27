@@ -45,7 +45,7 @@ const MOCKS_DIR = join(__dirname, config.server.mocksDir.replace('./mock-server/
 const DELAY_MIN = config.delay.min   ?? 300;
 const DELAY_MAX = config.delay.max   ?? 900;
 const ERR_RATE  = config.errorSimulation.enabled ? (config.errorSimulation.rate ?? 0.02) : 0;
-const PUBLIC_PATHS = config.auth.publicPaths ?? ['/auth/login', '/auth/signup', '/jobs', '/opportunities', '/candidates/register'];
+const PUBLIC_PATHS = config.auth.publicPaths ?? ['/auth/login', '/auth/signup', '/jobs', '/opportunities', '/candidates/register', '/recruiters/register'];
 
 // ─────────────────────────────────────────────────────────
 //  Datasets  — loaded once at startup, mutated in-memory

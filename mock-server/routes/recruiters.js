@@ -12,7 +12,7 @@
 
 import { Router } from 'express';
 
-export function recruitersRouter({ DB, PIPELINE_STAGES }) {
+export function recruitersRouter({ DB, PIPELINE_STAGES, sessions, generateToken }) {
   const router = Router();
 
   // POST /recruiters/register  (public)
@@ -22,15 +22,25 @@ export function recruitersRouter({ DB, PIPELINE_STAGES }) {
       return res.status(400).json({ error: 'fullName, email and password are required.' });
 
     const recruiterId = `r${String(DB.recruiters.length + 1).padStart(3, '0')}`;
-    DB.recruiters.push({
+    const newRecruiter = {
       recruiterId, fullName, email,
       phone:  phone ?? '',
       agency: agency ?? 'SkillsMine',
       role:   'recruiter',
       registeredAt: new Date().toISOString(),
       metrics: { placements: 0, activeRoles: 0, candidates: 0, conversionRate: 0 },
+    };
+    DB.recruiters.push(newRecruiter);
+
+    const token = generateToken({
+      sub: recruiterId, email, role: 'recruiter',
+      firstName: fullName.split(' ')[0],
+      lastName:  fullName.split(' ').slice(1).join(' '),
+      recruiterId,
+      permissions: ['MANDATE_CREATE', 'MANDATE_EDIT', 'PIPELINE_ADVANCE', 'CRM_EDIT', 'CANDIDATE_VIEW', 'VIEW_DASHBOARD'],
     });
-    return res.status(201).json({ recruiterId, message: 'Recruiter registered successfully.' });
+    sessions.set(token, newRecruiter);
+    return res.status(201).json({ recruiterId, token, message: 'Recruiter registered successfully.' });
   });
 
   // GET /recruiters/dashboard

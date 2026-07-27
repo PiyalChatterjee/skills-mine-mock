@@ -29,6 +29,7 @@ auth:
     - /jobs
     - /opportunities
     - /candidates/register
+    - /recruiters/register
   tokenHeader: "Authorization"
   tokenPrefix: "Bearer "
 
