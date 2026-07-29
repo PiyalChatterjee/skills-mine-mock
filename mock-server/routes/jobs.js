@@ -137,7 +137,7 @@ export function jobsRouter({ DB, PIPELINE_STAGES }) {
 
   // GET /jobs  (public)
   router.get('/', (req, res) => {
-    const { status, industry, location, q, page = 1, limit = 20 } = req.query;
+    const { status, industry, location, q, page = 1, limit = 10 } = req.query;
     let results = [...DB.jobs];
     if (status) results = results.filter(j => j.status?.toLowerCase() === status.toLowerCase());
     else        results = results.filter(j => j.status === 'Open');

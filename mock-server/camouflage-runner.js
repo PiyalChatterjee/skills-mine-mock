@@ -301,6 +301,7 @@ app.listen(PORT, () => {
   L('║                         GET  /candidates/dashboard           ║');
   L('║                         GET  /candidates/applications        ║');
   L('║                         GET  /candidates/:id                 ║');
+  L('║                         PUT  /candidates/:id                 ║');
   L('║                         GET  /candidates                     ║');
   L('║  routes/jobs.js         GET  /jobs  (public)                 ║');
   L('║                         GET  /jobs/:jobId                    ║');

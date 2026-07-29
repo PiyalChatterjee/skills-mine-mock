@@ -8,6 +8,7 @@
  * GET  /candidates/dashboard           → candidate home dashboard (live data)
  * GET  /candidates/applications        → my applications list
  * GET  /candidates/:id                 → candidate profile (recruiter / admin)
+ * PUT  /candidates/:id                 → partial update of a candidate profile
  * GET  /candidates                     → recruiter candidate search
  */
 
@@ -145,6 +146,23 @@ export function candidatesRouter({ DB, PIPELINE_STAGES, sessions, generateToken 
     const candidate = DB.candidates.find(c => c.candidateId === id);
     if (!candidate) return res.status(404).json({ error: `Candidate ${id} not found.` });
     return res.status(200).json(candidate);
+  });
+
+  // PUT /candidates/:id  (partial update)
+  router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const idx = DB.candidates.findIndex(c => c.candidateId === id);
+    if (idx === -1) return res.status(404).json({ error: `Candidate ${id} not found.` });
+
+    const IMMUTABLE = ['candidateId', 'role', 'registeredAt'];
+    const updates = { ...req.body };
+    IMMUTABLE.forEach(k => delete updates[k]);
+
+    if (Object.keys(updates).length === 0)
+      return res.status(400).json({ error: 'No updatable fields provided.' });
+
+    DB.candidates[idx] = { ...DB.candidates[idx], ...updates };
+    return res.status(200).json(DB.candidates[idx]);
   });
 
   // GET /candidates  (recruiter search)
