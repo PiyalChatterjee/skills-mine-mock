@@ -140,6 +140,19 @@ export function candidatesRouter({ DB, PIPELINE_STAGES, sessions, generateToken 
     return res.status(200).json({ applications: apps, total: apps.length });
   });
 
+  // GET /candidates/applications/:applicationId
+  router.get('/applications/:applicationId', (req, res) => {
+    const { applicationId } = req.params;
+    const user = req.currentUser;
+    const cid  = user?.candidateId ?? 'c001';
+    const application = DB.applications.find(
+      a => a.applicationId === applicationId && a.candidateId === cid
+    );
+    if (!application)
+      return res.status(404).json({ error: `Application ${applicationId} not found.` });
+    return res.status(200).json(application);
+  });
+
   // GET /candidates/:id  (recruiter / admin)
   router.get('/:id', (req, res) => {
     const { id } = req.params;
