@@ -1,132 +1,142 @@
 /**
- * MANCO ROUTES  (read-only — cannot perform recruiter operational actions)
+ * MANCO ROUTES  (v2 contract)
  *
- * GET  /manco/dashboard                      → platform KPIs + pipeline + compliance
- * GET  /manco/recruiters                     → all recruiters with metrics
- * GET  /manco/recruiters/:id/performance     → individual recruiter KPI trend
- * GET  /manco/recruiters/:id/pipeline        → recruiter pipeline breakdown
- * POST /manco/recruiters/:id/resolve         → resolve a compliance flag
+ * GET /api/v1/manco/:mancoId/dashboard           → platform KPIs + alerts + recruiters
+ * GET /api/manco/recruiters/:id/performance      → individual recruiter KPI metrics
  */
 
 import { Router } from 'express';
 
-export function mancoRouter({ DB, PIPELINE_STAGES }) {
+export function mancoRouter({ DB }) {
   const router = Router();
 
   // Role guard: only manco / admin may access these routes
   router.use((req, res, next) => {
-    const role = req.currentUser?.role;
-    if (role === 'candidate' || role === 'recruiter')
-      return res.status(403).json({ error: 'Access denied: MANCO or admin role required.' });
+    const role  = req.currentUser?.role ?? '';
+    const roles = req.currentUser?.roles ?? [];
+    const hasAccess = ['manco', 'admin', 'MANCO', 'ADMIN'].some(r => role === r || roles.includes(r));
+    if (!hasAccess)
+      return res.status(403).json({ success: false, statusCode: 403, message: 'Access denied: MANCO or admin role required.' });
     next();
   });
 
-  // GET /manco/dashboard
-  router.get('/dashboard', (req, res) => {
-    const pipelineCounts = {};
-    PIPELINE_STAGES.forEach(s => {
-      pipelineCounts[s] = DB.applications.filter(a => a.currentStage === s).length;
-    });
+  // GET /api/v1/manco/:mancoId/dashboard
+  router.get('/:mancoId/dashboard', (req, res) => {
+    const { mancoId } = req.params;
+    const { sortedBy = 'placements' } = req.query;
 
-    const recruiterPerformance = DB.recruiters.slice(0, 5).map(r => ({
+    const recruiters = DB.recruiters.slice(0, 10).map(r => ({
       recruiterId:    r.recruiterId,
       name:           r.fullName,
-      placements:     r.metrics?.placements ?? 0,
-      activeMandates: DB.jobs.filter(j => j.recruiterId === r.recruiterId && j.status === 'Open').length,
-      avgDays:        r.metrics?.avgDaysToPlace ?? 21,
-      conversionRate: r.metrics?.conversionRate ?? 0,
+      email:          r.email,
+      specialisation: r.specialisation ?? [],
+      metrics: {
+        placements:     r.metrics?.placements ?? 0,
+        activeRoles:    r.metrics?.activeRoles ?? 0,
+        candidates:     r.metrics?.candidates ?? 0,
+        conversionRate: r.metrics?.conversionRate ?? 0,
+      },
+      activeMandates: DB.mandates.filter(m => m.recruiterId === r.recruiterId && m.status === 'ACTIVE').length,
     }));
 
+    // Sort recruiters by requested metric
+    if (['placements', 'activeRoles', 'candidates', 'conversionRate'].includes(sortedBy)) {
+      recruiters.sort((a, b) => (b.metrics[sortedBy] ?? 0) - (a.metrics[sortedBy] ?? 0));
+    }
+
+    const alerts = [];
+    DB.mandates.forEach(m => {
+      const daysOpen = m.openDate
+        ? Math.floor((Date.now() - new Date(m.openDate).getTime()) / 86400000)
+        : 0;
+      if (daysOpen > 45 && m.status === 'ACTIVE') {
+        alerts.push({
+          alertId:   `ALT-${m.mandateId}`,
+          type:      'MANDATE_STALE',
+          severity:  'WARNING',
+          message:   `Mandate ${m.title} at ${m.client} has been open for ${daysOpen} days.`,
+          mandateId: m.mandateId,
+          daysOpen,
+        });
+      }
+    });
+
+    // EE compliance alerts
+    DB.mandates
+      .filter(m => m.eeTarget && m.shortlistedCount === 0 && m.status === 'ACTIVE')
+      .forEach(m => {
+        alerts.push({
+          alertId:   `ALT-EE-${m.mandateId}`,
+          type:      'EE_COMPLIANCE',
+          severity:  'WARNING',
+          message:   `EE target not met for mandate ${m.title} at ${m.client}.`,
+          mandateId: m.mandateId,
+        });
+      });
+
     return res.status(200).json({
-      totalActiveMandates:       DB.jobs.filter(j => j.status === 'Open').length,
-      totalCandidatesInPipeline: DB.applications.length,
-      placementsThisQuarter:     DB.applications.filter(a => a.currentStage === 'Offer').length,
-      avgTimeToPlace:            21,
-      pipelineSummary:           pipelineCounts,
-      recruiterPerformance,
-      industryBreakdown: [
-        { industry: 'Technology',         mandates: 12, placements: 8 },
-        { industry: 'Financial Services', mandates: 7,  placements: 5 },
-        { industry: 'Retail',             mandates: 5,  placements: 3 },
-        { industry: 'Healthcare',         mandates: 3,  placements: 2 },
-        { industry: 'Creative',           mandates: 3,  placements: 2 },
-      ],
-      complianceFlags: [
-        { mandateId: 'j001', flag: 'Transformation target not met',    severity: 'WARNING' },
-        { mandateId: 'j004', flag: 'No pipeline movement in 14 days',  severity: 'INFO'    },
-      ],
+      success: true,
+      statusCode: 200,
+      message: 'MANCO dashboard retrieved.',
+      data: {
+        alerts,
+        recruiters,
+        sortedBy,
+        summary: {
+          totalActiveMandates:       DB.mandates.filter(m => m.status === 'ACTIVE').length,
+          totalCandidatesInPipeline: DB.applications.length,
+          placementsThisQuarter:     DB.recruiters.reduce((acc, r) => acc + (r.metrics?.placements ?? 0), 0),
+          revenueYTD:                DB.recruiters.reduce((acc, r) => acc + (r.metrics?.revenueYTD ?? 0), 0),
+          avgTimeToPlace:            22,
+        },
+      },
     });
   });
 
-  // GET /manco/recruiters
-  router.get('/recruiters', (req, res) => {
-    const recruiters = DB.recruiters.map(r => ({
-      recruiterId: r.recruiterId,
-      fullName:    r.fullName,
-      email:       r.email,
-      agency:      r.agency,
-      metrics:     r.metrics,
-      activeJobs:  DB.jobs.filter(j => j.recruiterId === r.recruiterId && j.status === 'Open').length,
-    }));
-    return res.status(200).json({ recruiters, total: recruiters.length });
-  });
+  return router;
+}
 
-  // GET /manco/recruiters/:id/performance
-  router.get('/recruiters/:id/performance', (req, res) => {
+// ─── Recruiter performance (separate mount path) ──────────────────────────────
+export function mancoRecruiterPerformanceRouter({ DB }) {
+  const router = Router();
+
+  // GET /api/manco/recruiters/:id/performance
+  router.get('/:id/performance', (req, res) => {
     const { id } = req.params;
     const rec = DB.recruiters.find(r => r.recruiterId === id);
-    if (!rec) return res.status(404).json({ error: `Recruiter ${id} not found.` });
-    const jobs = DB.jobs.filter(j => j.recruiterId === id);
-    return res.status(200).json({
-      recruiterId: id,
-      fullName:    rec.fullName,
-      metrics:     rec.metrics,
-      jobsManaged: jobs.length,
-      activeJobs:  jobs.filter(j => j.status === 'Open').length,
-      closedJobs:  jobs.filter(j => j.status === 'Closed').length,
-      kpiTrend: [
-        { month: 'Aug', placements: 2, revenue: 96000 },
-        { month: 'Sep', placements: 3, revenue: 144000 },
-        { month: 'Oct', placements: 4, revenue: 192000 },
-        { month: 'Nov', placements: rec.metrics?.placements ?? 0, revenue: (rec.metrics?.placements ?? 0) * 48000 },
-      ],
-    });
-  });
+    if (!rec)
+      return res.status(404).json({ success: false, statusCode: 404, message: `Recruiter ${id} not found.` });
 
-  // GET /manco/recruiters/:id/pipeline
-  router.get('/recruiters/:id/pipeline', (req, res) => {
-    const { id } = req.params;
-    const rec = DB.recruiters.find(r => r.recruiterId === id);
-    if (!rec) return res.status(404).json({ error: `Recruiter ${id} not found.` });
-    const recJobs = DB.jobs.filter(j => j.recruiterId === id);
-    const recApps = DB.applications.filter(a => recJobs.some(j => j.jobId === a.jobId));
-    const stageCounts = {};
-    PIPELINE_STAGES.forEach(s => {
-      stageCounts[s] = recApps.filter(a => a.currentStage === s).length;
-    });
-    return res.status(200).json({
-      recruiterId: id,
-      fullName:    rec.fullName,
-      stageCounts,
-      applications: recApps,
-    });
-  });
+    const jobs    = DB.jobs.filter(j => j.recruiterId === id);
+    const mandate = DB.mandates.filter(m => m.recruiterId === id);
 
-  // POST /manco/recruiters/:id/resolve  (observational flag resolution only)
-  router.post('/recruiters/:id/resolve', (req, res) => {
-    const { id } = req.params;
-    const rec = DB.recruiters.find(r => r.recruiterId === id);
-    if (!rec) return res.status(404).json({ error: `Recruiter ${id} not found.` });
-    const { flagId, resolution, notes } = req.body ?? {};
-    const user = req.currentUser;
     return res.status(200).json({
-      recruiterId: id,
-      flagId:      flagId ?? 'flag-001',
-      resolution:  resolution ?? 'acknowledged',
-      notes:       notes ?? '',
-      resolvedAt:  new Date().toISOString(),
-      resolvedBy:  user ? `${user.firstName} ${user.lastName}` : 'MANCO',
-      message:     'Flag resolved. Note: MANCO cannot perform recruiter operational actions.',
+      success: true,
+      statusCode: 200,
+      message: 'Recruiter performance retrieved.',
+      data: {
+        recruiterId:    id,
+        name:           rec.fullName,
+        email:          rec.email,
+        specialisation: rec.specialisation ?? [],
+        metrics: {
+          placements:     rec.metrics?.placements ?? 0,
+          activeRoles:    mandate.filter(m => m.status === 'ACTIVE').length,
+          candidates:     rec.metrics?.candidates ?? 0,
+          conversionRate: rec.metrics?.conversionRate ?? 0,
+          avgDaysToPlace: rec.metrics?.avgDaysToPlace ?? 0,
+          revenueYTD:     rec.metrics?.revenueYTD ?? 0,
+        },
+        kpiTrend: [
+          { month: 'Aug', placements: Math.max(0, (rec.metrics?.placements ?? 4) - 3), revenue: (Math.max(0, (rec.metrics?.placements ?? 4) - 3)) * 48000 },
+          { month: 'Sep', placements: Math.max(0, (rec.metrics?.placements ?? 4) - 2), revenue: (Math.max(0, (rec.metrics?.placements ?? 4) - 2)) * 48000 },
+          { month: 'Oct', placements: Math.max(0, (rec.metrics?.placements ?? 4) - 1), revenue: (Math.max(0, (rec.metrics?.placements ?? 4) - 1)) * 48000 },
+          { month: 'Nov', placements: rec.metrics?.placements ?? 0,                     revenue: (rec.metrics?.placements ?? 0) * 48000                     },
+        ],
+        jobsManaged: jobs.length,
+        activeMandates: mandate.filter(m => m.status === 'ACTIVE').length,
+        closedMandates: mandate.filter(m => m.status !== 'ACTIVE').length,
+      },
     });
   });
 

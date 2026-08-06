@@ -1,147 +1,161 @@
 /**
- * AUTH ROUTES
+ * AUTH ROUTES  (v2 contract)
  *
- * POST /auth/login   → validate credentials, return JWT + dashboardUrl
- * POST /auth/signup  → candidate signup, return JWT + user
- * GET  /auth/me      → return current user from session
- * POST /auth/logout  → invalidate token
+ * POST /auth/register          → register a new user account
+ * POST /auth/login             → login, return JWT access/refresh tokens
+ * POST /auth/forgot-password   → send reset link (mock)
+ * POST /auth/change-password   → change password (mock)
+ * POST /auth/logout            → invalidate token
  */
 
 import { Router } from 'express';
 
-export function authRouter({ USERS, PASSWORDS, sessions, generateToken, ROLE_DASHBOARD, DB, saveDataset }) {
+export function authRouter({ USERS, sessions, generateToken, DB }) {
   const router = Router();
 
-  // POST /auth/signup
-  router.post('/signup', (req, res) => {
+  // POST /auth/register
+  router.post('/register', (req, res) => {
     const {
+      userType,
       firstName,
       lastName,
       email,
-      phoneNumber,
+      mobileNumber,
       password,
       confirmPassword,
-      passwordHint,
-      termsAccepted,
+      acceptTerms,
+      acceptPrivacyPolicy,
     } = req.body ?? {};
 
-    const fieldErrors = {};
+    if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !password)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'Required fields missing.' });
 
-    if (!firstName?.trim()) fieldErrors.firstName = 'First name is required';
-    if (!lastName?.trim()) fieldErrors.lastName = 'Last name is required';
-    if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fieldErrors.email = 'Invalid email format';
-    if (!phoneNumber?.trim()) fieldErrors.phoneNumber = 'Phone number is required';
-    if (!password || password.length < 8) fieldErrors.password = 'Password must be at least 8 characters';
-    if (!confirmPassword || confirmPassword !== password) fieldErrors.confirmPassword = 'Passwords do not match';
-    if (!passwordHint?.trim()) fieldErrors.passwordHint = 'Password hint is required';
-    if (termsAccepted !== true) fieldErrors.termsAccepted = 'You must accept the terms and privacy policy';
+    if (password !== confirmPassword)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'Passwords do not match.' });
 
-    if (Object.keys(fieldErrors).length > 0) {
-      return res.status(400).json({
-        message: 'Invalid signup payload',
-        code: 'VALIDATION_ERROR',
-        fieldErrors,
-      });
-    }
+    const exists = DB.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
+    if (exists)
+      return res.status(409).json({ success: false, statusCode: 409, message: 'Email already registered.' });
 
-    if (email.toLowerCase() === 'existing@skillsmine.com') {
-      return res.status(409).json({
-        message: 'Email already registered',
-        code: 'EMAIL_EXISTS',
-      });
-    }
-
-    const candidateId = `candidate-${String(DB.candidates.length + 1001)}`;
-    const user = {
-      sub: candidateId,
-      email: email.toLowerCase(),
-      role: 'candidate',
+    const userId = `USR${String(100000 + DB.users.length + 1)}`;
+    const newUser = {
+      userId,
+      userType: userType ?? 'JOB_SEEKER',
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      candidateId,
-      permissions: ['VIEW_JOBS', 'APPLY_JOB', 'UPLOAD_CV', 'VIEW_DASHBOARD'],
-    };
-
-    DB.candidates.push({
-      candidateId,
-      fullName: `${user.firstName} ${user.lastName}`,
-      email: user.email,
-      phone: phoneNumber,
+      email: email.toLowerCase(),
+      mobileNumber: mobileNumber ?? '',
       password,
-      role: 'candidate',
-      registeredAt: new Date().toISOString(),
-      profileComplete: 15,
-    });
-    saveDataset('candidates', DB.candidates);
-
-    const token = generateToken(user);
-    sessions.set(token, user);
+      accountStatus: 'PENDING_VERIFICATION',
+      profileCompleted: 10,
+      roles: [userType ?? 'JOB_SEEKER'],
+      acceptTerms: acceptTerms ?? false,
+      acceptPrivacyPolicy: acceptPrivacyPolicy ?? false,
+      createdAt: new Date().toISOString(),
+    };
+    DB.users.push(newUser);
 
     return res.status(201).json({
-      token,
-      expiresIn: 3600,
-      user: {
-        id: user.sub,
-        email: user.email,
-        displayName: `${user.firstName} ${user.lastName}`,
-        role: user.role,
-        permissions: user.permissions,
+      success: true,
+      statusCode: 201,
+      message: 'Registration completed successfully.',
+      data: {
+        userId,
+        email: newUser.email,
+        accountStatus: 'PENDING_VERIFICATION',
       },
     });
   });
 
   // POST /auth/login
   router.post('/login', (req, res) => {
-    const { email, candidateId, password } = req.body ?? {};
-    const loginId = email ?? candidateId;
-    if (!loginId || !password)
-      return res.status(400).json({ error: 'email or candidateId and password are required.' });
+    const { username, password, rememberMe } = req.body ?? {};
+    if (!username || !password)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'username and password are required.' });
 
-    let user = email ? USERS[email.toLowerCase()] : null;
+    // Look up in USERS seed first, then DB.users
+    let userRecord = USERS[username.toLowerCase()] ?? null;
 
-    if (!user) {
-      const candidate = DB.candidates.find(c =>
-        ((email && c.email?.toLowerCase() === email.toLowerCase()) || (candidateId && c.candidateId === candidateId)) &&
-        c.password === password
+    if (!userRecord) {
+      const dbUser = DB.users.find(
+        u => u.email?.toLowerCase() === username.toLowerCase() && u.password === password
       );
-      if (candidate) {
-        const [firstName, ...rest] = (candidate.fullName ?? '').split(' ');
-        user = {
-          sub: candidate.candidateId,
-          email: candidate.email,
-          role: 'candidate',
-          firstName: firstName ?? '',
-          lastName: rest.join(' '),
-          candidateId: candidate.candidateId,
-          permissions: ['VIEW_JOBS', 'APPLY_JOB', 'UPLOAD_CV', 'VIEW_DASHBOARD'],
+      if (dbUser) {
+        userRecord = {
+          sub: dbUser.userId,
+          email: dbUser.email,
+          firstName: dbUser.firstName,
+          lastName: dbUser.lastName,
+          roles: dbUser.roles ?? ['JOB_SEEKER'],
+          userId: dbUser.userId,
+          recruiterId: dbUser.recruiterId ?? null,
+          profileCompleted: dbUser.profileCompleted ?? 0,
         };
       }
+    } else if (password !== 'Password123') {
+      userRecord = null;
     }
 
-    if (!user || (email && USERS[email.toLowerCase()] && !PASSWORDS[password]))
-      return res.status(401).json({ error: 'Invalid email or password.' });
+    if (!userRecord)
+      return res.status(401).json({ success: false, statusCode: 401, message: 'Invalid username or password.' });
 
-    const token = generateToken(user);
-    sessions.set(token, user);
-    console.log(`[AUTH] Login : ${user.email} (${user.role})`);
+    const accessToken = generateToken(userRecord);
+    const refreshToken = generateToken({ ...userRecord, type: 'refresh' });
+    sessions.set(accessToken, userRecord);
 
-    const { sub, iat, exp, ...safeUser } = user;
+    const expiresIn = rememberMe ? 86400 : 3600;
+
     return res.status(200).json({
-      userId:       user.sub,
-      role:         user.role,
-      token,
-      dashboardUrl: ROLE_DASHBOARD[user.role] ?? '/',
-      user:         { id: user.sub, ...safeUser },
-      expiresIn:    86400,
+      success: true,
+      statusCode: 200,
+      message: 'Login successful',
+      data: {
+        accessToken,
+        refreshToken,
+        expiresIn,
+        profileCompleted: userRecord.profileCompleted ?? 82,
+        roles: userRecord.roles ?? ['JOB_SEEKER'],
+      },
     });
   });
 
-  // GET /auth/me
-  router.get('/me', (req, res) => {
-    const user = req.currentUser;
-    if (!user) return res.status(401).json({ error: 'Not authenticated.' });
-    const { sub, iat, exp, ...safeUser } = user;
-    return res.status(200).json({ user: { id: user.sub, ...safeUser } });
+  // POST /auth/forgot-password
+  router.post('/forgot-password', (req, res) => {
+    const { email } = req.body ?? {};
+    if (!email)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'email is required.' });
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'If the email address is registered, a password reset link has been sent.',
+      data: {
+        email: email.toLowerCase(),
+        resetLinkSent: true,
+        expiresInMinutes: 30,
+      },
+    });
+  });
+
+  // POST /auth/change-password
+  router.post('/change-password', (req, res) => {
+    const { currentPassword, newPassword, confirmNewPassword } = req.body ?? {};
+
+    if (!currentPassword || !newPassword || !confirmNewPassword)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'All password fields are required.' });
+
+    if (newPassword !== confirmNewPassword)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'New passwords do not match.' });
+
+    if (newPassword.length < 8)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'Password must be at least 8 characters.' });
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Password changed successfully.',
+      data: { changedAt: new Date().toISOString() },
+    });
   });
 
   // POST /auth/logout
@@ -149,11 +163,14 @@ export function authRouter({ USERS, PASSWORDS, sessions, generateToken, ROLE_DAS
     const authHeader = req.headers['authorization'] ?? '';
     const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
     if (token && sessions.has(token)) {
-      const user = sessions.get(token);
       sessions.delete(token);
-      console.log(`[AUTH] Logout: ${user.email}`);
     }
-    return res.status(200).json({ message: 'Logged out successfully.' });
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Logged out successfully.',
+      data: null,
+    });
   });
 
   return router;

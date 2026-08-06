@@ -1,36 +1,72 @@
 /**
- * SkillsMine – Camouflage-compatible Mock Server Runner
+ * SkillsMine – Mock Server Runner  (v2 contract)
  *
- * This file is BOOTSTRAP ONLY.
  * All route logic lives in mock-server/routes/:
  *
- *   routes/auth.js         POST /auth/login | GET /auth/me | POST /auth/logout
- *   routes/candidates.js   /candidates/*
- *   routes/jobs.js         /jobs/* + GET /opportunities
- *   routes/recruiters.js   /recruiters/*
- *   routes/manco.js        /manco/*
- *   routes/crm.js          /crm/*
+ *   routes/auth.js            POST /auth/register | /auth/login | /auth/forgot-password
+ *                             POST /auth/change-password | /auth/logout
+ *   routes/users.js           GET/PUT /users/:userId | POST/DELETE /users/:userId/profile-photo
+ *   routes/candidates.js      GET /candidate/dashboard
+ *                             POST /candidate/buildmycv
+ *                             GET /candidate/:resumeId/preview  | /download
+ *                             GET /candidate/:candidateId/recommended-jobs
+ *                             POST /applications/:applicationId/cv/upload
+ *   routes/jobs.js            GET  /jobs (public)
+ *                             GET  /jobs/:jobId
+ *                             POST /jobs/:jobId/save
+ *                             POST /jobs/:jobId/apply
+ *                             POST /jobs (recruiter)
+ *                             GET  /opportunities
+ *   routes/recruiter.js       GET  /recruiter/dashboard
+ *                             GET  /recruiter/mandates
+ *                             PUT  /recruiter/applications/:applicationId/stage
+ *                             GET  /recruiter/candidates/search
+ *                             GET  /mandates/:mandateId
+ *                             GET  /applications/:applicationId/stage-transition
+ *                             GET  /api/v1/candidates/:candidateId/profile
+ *   routes/pipeline.js        PATCH /api/v1/pipeline/:pipelineId/stage
+ *   routes/skills.js          GET  /skills/search
+ *   routes/manco.js           GET  /api/v1/manco/:mancoId/dashboard
+ *                             GET  /api/manco/recruiters/:id/performance
+ *   routes/crm.js             GET  /api/v1/crm/clients
+ *                             POST /api/v1/crm/clients/:clientId/notes
  *
  * Data files (loaded once at startup, mutated in-memory):
- *   data/candidates.json   data/jobs.json    data/recruiters.json
- *   data/crm-clients.json  data/applications.json
+ *   data/users.json            data/candidate-profiles.json  data/resumes.json
+ *   data/skills.json           data/jobs.json                data/applications.json
+ *   data/mandates.json         data/recruiters.json          data/crm-clients.json
  *
  * Run:  node mock-server/camouflage-runner.js
  */
 
-import express                                        from 'express';
+import express                                                 from 'express';
 import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
-import { join, dirname }                              from 'node:path';
-import { fileURLToPath }                              from 'node:url';
-import Handlebars                                     from 'handlebars';
-import { load as yamlLoad }                           from 'js-yaml';
+import { join, dirname }                                       from 'node:path';
+import { fileURLToPath }                                       from 'node:url';
+import Handlebars                                              from 'handlebars';
+import { load as yamlLoad }                                    from 'js-yaml';
 
-import { authRouter }                                 from './routes/auth.js';
-import { candidatesRouter }                           from './routes/candidates.js';
-import { jobsRouter, opportunitiesRouter }            from './routes/jobs.js';
-import { recruitersRouter, candidateActionsRouter }   from './routes/recruiters.js';
-import { mancoRouter }                                from './routes/manco.js';
-import { crmRouter }                                  from './routes/crm.js';
+import { authRouter }                                          from './routes/auth.js';
+import { usersRouter }                                         from './routes/users.js';
+import {
+  candidateDashboardRouter,
+  cvBuilderRouter,
+  applicationCvRouter,
+}                                                              from './routes/candidates.js';
+import {
+  jobsRouter,
+  opportunitiesRouter,
+}                                                              from './routes/jobs.js';
+import {
+  recruiterRouter,
+  mandatesRouter,
+  applicationStageRouter,
+  recruiterCandidateProfileRouter,
+}                                                              from './routes/recruiter.js';
+import { pipelineRouter }                                      from './routes/pipeline.js';
+import { skillsRouter }                                        from './routes/skills.js';
+import { mancoRouter, mancoRecruiterPerformanceRouter }        from './routes/manco.js';
+import { crmRouter }                                           from './routes/crm.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
@@ -45,7 +81,15 @@ const MOCKS_DIR = join(__dirname, config.server.mocksDir.replace('./mock-server/
 const DELAY_MIN = config.delay.min   ?? 300;
 const DELAY_MAX = config.delay.max   ?? 900;
 const ERR_RATE  = config.errorSimulation.enabled ? (config.errorSimulation.rate ?? 0.02) : 0;
-const PUBLIC_PATHS = config.auth.publicPaths ?? ['/auth/login', '/auth/signup', '/jobs', '/opportunities', '/candidates/register', '/recruiters/register'];
+
+const PUBLIC_PATHS = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/forgot-password',
+  '/jobs',
+  '/opportunities',
+  '/skills/search',
+];
 
 // ─────────────────────────────────────────────────────────
 //  Datasets  — loaded once at startup, mutated in-memory
@@ -56,11 +100,15 @@ function loadDataset(name) {
 }
 
 const DB = {
-  candidates:   loadDataset('candidates'),
-  jobs:         loadDataset('jobs'),
-  recruiters:   loadDataset('recruiters'),
-  clients:      loadDataset('crm-clients'),
-  applications: loadDataset('applications'),
+  users:             loadDataset('users'),
+  candidateProfiles: loadDataset('candidate-profiles'),
+  resumes:           loadDataset('resumes'),
+  skills:            loadDataset('skills'),
+  jobs:              loadDataset('jobs'),
+  applications:      loadDataset('applications'),
+  mandates:          loadDataset('mandates'),
+  recruiters:        loadDataset('recruiters'),
+  clients:           loadDataset('crm-clients'),
 };
 
 function saveDataset(name, data) {
@@ -68,54 +116,59 @@ function saveDataset(name, data) {
   writeFileSync(p, JSON.stringify(data, null, 2) + '\n');
 }
 
-// Pipeline stage order (shared by jobs + recruiters + manco routes)
-const PIPELINE_STAGES = ['Applied', 'Screening', 'Assessment', 'Interview', 'Shortlisted', 'Offer', 'Closed'];
-
 // ─────────────────────────────────────────────────────────
 //  Auth helpers  (shared with route files via injection)
 // ─────────────────────────────────────────────────────────
-const sessions = new Map(); // token → user object
+const sessions = new Map(); // accessToken → user object
 
+// Pre-seeded users (map by email — password is always "Password123")
 const USERS = {
-  'candidate@skillsmine.com': {
-    sub: 'u1', email: 'candidate@skillsmine.com', role: 'candidate',
-    firstName: 'Michael', lastName: 'Smith', candidateId: 'c001',
-    permissions: ['VIEW_JOBS', 'APPLY_JOB', 'UPLOAD_CV', 'VIEW_DASHBOARD'],
+  'michael.smith@email.com': {
+    sub: 'USR100001', userId: 'USR100001', email: 'michael.smith@email.com',
+    firstName: 'Michael', lastName: 'Smith',
+    roles: ['JOB_SEEKER'], profileCompleted: 82,
   },
-  'candidate2@skillsmine.com': {
-    sub: 'u10', email: 'candidate2@skillsmine.com', role: 'candidate',
-    firstName: 'Ayesha', lastName: 'Patel', candidateId: 'c002',
-    permissions: ['VIEW_JOBS', 'APPLY_JOB', 'UPLOAD_CV', 'VIEW_DASHBOARD'],
+  'ayesha.patel@email.com': {
+    sub: 'USR100002', userId: 'USR100002', email: 'ayesha.patel@email.com',
+    firstName: 'Ayesha', lastName: 'Patel',
+    roles: ['JOB_SEEKER'], profileCompleted: 65,
   },
   'recruiter@skillsmine.com': {
-    sub: 'u2', email: 'recruiter@skillsmine.com', role: 'recruiter',
-    firstName: 'Sarah', lastName: 'Johnson', recruiterId: 'r001',
-    permissions: ['MANDATE_CREATE', 'MANDATE_EDIT', 'PIPELINE_ADVANCE', 'CRM_EDIT', 'CANDIDATE_VIEW', 'VIEW_DASHBOARD'],
+    sub: 'USR100003', userId: 'USR100003', email: 'recruiter@skillsmine.com',
+    firstName: 'Sarah', lastName: 'Johnson',
+    roles: ['RECRUITER'], recruiterId: 'r001', profileCompleted: 100,
   },
   'recruiter2@skillsmine.com': {
-    sub: 'u11', email: 'recruiter2@skillsmine.com', role: 'recruiter',
-    firstName: 'Bongani', lastName: 'Cele', recruiterId: 'r002',
-    permissions: ['MANDATE_CREATE', 'MANDATE_EDIT', 'PIPELINE_ADVANCE', 'CRM_EDIT', 'CANDIDATE_VIEW', 'VIEW_DASHBOARD'],
+    sub: 'USR100004', userId: 'USR100004', email: 'recruiter2@skillsmine.com',
+    firstName: 'Bongani', lastName: 'Cele',
+    roles: ['RECRUITER'], recruiterId: 'r002', profileCompleted: 100,
   },
   'manco@skillsmine.com': {
-    sub: 'u3', email: 'manco@skillsmine.com', role: 'manco',
+    sub: 'USR100005', userId: 'USR100005', email: 'manco@skillsmine.com',
     firstName: 'David', lastName: 'Botha',
-    permissions: ['PIPELINE_VIEW', 'REPORT_VIEW', 'RECRUITER_VIEW', 'VIEW_DASHBOARD'],
+    roles: ['MANCO'], profileCompleted: 100,
   },
   'admin@skillsmine.com': {
-    sub: 'u5', email: 'admin@skillsmine.com', role: 'admin',
+    sub: 'USR100006', userId: 'USR100006', email: 'admin@skillsmine.com',
     firstName: 'Admin', lastName: 'User',
-    permissions: ['ALL'],
+    roles: ['ADMIN'], profileCompleted: 100,
   },
-};
-
-const PASSWORDS = { 'Password123': true };
-
-const ROLE_DASHBOARD = {
-  candidate: '/candidates/dashboard',
-  recruiter: '/recruiters/dashboard',
-  manco:     '/manco/dashboard',
-  admin:     '/admin/dashboard',
+  // Legacy aliases
+  'candidate@skillsmine.com': {
+    sub: 'USR100001', userId: 'USR100001', email: 'michael.smith@email.com',
+    firstName: 'Michael', lastName: 'Smith',
+    roles: ['JOB_SEEKER'], profileCompleted: 82,
+  },
+  'candidate2@skillsmine.com': {
+    sub: 'USR100002', userId: 'USR100002', email: 'ayesha.patel@email.com',
+    firstName: 'Ayesha', lastName: 'Patel',
+    roles: ['JOB_SEEKER'], profileCompleted: 65,
+  },
+  'thabo.nkosi@email.com': {
+    sub: 'USR100007', userId: 'USR100007', email: 'thabo.nkosi@email.com',
+    firstName: 'Thabo', lastName: 'Nkosi',
+    roles: ['JOB_SEEKER'], profileCompleted: 55,
+  },
 };
 
 function generateToken(user) {
@@ -125,7 +178,7 @@ function generateToken(user) {
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 86400,
   })).toString('base64url');
-  const sig = Buffer.from(`mock-${user.sub}-${Date.now()}`).toString('base64url');
+  const sig = Buffer.from(`mock-${user.sub ?? user.userId}-${Date.now()}`).toString('base64url');
   return `${header}.${payload}.${sig}`;
 }
 
@@ -207,9 +260,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Strip /api/ prefix so routes work with or without it
+// Strip /api/ prefix so routes work with or without it — but keep /api/v1/ for versioned routes
 app.use((req, _res, next) => {
-  if (req.path.startsWith('/api/')) req.url = req.url.replace('/api/', '/');
+  // Rewrite bare /api/ to / but leave /api/v1/ alone (handled at mount)
+  if (req.path.startsWith('/api/') && !req.path.startsWith('/api/v1/') && !req.path.startsWith('/api/manco/')) {
+    req.url = req.url.replace('/api/', '/');
+  }
   next();
 });
 
@@ -222,14 +278,23 @@ app.use(async (req, res, next) => {
 
   if (!isPublic && Math.random() < ERR_RATE) {
     console.log(`[INJECT] 500 → ${req.method} ${path}`);
-    return res.status(500).json({ error: 'Internal server error – please retry', injected: true });
+    return res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: 'Internal server error – please retry',
+      injected: true,
+    });
   }
 
   if (!isPublic) {
     const raw   = req.headers['authorization'] ?? '';
     const token = raw.startsWith('Bearer ') ? raw.slice(7) : null;
     if (!token || !sessions.has(token))
-      return res.status(401).json({ error: 'Not authenticated. Please login first.' });
+      return res.status(401).json({
+        success: false,
+        statusCode: 401,
+        message: 'Not authenticated. Please login first.',
+      });
     req.currentUser = sessions.get(token);
   }
 
@@ -237,18 +302,67 @@ app.use(async (req, res, next) => {
 });
 
 // ─────────────────────────────────────────────────────────
-//  Mount route modules
+//  Route context
 // ─────────────────────────────────────────────────────────
-const routeCtx = { DB, PIPELINE_STAGES, sessions, generateToken, saveDataset };
+const routeCtx = { DB, sessions, generateToken, saveDataset };
 
-app.use('/auth',        authRouter({ ...routeCtx, USERS, PASSWORDS, ROLE_DASHBOARD, DB }));
-app.use('/candidates',  candidatesRouter(routeCtx));
-app.use('/candidates',  candidateActionsRouter(routeCtx));   // :id/actions/send-latest-matched-jobs
-app.use('/jobs',        jobsRouter(routeCtx));
+// ─────────────────────────────────────────────────────────
+//  Auth
+// ─────────────────────────────────────────────────────────
+app.use('/auth', authRouter({ ...routeCtx, USERS }));
+
+// ─────────────────────────────────────────────────────────
+//  Users / Profiles
+// ─────────────────────────────────────────────────────────
+app.use('/users', usersRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Candidate (dashboard, CV builder, recommendations)
+// ─────────────────────────────────────────────────────────
+app.use('/candidate', candidateDashboardRouter(routeCtx));
+app.use('/candidate', cvBuilderRouter(routeCtx));
+
+// Applications CV upload: POST /applications/:applicationId/cv/upload
+app.use('/applications', applicationCvRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Jobs + Opportunities
+// ─────────────────────────────────────────────────────────
+app.use('/jobs',         jobsRouter(routeCtx));
 app.use('/opportunities', opportunitiesRouter(routeCtx));
-app.use('/recruiters',  recruitersRouter(routeCtx));
-app.use('/manco',       mancoRouter(routeCtx));
-app.use('/crm',         crmRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Skills
+// ─────────────────────────────────────────────────────────
+app.use('/skills', skillsRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Recruiter
+// ─────────────────────────────────────────────────────────
+app.use('/recruiter',     recruiterRouter(routeCtx));
+app.use('/mandates',      mandatesRouter(routeCtx));
+app.use('/applications',  applicationStageRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Pipeline  (PATCH /api/v1/pipeline/:pipelineId/stage)
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/pipeline', pipelineRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Recruiter candidate profile  (GET /api/v1/candidates/:candidateId/profile)
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/candidates', recruiterCandidateProfileRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  MANCO
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/manco',             mancoRouter(routeCtx));
+app.use('/api/manco/recruiters',     mancoRecruiterPerformanceRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  CRM
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/crm', crmRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Catch-all → .mock file fallback
@@ -259,7 +373,9 @@ app.all('*', (req, res) => {
   if (!resolved) {
     console.warn(`[404] No mock: ${req.method} ${req.path}`);
     return res.status(404).json({
-      error: `No mock defined for ${req.method} ${req.path}`,
+      success: false,
+      statusCode: 404,
+      message: `No mock defined for ${req.method} ${req.path}`,
       hint:  `Add a named route in mock-server/routes/ or create mock-server/mocks${req.path}/${req.method.toUpperCase()}.mock`,
     });
   }
@@ -277,7 +393,7 @@ app.all('*', (req, res) => {
     res.status(status).send(rendered);
   } catch (err) {
     console.error(`[ERROR] Mock render failed: ${resolved.file}`, err.message);
-    res.status(500).json({ error: 'Mock render error', detail: err.message });
+    res.status(500).json({ success: false, statusCode: 500, message: 'Mock render error', detail: err.message });
   }
 });
 
@@ -287,52 +403,78 @@ app.all('*', (req, res) => {
 app.listen(PORT, () => {
   const L = s => console.log(s);
   L('');
-  L('╔══════════════════════════════════════════════════════════════╗');
-  L('║    SkillsMine Mock Server  ·  Single Domain  ·  Role-based  ║');
-  L(`║    http://localhost:${PORT}                                    ║`);
-  L('╠══════════════════════════════════════════════════════════════╣');
-  L('║  routes/auth.js         POST /auth/login                     ║');
-  L('║                         POST /auth/signup                    ║');
-  L('║                         GET  /auth/me                        ║');
-  L('║                         POST /auth/logout                    ║');
-  L('║  routes/candidates.js   POST /candidates/register (public)   ║');
-  L('║                         POST /candidates/cv/upload           ║');
-  L('║                         PUT  /candidates/cv-builder/:step    ║');
-  L('║                         GET  /candidates/dashboard           ║');
-  L('║                         GET  /candidates/applications        ║');
-  L('║                         GET  /candidates/:id                 ║');
-  L('║                         PUT  /candidates/:id                 ║');
-  L('║                         GET  /candidates                     ║');
-  L('║  routes/jobs.js         GET  /jobs  (public)                 ║');
-  L('║                         GET  /jobs/:jobId                    ║');
-  L('║                         POST /jobs/:jobId/apply              ║');
-  L('║                         POST /jobs/:jobId/pipeline/advance   ║');
-  L('║                         POST /jobs  (recruiter)              ║');
-  L('║  routes/recruiters.js   POST /recruiters/register (public)   ║');
-  L('║                         GET  /recruiters/dashboard           ║');
-  L('║                         GET  /recruiters/jobs                ║');
-  L('║                         GET  /recruiters/jobs/:jobId         ║');
-  L('║                         GET  /recruiters/candidates          ║');
-  L('║                         GET  /recruiters/candidates/:id      ║');
-  L('║  routes/manco.js        GET  /manco/dashboard                ║');
-  L('║                         GET  /manco/recruiters               ║');
-  L('║                         GET  /manco/recruiters/:id/performance║');
-  L('║                         GET  /manco/recruiters/:id/pipeline  ║');
-  L('║                         POST /manco/recruiters/:id/resolve   ║');
-  L('║  routes/crm.js          GET  /crm/clients                    ║');
-  L('║                         POST /crm/clients/:id/notes          ║');
-  L('║  routes/jobs.js         GET  /opportunities  (public)        ║');
-  L('║                         ?q=  ?tag=  ?workType=  ?limit=      ║');
-  L(`║  Delay ${DELAY_MIN}–${DELAY_MAX} ms  ·  Error injection ${ERR_RATE * 100}%             ║`);
-  L('╚══════════════════════════════════════════════════════════════╝');
+  L('╔══════════════════════════════════════════════════════════════════════════╗');
+  L('║    SkillsMine Mock Server  ·  v2 Contract  ·  Role-based  (ESM)         ║');
+  L(`║    http://localhost:${PORT}                                                ║`);
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  AUTH                                                                    ║');
+  L('║    POST  /auth/register                                                  ║');
+  L('║    POST  /auth/login                                                     ║');
+  L('║    POST  /auth/forgot-password                                           ║');
+  L('║    POST  /auth/change-password                                           ║');
+  L('║    POST  /auth/logout                                                    ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  USERS / PROFILES                                                        ║');
+  L('║    GET   /users/:userId                                                  ║');
+  L('║    PUT   /users/:userId                                                  ║');
+  L('║    POST  /users/:userId/profile-photo                                    ║');
+  L('║    DELETE /users/:userId/profile-photo                                   ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  CANDIDATE                                                               ║');
+  L('║    GET   /candidate/dashboard                                            ║');
+  L('║    POST  /candidate/buildmycv                                            ║');
+  L('║    GET   /candidate/:resumeId/preview                                    ║');
+  L('║    GET   /candidate/:resumeId/download                                   ║');
+  L('║    GET   /candidate/:candidateId/recommended-jobs                        ║');
+  L('║    POST  /applications/:applicationId/cv/upload                          ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  JOBS                                                                    ║');
+  L('║    GET   /jobs  (public)                                                 ║');
+  L('║    GET   /jobs/:jobId                                                    ║');
+  L('║    POST  /jobs/:jobId/save                                               ║');
+  L('║    POST  /jobs/:jobId/apply                                              ║');
+  L('║    POST  /jobs  (recruiter)                                              ║');
+  L('║    GET   /opportunities  (public)                                        ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  SKILLS                                                                  ║');
+  L('║    GET   /skills/search?keyword=&limit=                                  ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  RECRUITER                                                               ║');
+  L('║    GET   /recruiter/dashboard                                            ║');
+  L('║    GET   /recruiter/mandates                                             ║');
+  L('║    PUT   /recruiter/applications/:applicationId/stage                    ║');
+  L('║    GET   /recruiter/candidates/search                                    ║');
+  L('║    GET   /mandates/:mandateId                                            ║');
+  L('║    GET   /applications/:applicationId/stage-transition                   ║');
+  L('║    GET   /api/v1/candidates/:candidateId/profile                         ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  PIPELINE                                                                ║');
+  L('║    PATCH /api/v1/pipeline/:pipelineId/stage                              ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  MANCO                                                                   ║');
+  L('║    GET   /api/v1/manco/:mancoId/dashboard                                ║');
+  L('║    GET   /api/manco/recruiters/:id/performance                           ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  CRM                                                                     ║');
+  L('║    GET   /api/v1/crm/clients  (?status=)                                 ║');
+  L('║    POST  /api/v1/crm/clients/:clientId/notes                             ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L(`║  Delay ${DELAY_MIN}–${DELAY_MAX} ms · Error injection ${(ERR_RATE * 100).toFixed(0)}%                              ║`);
+  L('╚══════════════════════════════════════════════════════════════════════════╝');
   L('');
   L('  Test accounts (password: Password123)');
-  L('    candidate@skillsmine.com    candidate2@skillsmine.com');
-  L('    recruiter@skillsmine.com    recruiter2@skillsmine.com');
-  L('    manco@skillsmine.com        admin@skillsmine.com');
+  L('    michael.smith@email.com    (JOB_SEEKER / USR100001)');
+  L('    ayesha.patel@email.com     (JOB_SEEKER / USR100002)');
+  L('    recruiter@skillsmine.com   (RECRUITER  / USR100003)');
+  L('    recruiter2@skillsmine.com  (RECRUITER  / USR100004)');
+  L('    manco@skillsmine.com       (MANCO      / USR100005)');
+  L('    admin@skillsmine.com       (ADMIN      / USR100006)');
+  L('  Legacy aliases: candidate@skillsmine.com, candidate2@skillsmine.com');
   L('');
   L('  Data (loaded from mock-server/data/)');
-  L(`    ${DB.candidates.length} candidates · ${DB.jobs.filter(j=>j.status==='Open').length} open jobs · ${DB.jobs.filter(j=>j.status==='Closed').length} closed · ${DB.jobs.filter(j=>j.status==='Draft').length} draft`);
+  L(`    ${DB.users.length} users · ${DB.candidateProfiles.length} candidate profiles · ${DB.resumes.length} resumes`);
+  L(`    ${DB.jobs.filter(j => j.status === 'Open').length} open jobs · ${DB.mandates.length} mandates`);
   L(`    ${DB.recruiters.length} recruiters · ${DB.clients.length} CRM clients · ${DB.applications.length} applications`);
+  L(`    ${DB.skills.length} skills`);
   L('');
 });

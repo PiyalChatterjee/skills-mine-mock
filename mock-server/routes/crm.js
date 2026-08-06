@@ -1,11 +1,10 @@
 /**
- * CRM ROUTES
+ * CRM ROUTES  (v2 contract)
  *
- * GET  /crm/clients             → list clients, optional ?status= filter, includes summary counts
- * POST /crm/clients/:id/notes   → add a note, optionally transition client status
+ * GET  /api/v1/crm/clients              → list clients with summary; optional ?status= filter
+ * POST /api/v1/crm/clients/:clientId/notes → add a note / transition status
  *
  * CRM status values:  hot_lead | warm_contact | cold_lead | needs_attention
- * Status transitions: cold_lead → warm_contact → hot_lead (or any via newStatus)
  */
 
 import { Router } from 'express';
@@ -15,12 +14,13 @@ export function crmRouter({ DB }) {
 
   // Role guard: candidates cannot access CRM
   router.use((req, res, next) => {
-    if (req.currentUser?.role === 'candidate')
-      return res.status(403).json({ error: 'Access denied.' });
+    const role = req.currentUser?.role ?? (req.currentUser?.roles?.[0] ?? '');
+    if (['JOB_SEEKER', 'candidate'].includes(role))
+      return res.status(403).json({ success: false, statusCode: 403, message: 'Access denied.' });
     next();
   });
 
-  // GET /crm/clients  (supports ?status=hot_lead|warm_contact|cold_lead|needs_attention)
+  // GET /api/v1/crm/clients
   router.get('/clients', (req, res) => {
     const { status, page = 1, limit = 20 } = req.query;
     let results = [...DB.clients];
@@ -35,24 +35,40 @@ export function crmRouter({ DB }) {
       warm_contact:    DB.clients.filter(c => c.status === 'warm_contact').length,
       cold_lead:       DB.clients.filter(c => c.status === 'cold_lead').length,
       needs_attention: DB.clients.filter(c => c.status === 'needs_attention').length,
+      total:           DB.clients.length,
     };
 
-    return res.status(200).json({ clients: data, total: results.length, page: pageNum, pageSize, summary });
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'CRM clients retrieved.',
+      data: {
+        summary,
+        clients: data,
+        pagination: {
+          page:       pageNum,
+          pageSize,
+          total:      results.length,
+          totalPages: Math.ceil(results.length / pageSize),
+        },
+      },
+    });
   });
 
-  // POST /crm/clients/:id/notes
-  router.post('/clients/:id/notes', (req, res) => {
-    const { id } = req.params;
-    const client = DB.clients.find(c => c.clientId === id);
-    if (!client) return res.status(404).json({ error: `Client ${id} not found.` });
+  // POST /api/v1/crm/clients/:clientId/notes
+  router.post('/clients/:clientId/notes', (req, res) => {
+    const { clientId } = req.params;
+    const client = DB.clients.find(c => c.clientId === clientId);
+    if (!client) return res.status(404).json({ success: false, statusCode: 404, message: `Client ${clientId} not found.` });
 
-    const { note, newStatus } = req.body ?? {};
-    if (!note) return res.status(400).json({ error: 'note is required.' });
+    const { note, noteType, newStatus } = req.body ?? {};
+    if (!note) return res.status(400).json({ success: false, statusCode: 400, message: 'note is required.' });
 
     const user    = req.currentUser;
     const noteObj = {
       noteId:   `note-${Date.now()}`,
       note,
+      noteType: noteType ?? 'GENERAL',
       addedBy:  user ? `${user.firstName} ${user.lastName}` : 'Unknown',
       addedAt:  new Date().toISOString(),
     };
@@ -63,11 +79,19 @@ export function crmRouter({ DB }) {
     if (newStatus) client.status = newStatus;
 
     return res.status(201).json({
-      clientId:      id,
-      noteId:        noteObj.noteId,
-      previousStatus,
-      currentStatus: client.status,
-      message:       'Note added successfully.',
+      success: true,
+      statusCode: 201,
+      message: 'Note added successfully.',
+      data: {
+        clientId,
+        noteId:         noteObj.noteId,
+        noteType:       noteObj.noteType,
+        addedBy:        noteObj.addedBy,
+        addedAt:        noteObj.addedAt,
+        previousStatus,
+        currentStatus:  client.status,
+        totalNotes:     client.notes.length,
+      },
     });
   });
 

@@ -25,11 +25,11 @@ auth:
   enabled: true
   publicPaths:
     - /auth/login
-    - /auth/signup
+    - /auth/register
+    - /auth/forgot-password
     - /jobs
     - /opportunities
-    - /candidates/register
-    - /recruiters/register
+    - /skills/search
   tokenHeader: "Authorization"
   tokenPrefix: "Bearer "
 

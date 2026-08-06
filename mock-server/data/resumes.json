@@ -1,0 +1,91 @@
+[
+  {
+    "resumeId": "RES100001",
+    "userId": "USR100001",
+    "candidateId": "CAND100001",
+    "title": "Michael Smith – Senior Software Engineer CV",
+    "status": "PUBLISHED",
+    "createdAt": "2024-10-15T09:00:00Z",
+    "updatedAt": "2024-11-01T14:30:00Z",
+    "previewUrl": "https://mock-cdn.skillsmine.com/resumes/RES100001/preview.pdf",
+    "downloadUrl": "https://mock-cdn.skillsmine.com/resumes/RES100001/download.pdf",
+    "personalDetails": {
+      "firstName": "Michael",
+      "lastName": "Smith",
+      "email": "michael.smith@email.com",
+      "mobileNumber": "+27821234567",
+      "location": "Johannesburg, Gauteng",
+      "linkedinUrl": "https://linkedin.com/in/michael-smith-dev"
+    },
+    "careerHistory": [
+      {
+        "company": "Accenture",
+        "jobTitle": "Senior Software Engineer",
+        "startDate": "2020-03",
+        "endDate": "Present",
+        "responsibilities": "Lead frontend development using React and Node.js for enterprise banking clients."
+      },
+      {
+        "company": "Standard Bank",
+        "jobTitle": "Software Engineer",
+        "startDate": "2017-01",
+        "endDate": "2020-02",
+        "responsibilities": "Built and maintained retail banking web applications."
+      }
+    ],
+    "skills": ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL", "Docker", "CI/CD"],
+    "education": [
+      {
+        "institution": "University of the Witwatersrand",
+        "qualification": "BSc Computer Science",
+        "year": 2016
+      }
+    ],
+    "languages": [
+      { "language": "English", "proficiency": "Native" },
+      { "language": "Zulu", "proficiency": "Conversational" }
+    ],
+    "summary": "Experienced full-stack software engineer with 8+ years delivering scalable solutions for financial services clients."
+  },
+  {
+    "resumeId": "RES100002",
+    "userId": "USR100002",
+    "candidateId": "CAND100002",
+    "title": "Ayesha Patel – Product Manager CV",
+    "status": "PUBLISHED",
+    "createdAt": "2024-09-20T09:00:00Z",
+    "updatedAt": "2024-10-15T11:00:00Z",
+    "previewUrl": "https://mock-cdn.skillsmine.com/resumes/RES100002/preview.pdf",
+    "downloadUrl": "https://mock-cdn.skillsmine.com/resumes/RES100002/download.pdf",
+    "personalDetails": {
+      "firstName": "Ayesha",
+      "lastName": "Patel",
+      "email": "ayesha.patel@email.com",
+      "mobileNumber": "+27831234567",
+      "location": "Cape Town, Western Cape",
+      "linkedinUrl": "https://linkedin.com/in/ayesha-patel-pm"
+    },
+    "careerHistory": [
+      {
+        "company": "TymeBank",
+        "jobTitle": "Product Manager – Digital Payments",
+        "startDate": "2021-06",
+        "endDate": "Present",
+        "responsibilities": "Own product roadmap for digital payments, driving feature delivery and stakeholder alignment."
+      }
+    ],
+    "skills": ["Product Management", "Agile", "Roadmap Planning", "User Research", "SQL", "JIRA"],
+    "education": [
+      {
+        "institution": "University of Cape Town",
+        "qualification": "BBusSci Information Systems",
+        "year": 2017
+      }
+    ],
+    "languages": [
+      { "language": "English", "proficiency": "Native" },
+      { "language": "Afrikaans", "proficiency": "Basic" }
+    ],
+    "summary": "Strategic product manager with 4 years in FinTech, specialising in payments and digital banking products."
+  }
+]

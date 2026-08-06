@@ -1,10 +1,10 @@
 /**
- * JOBS ROUTES
+ * JOBS ROUTES  (v2 contract)
  *
- * GET  /jobs                         → public job board (filterable)
+ * GET  /jobs                         → public job board (filterable), showEmployerDetails flag
  * GET  /jobs/:jobId                  → single job detail
- * POST /jobs/:jobId/apply            → apply for a job (auth or guest)
- * POST /jobs/:jobId/pipeline/advance → advance candidate through pipeline stages
+ * POST /jobs/:jobId/save             → save / bookmark a job
+ * POST /jobs/:jobId/apply            → apply for a job
  * POST /jobs                         → create a new job posting (recruiter only)
  *
  * OPPORTUNITIES ROUTES
@@ -21,8 +21,6 @@ import { Router } from 'express';
 
 // ─────────────────────────────────────────────────────────
 //  Display metadata for the opportunities card format.
-//  Keyed by jobId — enriches DB jobs with branding colours
-//  and card layout hints used by the marketing website.
 // ─────────────────────────────────────────────────────────
 const OPPORTUNITY_META = {
   j001: { employerOrbColor: '#0a3d6b', employerOrbGlow: 'rgba(10, 61, 107, 0.35)',   blurredEmployer: false, tallCard: true  },
@@ -35,34 +33,17 @@ const OPPORTUNITY_META = {
   j008: { employerOrbColor: '#e8403a', employerOrbGlow: 'rgba(232, 64, 58, 0.35)',    blurredEmployer: false, tallCard: false },
   j009: { employerOrbColor: '#e07020', employerOrbGlow: 'rgba(224, 112, 32, 0.35)',   blurredEmployer: true,  tallCard: true  },
   j010: { employerOrbColor: '#d4001a', employerOrbGlow: 'rgba(212, 0, 26, 0.35)',     blurredEmployer: true,  tallCard: false },
-  j011: { employerOrbColor: '#0058a3', employerOrbGlow: 'rgba(0, 88, 163, 0.35)',     blurredEmployer: false, tallCard: false },
-  j012: { employerOrbColor: '#003f8a', employerOrbGlow: 'rgba(0, 63, 138, 0.35)',     blurredEmployer: false, tallCard: true  },
-  j013: { employerOrbColor: '#006652', employerOrbGlow: 'rgba(0, 102, 82, 0.35)',     blurredEmployer: false, tallCard: false },
-  j014: { employerOrbColor: '#0a3d6b', employerOrbGlow: 'rgba(10, 61, 107, 0.35)',   blurredEmployer: true,  tallCard: false },
-  j015: { employerOrbColor: '#a100ff', employerOrbGlow: 'rgba(161, 0, 255, 0.35)',   blurredEmployer: false, tallCard: false },
-  j016: { employerOrbColor: '#c41e3a', employerOrbGlow: 'rgba(196, 30, 58, 0.35)',   blurredEmployer: true,  tallCard: false },
-  j017: { employerOrbColor: '#e40000', employerOrbGlow: 'rgba(228, 0, 0, 0.35)',     blurredEmployer: false, tallCard: false },
-  j018: { employerOrbColor: '#cc0000', employerOrbGlow: 'rgba(204, 0, 0, 0.35)',     blurredEmployer: false, tallCard: false },
-  j019: { employerOrbColor: '#5f2e91', employerOrbGlow: 'rgba(95, 46, 145, 0.35)',   blurredEmployer: false, tallCard: false },
-  j020: { employerOrbColor: '#003f8a', employerOrbGlow: 'rgba(0, 63, 138, 0.35)',    blurredEmployer: false, tallCard: false },
-  j021: { employerOrbColor: '#444f59', employerOrbGlow: 'rgba(68, 79, 89, 0.35)',    blurredEmployer: false, tallCard: false },
-  j022: { employerOrbColor: '#00b4a0', employerOrbGlow: 'rgba(0, 180, 160, 0.35)',   blurredEmployer: false, tallCard: false },
-  j023: { employerOrbColor: '#ff6600', employerOrbGlow: 'rgba(255, 102, 0, 0.35)',   blurredEmployer: true,  tallCard: true  },
-  j024: { employerOrbColor: '#df7f2f', employerOrbGlow: 'rgba(223, 127, 47, 0.35)',  blurredEmployer: true,  tallCard: false },
-  j025: { employerOrbColor: '#5f2e91', employerOrbGlow: 'rgba(95, 46, 145, 0.35)',   blurredEmployer: false, tallCard: false },
 };
 
-// Build a tags array from a DB job record
 function buildTags(job) {
   const tags = [];
   if (job.industry)        tags.push(job.industry);
-  if (job.location)        tags.push(job.location.split(',')[0].trim());   // "Johannesburg, Gauteng" → "Johannesburg"
+  if (job.location)        tags.push(job.location.split(',')[0].trim());
   if (job.workType)        tags.push(job.workType);
   if (job.employmentType && job.employmentType !== 'Permanent') tags.push(job.employmentType);
   return tags;
 }
 
-// Shape a DB job into the opportunities card format
 function toOpportunityCard(job) {
   const meta = OPPORTUNITY_META[job.jobId] ?? {
     employerOrbColor: '#3b82d4',
@@ -71,14 +52,14 @@ function toOpportunityCard(job) {
     tallCard:         false,
   };
   return {
-    id:               job.jobId,
-    title:            job.title,
-    tags:             buildTags(job),
-    description:      job.description,
-    employerName:     job.company,
-    salaryRange:      job.salaryRange,
-    workType:         job.workType,
-    employmentType:   job.employmentType,
+    id:             job.jobId,
+    title:          job.title,
+    tags:           buildTags(job),
+    description:    job.description,
+    employerName:   job.company,
+    salaryRange:    job.salaryRange,
+    workType:       job.workType,
+    employmentType: job.employmentType,
     ...meta,
   };
 }
@@ -89,7 +70,6 @@ export function opportunitiesRouter({ DB }) {
   // GET /opportunities  (public, filterable)
   router.get('/', (req, res) => {
     const { q, tag, workType, employmentType, limit = '10' } = req.query;
-
     let results = DB.jobs.filter(j => j.status === 'Open');
 
     if (q) {
@@ -100,7 +80,6 @@ export function opportunitiesRouter({ DB }) {
         j.description?.toLowerCase().includes(lc)
       );
     }
-
     if (tag) {
       const lc = tag.toLowerCase();
       results = results.filter(j =>
@@ -108,12 +87,10 @@ export function opportunitiesRouter({ DB }) {
         j.industry?.toLowerCase().includes(lc)
       );
     }
-
     if (workType) {
       const lc = workType.toLowerCase();
       results = results.filter(j => j.workType?.toLowerCase() === lc);
     }
-
     if (employmentType) {
       const lc = employmentType.toLowerCase();
       results = results.filter(j => j.employmentType?.toLowerCase() === lc);
@@ -132,12 +109,17 @@ export function opportunitiesRouter({ DB }) {
   return router;
 }
 
-export function jobsRouter({ DB, PIPELINE_STAGES }) {
+export function jobsRouter({ DB }) {
   const router = Router();
 
   // GET /jobs  (public)
   router.get('/', (req, res) => {
-    const { status, industry, location, q, page = 1, limit = 10 } = req.query;
+    const {
+      status, industry, location, q,
+      page = 1, limit = 10,
+      showEmployerDetails,
+    } = req.query;
+
     let results = [...DB.jobs];
     if (status) results = results.filter(j => j.status?.toLowerCase() === status.toLowerCase());
     else        results = results.filter(j => j.status === 'Open');
@@ -147,101 +129,94 @@ export function jobsRouter({ DB, PIPELINE_STAGES }) {
       j.title?.toLowerCase().includes(q.toLowerCase()) ||
       j.company?.toLowerCase().includes(q.toLowerCase())
     );
+
     const pageNum  = parseInt(page, 10);
     const pageSize = parseInt(limit, 10);
+    const total    = results.length;
     const data     = results.slice((pageNum - 1) * pageSize, pageNum * pageSize);
-    return res.status(200).json({ jobs: data, total: results.length, page: pageNum, pageSize });
+
+    return res.status(200).json({
+      status: 'SUCCESS',
+      data: {
+        showEmployerDetails: showEmployerDetails === 'true' || showEmployerDetails === true,
+        jobs: data,
+        pagination: {
+          page:       pageNum,
+          pageSize,
+          total,
+          totalPages: Math.ceil(total / pageSize),
+        },
+      },
+    });
   });
 
   // GET /jobs/:jobId  (public)
   router.get('/:jobId', (req, res) => {
     const { jobId } = req.params;
     const job = DB.jobs.find(j => j.jobId === jobId);
-    if (!job) return res.status(404).json({ error: `Job ${jobId} not found.` });
-    return res.status(200).json(job);
+    if (!job) return res.status(404).json({ success: false, statusCode: 404, message: `Job ${jobId} not found.` });
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Job retrieved.',
+      data: job,
+    });
   });
 
-  // POST /jobs/:jobId/apply  (auth optional – guest allowed)
+  // POST /jobs/:jobId/save
+  router.post('/:jobId/save', (req, res) => {
+    const { jobId } = req.params;
+    const job = DB.jobs.find(j => j.jobId === jobId);
+    if (!job) return res.status(404).json({ success: false, statusCode: 404, message: `Job ${jobId} not found.` });
+    return res.status(200).json({ success: true });
+  });
+
+  // POST /jobs/:jobId/apply
   router.post('/:jobId/apply', (req, res) => {
     const { jobId } = req.params;
     const job = DB.jobs.find(j => j.jobId === jobId);
-    if (!job) return res.status(404).json({ error: `Job ${jobId} not found.` });
+    if (!job) return res.status(404).json({ success: false, statusCode: 404, message: `Job ${jobId} not found.` });
     if (job.status !== 'Open')
-      return res.status(422).json({ error: 'This position is no longer accepting applications.' });
+      return res.status(422).json({ success: false, statusCode: 422, message: 'This position is no longer accepting applications.' });
 
-    const user    = req.currentUser;
-    const isGuest = !user;
-    const { fullName, email, coverLetter } = req.body ?? {};
+    const { candidateId, cvId, sourceChannel } = req.body ?? {};
 
-    if (isGuest && (!fullName || !email))
-      return res.status(400).json({ error: 'Guest applications require fullName and email.' });
+    const applicationId = `APP${String(Date.now()).slice(-8)}`;
+    const matchScore    = Math.floor(Math.random() * 30) + 65;
 
-    const applicationId = `app-${Date.now()}`;
-    const candidateId   = user?.candidateId ?? `guest-${Date.now()}`;
+    const user = req.currentUser;
+    const resolvedCandidateId = candidateId ?? user?.userId ?? `guest-${Date.now()}`;
 
     job.applicationCount = (job.applicationCount ?? 0) + 1;
 
     DB.applications.push({
       applicationId,
-      candidateId,
+      userId:        user?.userId ?? null,
+      candidateId:   resolvedCandidateId,
       jobId,
-      jobTitle:     job.title,
-      company:      job.company,
-      currentStage: 'Applied',
-      appliedDate:  new Date().toISOString().split('T')[0],
-      matchScore:   Math.floor(Math.random() * 30) + 65,
-      coverLetter:  coverLetter ?? '',
-      isGuest,
+      jobTitle:      job.title,
+      company:       job.company,
+      cvId:          cvId ?? null,
+      sourceChannel: sourceChannel ?? 'direct',
+      currentStage:  'Inbound',
+      appliedDate:   new Date().toISOString().split('T')[0],
+      matchScore,
+      isGuest:       !user,
     });
 
     return res.status(201).json({
       applicationId,
-      jobId,
-      currentStage:     'Applied',
-      applicationCount: job.applicationCount,
-      message:          'Application submitted successfully.',
-    });
-  });
-
-  // POST /jobs/:jobId/pipeline/advance  (recruiter)
-  router.post('/:jobId/pipeline/advance', (req, res) => {
-    const { jobId } = req.params;
-    const { candidateId, checklistComplete } = req.body ?? {};
-    if (!candidateId) return res.status(400).json({ error: 'candidateId is required.' });
-
-    const application = DB.applications.find(a => a.jobId === jobId && a.candidateId === candidateId);
-    if (!application) return res.status(404).json({ error: 'Application not found.' });
-
-    const currentIdx = PIPELINE_STAGES.indexOf(application.currentStage);
-    if (currentIdx === -1 || currentIdx === PIPELINE_STAGES.length - 1)
-      return res.status(422).json({ error: 'Cannot advance: already at final stage.' });
-
-    if (checklistComplete === false)
-      return res.status(422).json({
-        error:         'Cannot advance: required checklist items are incomplete.',
-        requiredItems: ['Screening notes', 'Assessment score'],
-      });
-
-    const previousStage       = application.currentStage;
-    application.currentStage  = PIPELINE_STAGES[currentIdx + 1];
-    application.updatedAt     = new Date().toISOString();
-
-    return res.status(200).json({
-      applicationId: application.applicationId,
-      candidateId,
-      jobId,
-      previousStage,
-      newStage:  application.currentStage,
-      updatedAt: application.updatedAt,
-      message:   `Candidate advanced from ${previousStage} to ${application.currentStage}.`,
+      matchScore,
+      status:   'submitted',
+      nextStep: user ? 'view_dashboard' : 'account_prompt',
     });
   });
 
   // POST /jobs  (recruiter creates a job posting)
   router.post('/', (req, res) => {
     const user = req.currentUser;
-    if (!['recruiter', 'admin'].includes(user?.role))
-      return res.status(403).json({ error: 'Only recruiters can create job postings.' });
+    if (!['RECRUITER', 'ADMIN', 'recruiter', 'admin'].some(r => (user?.roles ?? []).includes(r) || user?.role === r))
+      return res.status(403).json({ success: false, statusCode: 403, message: 'Only recruiters can create job postings.' });
 
     const {
       title, company, location, industry,
@@ -249,7 +224,8 @@ export function jobsRouter({ DB, PIPELINE_STAGES }) {
       salaryMin, salaryMax,
       description, skills, requirements,
     } = req.body ?? {};
-    if (!title || !company) return res.status(400).json({ error: 'title and company are required.' });
+    if (!title || !company)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'title and company are required.' });
 
     const jobId  = `j${String(DB.jobs.length + 1).padStart(3, '0')}`;
     const newJob = {
@@ -259,18 +235,24 @@ export function jobsRouter({ DB, PIPELINE_STAGES }) {
       salaryMin:      salaryMin ?? 0,
       salaryMax:      salaryMax ?? 0,
       salaryRange:    salaryMin
-        ? `R${salaryMin.toLocaleString()} – R${salaryMax?.toLocaleString() ?? '?'}`
+        ? `R${Number(salaryMin).toLocaleString()} – R${Number(salaryMax ?? 0).toLocaleString()}`
         : 'Market related',
-      description:  description ?? '',
-      skills:       skills ?? [],
-      requirements: requirements ?? [],
+      description:      description ?? '',
+      skills:           skills ?? [],
+      requirements:     requirements ?? [],
       status:           'Draft',
       applicationCount: 0,
       postedDate:       new Date().toISOString().split('T')[0],
-      recruiterId:      user.recruiterId ?? user.sub,
+      recruiterId:      user?.recruiterId ?? user?.userId ?? null,
     };
     DB.jobs.push(newJob);
-    return res.status(201).json({ ...newJob, message: 'Job posting created successfully.' });
+
+    return res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Job posting created successfully.',
+      data: newJob,
+    });
   });
 
   return router;
