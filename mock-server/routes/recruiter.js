@@ -171,6 +171,24 @@ export function mandatesRouter({ DB }) {
     const job = DB.jobs.find(j => j.jobId === mandate.jobId);
     const apps = DB.applications.filter(a => a.jobId === mandate.jobId);
 
+    // Group applicants into the pipeline stage buckets for the recruiter view
+    const pipelineBuckets = {};
+    const STAGES = ['Inbound', 'Screening', 'Shortlisted', 'Interview', 'Offer', 'Placed', 'Closed'];
+    STAGES.forEach(s => { pipelineBuckets[s] = []; });
+    apps.forEach(a => {
+      const bucket = pipelineBuckets[a.currentStage];
+      if (bucket) {
+        bucket.push({
+          applicationId: a.applicationId,
+          candidateId:   a.candidateId,
+          candidateName: a.candidateName ?? '',
+          matchScore:    a.matchScore,
+          appliedDate:   a.appliedDate,
+          updatedAt:     a.updatedAt,
+        });
+      }
+    });
+
     return res.status(200).json({
       success: true,
       statusCode: 200,
@@ -181,10 +199,13 @@ export function mandatesRouter({ DB }) {
         applicants: apps.map(a => ({
           applicationId: a.applicationId,
           candidateId:   a.candidateId,
+          candidateName: a.candidateName ?? '',
           currentStage:  a.currentStage,
           matchScore:    a.matchScore,
           appliedDate:   a.appliedDate,
+          updatedAt:     a.updatedAt,
         })),
+        pipelineBuckets,
       },
     });
   });
@@ -203,52 +224,60 @@ export function applicationStageRouter({ DB }) {
     if (!app)
       return res.status(404).json({ success: false, statusCode: 404, message: `Application ${applicationId} not found.` });
 
-    // Build mock stage history grouped by stage
-    const now = new Date();
-    const stageHistory = {
-      Inbound: {
-        enteredAt: app.appliedDate ? `${app.appliedDate}T08:00:00Z` : now.toISOString(),
-        exitedAt:  `${app.appliedDate}T14:00:00Z`,
-        notes:     'Application received.',
-        completed: true,
-      },
-      Screening: {
-        enteredAt: `${app.appliedDate}T14:00:00Z`,
-        exitedAt:  app.currentStage !== 'Inbound' ? `${app.appliedDate}T16:00:00Z` : null,
-        notes:     'Phone screen completed.',
-        completed: !['Inbound'].includes(app.currentStage),
-      },
-      Shortlisted: {
-        enteredAt: ['Shortlisted', 'Interview', 'Offer', 'Placed', 'Closed'].includes(app.currentStage) ? new Date(now.getTime() - 5 * 86400000).toISOString() : null,
-        exitedAt:  null,
-        notes:     '',
-        completed: ['Interview', 'Offer', 'Placed', 'Closed'].includes(app.currentStage),
-      },
-      Interview: {
-        enteredAt: ['Interview', 'Offer', 'Placed', 'Closed'].includes(app.currentStage) ? new Date(now.getTime() - 3 * 86400000).toISOString() : null,
-        exitedAt:  null,
-        notes:     '',
-        completed: ['Offer', 'Placed', 'Closed'].includes(app.currentStage),
-      },
-      Offer: {
-        enteredAt: ['Offer', 'Placed'].includes(app.currentStage) ? new Date(now.getTime() - 86400000).toISOString() : null,
-        exitedAt:  null,
-        notes:     '',
-        completed: app.currentStage === 'Placed',
-      },
-      Placed: {
-        enteredAt: app.currentStage === 'Placed' ? new Date().toISOString() : null,
-        exitedAt:  null,
-        notes:     '',
-        completed: app.currentStage === 'Placed',
-      },
-      Closed: {
-        enteredAt: app.currentStage === 'Closed' ? new Date().toISOString() : null,
-        exitedAt:  null,
-        notes:     '',
-        completed: app.currentStage === 'Closed',
-      },
-    };
+    // Use stored stageHistory when present (rich records); synthesise for legacy records
+    const ORDERED_STAGES = ['Inbound', 'Screening', 'Shortlisted', 'Interview', 'Offer', 'Placed', 'Closed'];
+    let stageHistory;
+
+    if (app.stageHistory && Array.isArray(app.stageHistory) && app.stageHistory.length > 0) {
+      // Convert the array format from seed data into the keyed object format
+      stageHistory = {};
+      ORDERED_STAGES.forEach(stageName => {
+        const entry = app.stageHistory.find(h => h.stage === stageName);
+        stageHistory[stageName] = entry
+          ? { enteredAt: entry.enteredAt, exitedAt: entry.exitedAt ?? null, completed: entry.exitedAt !== null }
+          : { enteredAt: null, exitedAt: null, completed: false };
+      });
+    } else {
+      // Fallback synthetic builder for legacy application records
+      const now = new Date();
+      stageHistory = {
+        Inbound: {
+          enteredAt: app.appliedDate ? `${app.appliedDate}T08:00:00Z` : now.toISOString(),
+          exitedAt:  `${app.appliedDate}T14:00:00Z`,
+          completed: true,
+        },
+        Screening: {
+          enteredAt: `${app.appliedDate}T14:00:00Z`,
+          exitedAt:  app.currentStage !== 'Inbound' ? `${app.appliedDate}T16:00:00Z` : null,
+          completed: app.currentStage !== 'Inbound',
+        },
+        Shortlisted: {
+          enteredAt: ['Shortlisted', 'Interview', 'Offer', 'Placed', 'Closed'].includes(app.currentStage) ? new Date(now.getTime() - 5 * 86400000).toISOString() : null,
+          exitedAt:  null,
+          completed: ['Interview', 'Offer', 'Placed', 'Closed'].includes(app.currentStage),
+        },
+        Interview: {
+          enteredAt: ['Interview', 'Offer', 'Placed', 'Closed'].includes(app.currentStage) ? new Date(now.getTime() - 3 * 86400000).toISOString() : null,
+          exitedAt:  null,
+          completed: ['Offer', 'Placed', 'Closed'].includes(app.currentStage),
+        },
+        Offer: {
+          enteredAt: ['Offer', 'Placed'].includes(app.currentStage) ? new Date(now.getTime() - 86400000).toISOString() : null,
+          exitedAt:  null,
+          completed: app.currentStage === 'Placed',
+        },
+        Placed: {
+          enteredAt: app.currentStage === 'Placed' ? new Date().toISOString() : null,
+          exitedAt:  null,
+          completed: app.currentStage === 'Placed',
+        },
+        Closed: {
+          enteredAt: app.currentStage === 'Closed' ? new Date().toISOString() : null,
+          exitedAt:  null,
+          completed: app.currentStage === 'Closed',
+        },
+      };
+    }
 
     return res.status(200).json({
       success: true,
@@ -257,11 +286,16 @@ export function applicationStageRouter({ DB }) {
       data: {
         applicationId,
         candidateId:   app.candidateId,
+        candidateName: app.candidateName ?? '',
+        mandateId:     app.mandateId ?? null,
+        recruiterId:   app.recruiterId ?? null,
         jobId:         app.jobId,
         jobTitle:      app.jobTitle,
         company:       app.company,
         currentStage:  app.currentStage,
         matchScore:    app.matchScore,
+        appliedDate:   app.appliedDate,
+        updatedAt:     app.updatedAt,
         stageHistory,
       },
     });

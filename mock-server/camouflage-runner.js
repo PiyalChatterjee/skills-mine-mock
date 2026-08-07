@@ -6,7 +6,7 @@
  *   routes/auth.js            POST /auth/register | /auth/login | /auth/forgot-password
  *                             POST /auth/change-password | /auth/logout
  *   routes/users.js           GET/PUT /users/:userId | POST/DELETE /users/:userId/profile-photo
- *   routes/candidates.js      GET /candidate/dashboard
+ *   routes/candidates.js      GET /candidate/:userId/dashboard
  *                             POST /candidate/buildmycv
  *                             GET /candidate/:resumeId/preview  | /download
  *                             GET /candidate/:candidateId/recommended-jobs
@@ -104,6 +104,7 @@ const DB = {
   candidateProfiles: loadDataset('candidate-profiles'),
   resumes:           loadDataset('resumes'),
   skills:            loadDataset('skills'),
+  userSkills:        loadDataset('user-skills'),
   jobs:              loadDataset('jobs'),
   applications:      loadDataset('applications'),
   mandates:          loadDataset('mandates'),
@@ -421,8 +422,10 @@ app.listen(PORT, () => {
   L('║    DELETE /users/:userId/profile-photo                                   ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  CANDIDATE                                                               ║');
-  L('║    GET   /candidate/dashboard                                            ║');
-  L('║    POST  /candidate/buildmycv                                            ║');
+  L('║    GET   /candidate/:userId/dashboard                                    ║');
+  L('║    GET   /candidate/buildmycv   (read)                                   ║');
+  L('║    POST  /candidate/buildmycv   (create)                                 ║');
+  L('║    PUT   /candidate/buildmycv   (partial update)                         ║');
   L('║    GET   /candidate/:resumeId/preview                                    ║');
   L('║    GET   /candidate/:resumeId/download                                   ║');
   L('║    GET   /candidate/:candidateId/recommended-jobs                        ║');

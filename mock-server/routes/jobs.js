@@ -168,6 +168,19 @@ export function jobsRouter({ DB }) {
     const { jobId } = req.params;
     const job = DB.jobs.find(j => j.jobId === jobId);
     if (!job) return res.status(404).json({ success: false, statusCode: 404, message: `Job ${jobId} not found.` });
+
+    // Persist save to the authenticated user's savedJobs list
+    const user = req.currentUser;
+    if (user?.userId) {
+      const userRecord = DB.users.find(u => u.userId === user.userId);
+      if (userRecord) {
+        if (!userRecord.savedJobs) userRecord.savedJobs = [];
+        if (!userRecord.savedJobs.includes(jobId)) {
+          userRecord.savedJobs.push(jobId);
+        }
+      }
+    }
+
     return res.status(200).json({ success: true });
   });
 

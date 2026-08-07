@@ -1,7 +1,7 @@
 /**
  * USERS ROUTES  (v2 contract)
  *
- * GET    /users/:userId              → full user profile
+ * GET    /users/:userId              → full user profile (includes savedJobs)
  * PUT    /users/:userId              → update user profile
  * POST   /users/:userId/profile-photo → upload profile photo (mock)
  * DELETE /users/:userId/profile-photo → remove profile photo
@@ -24,6 +24,8 @@ export function usersRouter({ DB }) {
     return res.status(200).json({
       status: 'SUCCESS',
       data: {
+        userId: user.userId,
+        savedJobs: user.savedJobs ?? [],
         personalDetails: profile
           ? {
               userId: user.userId,
@@ -72,7 +74,7 @@ export function usersRouter({ DB }) {
     const profileIdx = DB.candidateProfiles.findIndex(p => p.userId === userId);
     const updates = req.body ?? {};
 
-    // Update base user fields
+    // Update base user fields (savedJobs is mutable via PUT but not overwritten unless explicitly sent)
     const IMMUTABLE = ['userId', 'userType', 'createdAt', 'roles'];
     const userUpdates = { ...updates };
     IMMUTABLE.forEach(k => delete userUpdates[k]);

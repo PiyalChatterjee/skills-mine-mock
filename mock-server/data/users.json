@@ -10,6 +10,7 @@
     "accountStatus": "ACTIVE",
     "profileCompleted": 82,
     "roles": ["JOB_SEEKER"],
+    "savedJobs": ["j001", "j006", "j008"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-01-15T08:00:00Z"
@@ -25,6 +26,7 @@
     "accountStatus": "ACTIVE",
     "profileCompleted": 65,
     "roles": ["JOB_SEEKER"],
+    "savedJobs": ["j003", "j012"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-02-20T08:00:00Z"
@@ -41,6 +43,7 @@
     "profileCompleted": 100,
     "roles": ["RECRUITER"],
     "recruiterId": "r001",
+    "savedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-15T08:00:00Z"
@@ -57,6 +60,7 @@
     "profileCompleted": 100,
     "roles": ["RECRUITER"],
     "recruiterId": "r002",
+    "savedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-02-01T08:00:00Z"
@@ -72,6 +76,7 @@
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
     "roles": ["MANCO"],
+    "savedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-01T08:00:00Z"
@@ -87,6 +92,7 @@
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
     "roles": ["ADMIN"],
+    "savedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-01T08:00:00Z"
@@ -102,6 +108,7 @@
     "accountStatus": "ACTIVE",
     "profileCompleted": 55,
     "roles": ["JOB_SEEKER"],
+    "savedJobs": ["j002"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-03-10T08:00:00Z"
@@ -117,6 +124,7 @@
     "accountStatus": "ACTIVE",
     "profileCompleted": 70,
     "roles": ["JOB_SEEKER"],
+    "savedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-04-05T08:00:00Z"

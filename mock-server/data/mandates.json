@@ -18,14 +18,17 @@
     "eeTarget": true,
     "eeRequirement": "African Female preferred",
     "skills": ["React", "TypeScript", "Redux", "GraphQL"],
-    "applicantCount": 34,
+    "applicantCount": 35,
     "shortlistedCount": 5,
-    "interviewCount": 2,
+    "interviewCount": 3,
+    "topCandidates": [
+      { "candidateId": "CAND100001", "candidateName": "Michael Smith", "matchScore": 92, "currentStage": "Interview" }
+    ],
     "pipeline": {
       "Inbound": 12,
       "Screening": 8,
       "Shortlisted": 5,
-      "Interview": 2,
+      "Interview": 3,
       "Offer": 0,
       "Placed": 0,
       "Closed": 7
@@ -114,12 +117,15 @@
     "eeTarget": true,
     "eeRequirement": "Any EE",
     "skills": ["AWS", "Azure", "Terraform", "Kubernetes"],
-    "applicantCount": 29,
+    "applicantCount": 30,
     "shortlistedCount": 6,
     "interviewCount": 3,
+    "topCandidates": [
+      { "candidateId": "CAND100001", "candidateName": "Michael Smith", "matchScore": 87, "currentStage": "Screening" }
+    ],
     "pipeline": {
       "Inbound": 10,
-      "Screening": 7,
+      "Screening": 8,
       "Shortlisted": 6,
       "Interview": 3,
       "Offer": 1,
@@ -157,6 +163,41 @@
       "Offer": 0,
       "Placed": 0,
       "Closed": 1
+    }
+  },
+  {
+    "mandateId": "MND006",
+    "jobId": "j006",
+    "title": "Front-End Developer",
+    "client": "Discovery",
+    "clientId": "cl007",
+    "recruiterId": "r002",
+    "recruiterName": "Bongani Cele",
+    "status": "ACTIVE",
+    "priority": "MEDIUM",
+    "openDate": "2024-10-28",
+    "targetCloseDate": "2024-12-28",
+    "salaryBand": "R50 000 – R70 000",
+    "location": "Johannesburg, Gauteng",
+    "workType": "Hybrid",
+    "employmentType": "Permanent",
+    "eeTarget": false,
+    "eeRequirement": "",
+    "skills": ["React", "Angular", "TypeScript", "WCAG", "REST APIs"],
+    "applicantCount": 42,
+    "shortlistedCount": 4,
+    "interviewCount": 1,
+    "topCandidates": [
+      { "candidateId": "CAND100001", "candidateName": "Michael Smith", "matchScore": 84, "currentStage": "Shortlisted" }
+    ],
+    "pipeline": {
+      "Inbound": 15,
+      "Screening": 12,
+      "Shortlisted": 4,
+      "Interview": 1,
+      "Offer": 0,
+      "Placed": 0,
+      "Closed": 10
     }
   }
 ]

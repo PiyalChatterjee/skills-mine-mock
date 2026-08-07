@@ -1,0 +1,516 @@
+openapi: "3.0.3"
+info:
+  title: SkillsMine Mock API – CV Builder
+  version: "3.0.0"
+  description: |
+    Endpoints for the Build My CV feature.
+    All three endpoints share the same response data model.
+    Data is persisted in-memory for the lifetime of the mock server process.
+
+servers:
+  - url: http://localhost:4000
+    description: Local mock server
+
+tags:
+  - name: CV Builder
+    description: Create, read and update a candidate's Build My CV record
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    PersonalDetails:
+      type: object
+      description: Candidate personal details as submitted by the frontend
+      properties:
+        firstName:
+          type: string
+          example: Michael
+        lastName:
+          type: string
+          example: Smith
+        race:
+          type: string
+          example: African
+        gender:
+          type: string
+          enum: [Male, Female, Non-binary, Prefer not to say]
+          example: Male
+        disabilityStatus:
+          type: string
+          enum: [None, Yes, Prefer not to say]
+          example: None
+        nationality:
+          type: string
+          example: South African
+        location:
+          type: string
+          example: Johannesburg
+        currentCompany:
+          type: string
+          example: Accenture
+        currentPosition:
+          type: string
+          example: Senior Software Engineer
+        noticePeriod:
+          type: string
+          enum: [Immediately, 1 week, 2 weeks, 1 month, 2 months, 3 months]
+          example: 1 month
+
+    CareerEntry:
+      type: object
+      description: One work history record
+      properties:
+        company:
+          type: string
+          example: Accenture
+        jobTitle:
+          type: string
+          example: Senior Software Engineer
+        startDate:
+          type: string
+          example: "2020-03"
+        endDate:
+          type: string
+          nullable: true
+          example: Present
+        responsibilities:
+          type: string
+          example: Lead frontend development for enterprise clients using React and Node.js.
+
+    SecondaryEducationEntry:
+      type: object
+      properties:
+        schoolName:
+          type: string
+          example: High School of Gauteng
+        qualification:
+          type: string
+          example: Grade 12
+        yearCompleted:
+          type: integer
+          example: 2012
+
+    TertiaryEducationEntry:
+      type: object
+      properties:
+        institution:
+          type: string
+          example: University of the Witwatersrand
+        qualification:
+          type: string
+          example: BSc Computer Science
+        fieldOfStudy:
+          type: string
+          example: Computer Science
+        yearCompleted:
+          type: integer
+          example: 2016
+
+    Education:
+      type: object
+      description: Education split into secondary and tertiary collections
+      properties:
+        secondaryEducation:
+          type: array
+          items:
+            $ref: "#/components/schemas/SecondaryEducationEntry"
+        tertiaryEducation:
+          type: array
+          items:
+            $ref: "#/components/schemas/TertiaryEducationEntry"
+
+    LanguageEntry:
+      type: object
+      properties:
+        language:
+          type: string
+          example: English
+        proficiency:
+          type: string
+          enum: [Native, Fluent, Conversational, Basic]
+          example: Conversational
+
+    CvBuilderData:
+      type: object
+      description: The canonical Build My CV data model — matches the frontend payload exactly
+      properties:
+        userId:
+          type: string
+          example: USR100001
+        personalDetails:
+          $ref: "#/components/schemas/PersonalDetails"
+        careerHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/CareerEntry"
+        skills:
+          type: array
+          description: Plain string skill names
+          items:
+            type: string
+          example: ["React", "Node.js", "TypeScript", "AWS"]
+        education:
+          $ref: "#/components/schemas/Education"
+        languages:
+          type: array
+          items:
+            $ref: "#/components/schemas/LanguageEntry"
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-10-15T09:00:00.000Z"
+        lastModified:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-11-01T14:30:00.000Z"
+
+    CvBuilderResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        statusCode:
+          type: integer
+          example: 200
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/CvBuilderData"
+
+    CvBuilderUpdateBody:
+      type: object
+      description: |
+        Partial update payload. Include only the sections you want to update.
+        Omitted sections are preserved unchanged.
+
+        For `education`, you may send only `secondaryEducation` or only
+        `tertiaryEducation` — the other sub-array will be preserved.
+
+        `skills` is an array of plain strings, e.g. `["React", "Node.js"]`.
+      properties:
+        personalDetails:
+          $ref: "#/components/schemas/PersonalDetails"
+        careerHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/CareerEntry"
+        skills:
+          type: array
+          items:
+            type: string
+          example: ["React", "Node.js", "AWS"]
+        education:
+          $ref: "#/components/schemas/Education"
+        languages:
+          type: array
+          items:
+            $ref: "#/components/schemas/LanguageEntry"
+
+security:
+  - BearerAuth: []
+
+paths:
+
+  /candidate/buildmycv:
+
+    # ──────────────────────────────────────────────────────────────────────────
+    get:
+      tags: [CV Builder]
+      summary: Read – Fetch Build My CV data
+      description: |
+        Returns the authenticated user's saved Build My CV record.
+
+        **Never errors.** When no record exists, returns a UI-ready empty
+        template with empty strings and empty arrays — never `null`.
+
+        When a candidate profile exists, the record is automatically seeded
+        from that data on first call.
+      operationId: getCvBuilder
+      responses:
+        "200":
+          description: CV builder data (or empty template when no record exists)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CvBuilderResponse"
+              examples:
+                seeded:
+                  summary: Seeded from existing profile (Michael Smith)
+                  value:
+                    success: true
+                    statusCode: 200
+                    message: CV builder data retrieved.
+                    data:
+                      userId: USR100001
+                      createdAt: "2024-10-15T09:00:00.000Z"
+                      lastModified: "2024-11-01T14:30:00.000Z"
+                      personalDetails:
+                        firstName: Michael
+                        lastName: Smith
+                        race: African
+                        gender: Male
+                        disabilityStatus: None
+                        nationality: South African
+                        location: Johannesburg
+                        currentCompany: Accenture
+                        currentPosition: Senior Software Engineer
+                        noticePeriod: 1 month
+                      careerHistory:
+                        - company: Accenture
+                          jobTitle: Senior Software Engineer
+                          startDate: "2020-03"
+                          endDate: Present
+                          responsibilities: Lead frontend development for enterprise clients using React and Node.js.
+                        - company: Standard Bank
+                          jobTitle: Software Engineer
+                          startDate: "2017-01"
+                          endDate: "2020-02"
+                          responsibilities: Built and maintained banking web applications.
+                      skills: ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL", "Docker"]
+                      education:
+                        secondaryEducation:
+                          - schoolName: High School of Gauteng
+                            qualification: Grade 12
+                            yearCompleted: 2012
+                        tertiaryEducation:
+                          - institution: University of the Witwatersrand
+                            qualification: BSc Computer Science
+                            fieldOfStudy: Computer Science
+                            yearCompleted: 2016
+                      languages:
+                        - language: English
+                          proficiency: Conversational
+                        - language: Zulu
+                          proficiency: Conversational
+                empty:
+                  summary: No record exists – UI-ready empty template
+                  value:
+                    success: true
+                    statusCode: 200
+                    message: No saved CV builder data found. Returning empty template.
+                    data:
+                      userId: USR100099
+                      createdAt: null
+                      lastModified: null
+                      personalDetails:
+                        firstName: ""
+                        lastName: ""
+                        race: ""
+                        gender: ""
+                        disabilityStatus: ""
+                        nationality: ""
+                        location: ""
+                        currentCompany: ""
+                        currentPosition: ""
+                        noticePeriod: ""
+                      careerHistory: []
+                      skills: []
+                      education:
+                        secondaryEducation: []
+                        tertiaryEducation: []
+                      languages: []
+        "401":
+          description: Not authenticated
+
+    # ──────────────────────────────────────────────────────────────────────────
+    post:
+      tags: [CV Builder]
+      summary: Create – Save Build My CV data
+      description: |
+        Creates a new Build My CV record for the current user.
+
+        Returns **201** on first creation, **200** if a record already existed.
+
+        `createdAt` and `lastModified` are set by the server.
+      operationId: postCvBuilder
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CvBuilderUpdateBody"
+            example:
+              personalDetails:
+                firstName: Michael
+                lastName: Smith
+                race: African
+                gender: Male
+                disabilityStatus: None
+                nationality: South African
+                location: Johannesburg
+                currentCompany: Accenture
+                currentPosition: Senior Software Engineer
+                noticePeriod: 1 month
+              careerHistory:
+                - company: Accenture
+                  jobTitle: Senior Software Engineer
+                  startDate: "2020-03"
+                  endDate: Present
+                  responsibilities: Lead frontend development for enterprise clients using React and Node.js.
+              skills: ["React", "Node.js", "TypeScript", "AWS"]
+              education:
+                secondaryEducation:
+                  - schoolName: High School of Gauteng
+                    qualification: Grade 12
+                    yearCompleted: 2012
+                tertiaryEducation:
+                  - institution: University of the Witwatersrand
+                    qualification: BSc Computer Science
+                    fieldOfStudy: Computer Science
+                    yearCompleted: 2016
+              languages:
+                - language: English
+                  proficiency: Conversational
+      responses:
+        "201":
+          description: CV builder record created (first time)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CvBuilderResponse"
+              example:
+                success: true
+                statusCode: 201
+                message: Build My CV created successfully.
+                data:
+                  userId: USR100099
+                  createdAt: "2025-01-10T08:00:00.000Z"
+                  lastModified: "2025-01-10T08:00:00.000Z"
+                  personalDetails:
+                    firstName: Michael
+                    lastName: Smith
+                    race: African
+                    gender: Male
+                    disabilityStatus: None
+                    nationality: South African
+                    location: Johannesburg
+                    currentCompany: Accenture
+                    currentPosition: Senior Software Engineer
+                    noticePeriod: 1 month
+                  careerHistory: []
+                  skills: ["React", "Node.js", "TypeScript", "AWS"]
+                  education:
+                    secondaryEducation: []
+                    tertiaryEducation: []
+                  languages: []
+        "200":
+          description: CV builder record updated (already existed)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CvBuilderResponse"
+        "401":
+          description: Not authenticated
+
+    # ──────────────────────────────────────────────────────────────────────────
+    put:
+      tags: [CV Builder]
+      summary: Update – Partially update Build My CV data
+      description: |
+        Performs a **partial update** on the current user's Build My CV record.
+
+        Rules:
+        - Only sections present in the request body are overwritten.
+        - Sections **not** in the body are preserved unchanged.
+        - For `education`, either or both of `secondaryEducation` /
+          `tertiaryEducation` can be sent independently.
+        - `skills` is an array of plain strings.
+        - `lastModified` is always updated on success.
+        - `createdAt` is never changed.
+        - If no record exists, one is created automatically (returns 200).
+      operationId: putCvBuilder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CvBuilderUpdateBody"
+            examples:
+              skillsOnly:
+                summary: Update skills only
+                value:
+                  skills: ["React", "Node.js", "AWS"]
+              educationOnly:
+                summary: Update tertiary education only
+                value:
+                  education:
+                    tertiaryEducation:
+                      - institution: University of Cape Town
+                        qualification: BCom Information Systems
+                        fieldOfStudy: Information Systems
+                        yearCompleted: 2022
+              secondaryOnly:
+                summary: Update secondary education only
+                value:
+                  education:
+                    secondaryEducation:
+                      - schoolName: Northcliff High School
+                        qualification: Grade 12
+                        yearCompleted: 2013
+              multiSection:
+                summary: Update multiple sections
+                value:
+                  personalDetails:
+                    location: Cape Town, Western Cape
+                    race: Coloured
+                  skills: ["React", "Node.js", "AWS"]
+      responses:
+        "200":
+          description: CV builder record partially updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CvBuilderResponse"
+              examples:
+                skillsUpdated:
+                  summary: After updating skills only
+                  value:
+                    success: true
+                    statusCode: 200
+                    message: Build My CV updated successfully.
+                    data:
+                      userId: USR100001
+                      createdAt: "2024-10-15T09:00:00.000Z"
+                      lastModified: "2025-01-10T10:30:00.000Z"
+                      personalDetails:
+                        firstName: Michael
+                        lastName: Smith
+                        race: African
+                        gender: Male
+                        disabilityStatus: None
+                        nationality: South African
+                        location: Johannesburg
+                        currentCompany: Accenture
+                        currentPosition: Senior Software Engineer
+                        noticePeriod: 1 month
+                      careerHistory:
+                        - company: Accenture
+                          jobTitle: Senior Software Engineer
+                          startDate: "2020-03"
+                          endDate: Present
+                          responsibilities: Lead frontend development for enterprise clients using React and Node.js.
+                      skills: ["React", "Node.js", "AWS"]
+                      education:
+                        secondaryEducation:
+                          - schoolName: High School of Gauteng
+                            qualification: Grade 12
+                            yearCompleted: 2012
+                        tertiaryEducation:
+                          - institution: University of the Witwatersrand
+                            qualification: BSc Computer Science
+                            fieldOfStudy: Computer Science
+                            yearCompleted: 2016
+                      languages:
+                        - language: English
+                          proficiency: Conversational
+        "401":
+          description: Not authenticated

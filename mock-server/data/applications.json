@@ -1,31 +1,74 @@
 [
   {
-    "applicationId": "app-c001-j001",
-    "candidateId": "c001",
+    "applicationId": "APP-MS-001",
+    "userId": "USR100001",
+    "candidateId": "CAND100001",
     "candidateName": "Michael Smith",
     "jobId": "j001",
+    "mandateId": "MND001",
+    "recruiterId": "r001",
+    "recruiterName": "Sarah Johnson",
     "jobTitle": "Senior React Developer",
     "company": "Standard Bank",
     "currentStage": "Interview",
     "appliedDate": "2024-10-16",
+    "updatedAt": "2024-11-10T09:00:00Z",
     "matchScore": 92,
-    "coverLetter": "I am very interested in this opportunity.",
+    "coverLetter": "With 8 years of React and TypeScript experience, and a background working directly with Standard Bank's technology team at Accenture, I am uniquely positioned to contribute from day one.",
     "isGuest": false,
-    "updatedAt": "2024-11-10T09:00:00Z"
+    "sourceChannel": "direct",
+    "stageHistory": [
+      { "stage": "Inbound",   "enteredAt": "2024-10-16T08:00:00Z", "exitedAt": "2024-10-17T14:00:00Z" },
+      { "stage": "Screening", "enteredAt": "2024-10-17T14:00:00Z", "exitedAt": "2024-10-24T10:00:00Z" },
+      { "stage": "Interview", "enteredAt": "2024-10-24T10:00:00Z", "exitedAt": null }
+    ]
   },
   {
-    "applicationId": "app-c001-j004",
-    "candidateId": "c001",
+    "applicationId": "APP-MS-002",
+    "userId": "USR100001",
+    "candidateId": "CAND100001",
     "candidateName": "Michael Smith",
     "jobId": "j004",
+    "mandateId": "MND004",
+    "recruiterId": "r002",
+    "recruiterName": "Bongani Cele",
     "jobTitle": "Cloud Solutions Architect",
     "company": "IBM",
     "currentStage": "Screening",
     "appliedDate": "2024-10-23",
-    "matchScore": 81,
-    "coverLetter": "",
+    "updatedAt": "2024-10-25T10:00:00Z",
+    "matchScore": 87,
+    "coverLetter": "My extensive AWS and Node.js architecture experience gained at Accenture makes me a strong candidate for this cloud-focused role.",
     "isGuest": false,
-    "updatedAt": "2024-10-25T10:00:00Z"
+    "sourceChannel": "linkedin",
+    "stageHistory": [
+      { "stage": "Inbound",   "enteredAt": "2024-10-23T08:00:00Z", "exitedAt": "2024-10-25T10:00:00Z" },
+      { "stage": "Screening", "enteredAt": "2024-10-25T10:00:00Z", "exitedAt": null }
+    ]
+  },
+  {
+    "applicationId": "APP-MS-003",
+    "userId": "USR100001",
+    "candidateId": "CAND100001",
+    "candidateName": "Michael Smith",
+    "jobId": "j006",
+    "mandateId": "MND006",
+    "recruiterId": "r002",
+    "recruiterName": "Bongani Cele",
+    "jobTitle": "Front-End Developer",
+    "company": "Discovery",
+    "currentStage": "Shortlisted",
+    "appliedDate": "2024-10-29",
+    "updatedAt": "2024-11-12T11:00:00Z",
+    "matchScore": 84,
+    "coverLetter": "My React and TypeScript expertise aligns strongly with Discovery's web portal requirements and I am excited by the scale of the platform.",
+    "isGuest": false,
+    "sourceChannel": "direct",
+    "stageHistory": [
+      { "stage": "Inbound",    "enteredAt": "2024-10-29T08:00:00Z", "exitedAt": "2024-10-30T09:00:00Z" },
+      { "stage": "Screening",  "enteredAt": "2024-10-30T09:00:00Z", "exitedAt": "2024-11-05T14:00:00Z" },
+      { "stage": "Shortlisted","enteredAt": "2024-11-05T14:00:00Z", "exitedAt": null }
+    ]
   },
   {
     "applicationId": "app-c002-j003",

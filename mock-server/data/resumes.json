@@ -33,14 +33,24 @@
         "responsibilities": "Built and maintained retail banking web applications."
       }
     ],
-    "skills": ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL", "Docker", "CI/CD"],
-    "education": [
-      {
-        "institution": "University of the Witwatersrand",
-        "qualification": "BSc Computer Science",
-        "year": 2016
-      }
-    ],
+    "skills": ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL", "Docker"],
+    "education": {
+      "secondaryEducation": [
+        {
+          "schoolName": "High School of Gauteng",
+          "qualification": "Grade 12",
+          "yearCompleted": 2012
+        }
+      ],
+      "tertiaryEducation": [
+        {
+          "institution": "University of the Witwatersrand",
+          "qualification": "BSc Computer Science",
+          "fieldOfStudy": "Computer Science",
+          "yearCompleted": 2016
+        }
+      ]
+    },
     "languages": [
       { "language": "English", "proficiency": "Native" },
       { "language": "Zulu", "proficiency": "Conversational" }

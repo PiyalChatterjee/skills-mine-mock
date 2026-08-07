@@ -7,10 +7,15 @@
       "lastName": "Smith",
       "email": "michael.smith@email.com",
       "mobileNumber": "+27821234567",
-      "location": "Johannesburg, Gauteng",
+      "race": "African",
+      "gender": "Male",
+      "disabilityStatus": "None",
       "nationality": "South African",
+      "location": "Johannesburg",
+      "currentCompany": "Accenture",
+      "currentPosition": "Senior Software Engineer",
+      "noticePeriod": "1 month",
       "idNumber": "9001015800086",
-      "eeStatus": "White Male",
       "profileImageUrl": "https://mock-cdn.skillsmine.com/profiles/USR100001/photo.jpg",
       "thumbnailUrl": "https://mock-cdn.skillsmine.com/profiles/USR100001/thumb.jpg",
       "linkedinUrl": "https://linkedin.com/in/michael-smith-dev",
@@ -26,17 +31,23 @@
       "industries": ["Technology", "Financial Services"],
       "locations": ["Johannesburg", "Remote"]
     },
-    "education": [
-      {
-        "educationId": "edu-001",
-        "institution": "University of the Witwatersrand",
-        "qualification": "BSc Computer Science",
-        "fieldOfStudy": "Computer Science",
-        "startYear": 2012,
-        "endYear": 2016,
-        "completed": true
-      }
-    ],
+    "education": {
+      "secondaryEducation": [
+        {
+          "schoolName": "High School of Gauteng",
+          "qualification": "Grade 12",
+          "yearCompleted": 2012
+        }
+      ],
+      "tertiaryEducation": [
+        {
+          "institution": "University of the Witwatersrand",
+          "qualification": "BSc Computer Science",
+          "fieldOfStudy": "Computer Science",
+          "yearCompleted": 2016
+        }
+      ]
+    },
     "experience": [
       {
         "experienceId": "exp-001",
@@ -63,6 +74,44 @@
     "languages": [
       { "language": "English", "proficiency": "Native" },
       { "language": "Zulu", "proficiency": "Conversational" }
+    ],
+    "applications": [
+      {
+        "applicationId": "APP-MS-001",
+        "jobId": "j001",
+        "mandateId": "MND001",
+        "recruiterId": "r001",
+        "jobTitle": "Senior React Developer",
+        "company": "Standard Bank",
+        "currentStage": "Interview",
+        "appliedDate": "2024-10-16",
+        "updatedAt": "2024-11-10T09:00:00Z",
+        "matchScore": 92
+      },
+      {
+        "applicationId": "APP-MS-002",
+        "jobId": "j004",
+        "mandateId": "MND004",
+        "recruiterId": "r002",
+        "jobTitle": "Cloud Solutions Architect",
+        "company": "IBM",
+        "currentStage": "Screening",
+        "appliedDate": "2024-10-23",
+        "updatedAt": "2024-10-25T10:00:00Z",
+        "matchScore": 87
+      },
+      {
+        "applicationId": "APP-MS-003",
+        "jobId": "j006",
+        "mandateId": "MND006",
+        "recruiterId": "r002",
+        "jobTitle": "Front-End Developer",
+        "company": "Discovery",
+        "currentStage": "Shortlisted",
+        "appliedDate": "2024-10-29",
+        "updatedAt": "2024-11-12T11:00:00Z",
+        "matchScore": 84
+      }
     ]
   },
   {
