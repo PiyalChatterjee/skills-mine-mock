@@ -6,6 +6,7 @@
  * POST /auth/forgot-password   → send reset link (mock)
  * POST /auth/change-password   → change password (mock)
  * POST /auth/logout            → invalidate token
+ * GET  /auth/me                → current authenticated user (alias for GET /api/v1/users/me)
  */
 
 import { Router } from 'express';
@@ -170,6 +171,33 @@ export function authRouter({ USERS, sessions, generateToken, DB }) {
       statusCode: 200,
       message: 'Logged out successfully.',
       data: null,
+    });
+  });
+
+  // GET /auth/me  — current authenticated user
+  router.get('/me', (req, res) => {
+    const raw   = req.headers['authorization'] ?? '';
+    const token = raw.startsWith('Bearer ') ? raw.slice(7) : null;
+    const session = token ? sessions.get(token) : null;
+
+    if (!session)
+      return res.status(401).json({ success: false, statusCode: 401, message: 'Not authenticated. Please login first.' });
+
+    const user = DB.users.find(u => u.userId === (session.userId ?? session.sub));
+    if (!user)
+      return res.status(404).json({ success: false, statusCode: 404, message: 'User not found.' });
+
+    const staffProfile = user.staffNumber
+      ? { staffNumber: user.staffNumber, departmentCode: user.departmentCode ?? '' }
+      : null;
+
+    return res.status(200).json({
+      userId:        user.userId,
+      email:         user.email,
+      provider:      user.provider ?? 'LOCAL',
+      roles:         user.roles ?? [],
+      staffProfile,
+      accountStatus: user.accountStatus ?? 'ACTIVE',
     });
   });
 
