@@ -53,9 +53,9 @@ export function candidateDashboardRouter({ DB }) {
     const { userId } = req.params;
     // Fall back to the authenticated user if the caller passes "me" as the id
     const resolvedId = (userId === 'me' ? req.currentUser?.userId : userId) ?? 'USR100001';
-    const profile = DB.candidateProfiles.find(p => p.userId === resolvedId) ?? DB.candidateProfiles[0];
+    const profile = DB.candidateProfiles.find(p => p.userId === resolvedId);
     const apps    = DB.applications.filter(
-      a => a.userId === resolvedId || a.candidateId === profile?.candidateId
+      a => a.userId === resolvedId || (profile && a.candidateId === profile.candidateId)
     );
 
     // summary counts matching contract

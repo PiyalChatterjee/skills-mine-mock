@@ -60,6 +60,11 @@ export function usersRouter({ DB }) {
         desiredJob: profile?.desiredJob ?? {},
         education: profile?.education ?? [],
         experience: profile?.experience ?? [],
+        authentication: {
+          password: user.password ?? '',
+          provider: user.provider ?? 'LOCAL',
+          accountStatus: user.accountStatus ?? 'ACTIVE',
+        },
       },
     });
   });
