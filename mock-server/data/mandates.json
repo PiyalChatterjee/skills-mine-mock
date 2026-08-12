@@ -7,22 +7,65 @@
     "clientId": "cl001",
     "recruiterId": "r001",
     "recruiterName": "Sarah Johnson",
-    "status": "ACTIVE",
+    "industry": "Banking",
+    "industries": [
+      "Banking"
+    ],
+    "status": "POSTED",
     "priority": "HIGH",
     "openDate": "2024-10-15",
     "targetCloseDate": "2024-12-15",
     "salaryBand": "R70 000 – R95 000",
+    "salaryMin": 70000,
+    "salaryMax": 95000,
     "location": "Johannesburg, Gauteng",
     "workType": "Hybrid",
     "employmentType": "Permanent",
+    "experienceLevel": "Senior",
     "eeTarget": true,
     "eeRequirement": "African Female preferred",
-    "skills": ["React", "TypeScript", "Redux", "GraphQL"],
+    "jobDescription": "We are looking for a Senior React Developer to join the digital banking team at Standard Bank. You will lead the development of modern, scalable front-end solutions that serve millions of customers.",
+    "requirements": [
+      "5+ years of experience in front-end development",
+      "Strong proficiency in React and TypeScript",
+      "Experience with Redux or similar state management",
+      "Familiarity with GraphQL and REST APIs",
+      "Ability to write clean, testable code"
+    ],
+    "responsibilities": [
+      "Architect and develop high-performance React applications",
+      "Collaborate with design and product teams to deliver features",
+      "Conduct code reviews and mentor junior developers",
+      "Optimise applications for maximum speed and scalability",
+      "Maintain and improve CI/CD pipelines"
+    ],
+    "benefits": [
+      "Competitive salary package",
+      "Medical aid contribution",
+      "Flexible hybrid working model",
+      "Annual performance bonus",
+      "Learning and development budget"
+    ],
+    "skills": [
+      "React",
+      "TypeScript",
+      "Redux",
+      "GraphQL"
+    ],
+    "jobBoards": [
+      "LinkedIn",
+      "Indeed"
+    ],
     "applicantCount": 35,
     "shortlistedCount": 5,
     "interviewCount": 3,
     "topCandidates": [
-      { "candidateId": "CAND100001", "candidateName": "Michael Smith", "matchScore": 92, "currentStage": "Interview" }
+      {
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "matchScore": 92,
+        "currentStage": "Interview"
+      }
     ],
     "pipeline": {
       "Inbound": 12,
@@ -42,17 +85,57 @@
     "clientId": "cl002",
     "recruiterId": "r001",
     "recruiterName": "Sarah Johnson",
-    "status": "ACTIVE",
+    "industry": "Banking",
+    "industries": [
+      "Banking",
+      "finance"
+    ],
+    "status": "POSTED",
     "priority": "MEDIUM",
     "openDate": "2024-10-18",
     "targetCloseDate": "2024-12-20",
-    "salaryBand": "R55 000 – R75 000",
+    "salaryBand": "R55,000 – R75,000",
+    "salaryMin": 55000,
+    "salaryMax": 75000,
     "location": "Johannesburg, Gauteng",
     "workType": "Remote",
     "employmentType": "Permanent",
+    "experienceLevel": "Mid",
     "eeTarget": true,
     "eeRequirement": "African or Coloured",
-    "skills": ["Python", "Spark", "dbt", "Snowflake"],
+    "jobDescription": "FNB is seeking a skilled Data Engineer to design and build scalable data pipelines that power our analytics and reporting platforms.",
+    "requirements": [
+      "3+ years of experience in data engineering",
+      "Proficiency in Python and SQL",
+      "Hands-on experience with Spark and dbt",
+      "Familiarity with cloud data warehouses such as Snowflake",
+      "Understanding of data modelling best practices"
+    ],
+    "responsibilities": [
+      "Design, build and maintain robust ETL/ELT pipelines",
+      "Collaborate with data analysts and scientists to deliver data products",
+      "Optimise query performance and data storage costs",
+      "Ensure data quality and reliability across pipelines",
+      "Document data flows and lineage"
+    ],
+    "benefits": [
+      "Remote-first working arrangement",
+      "Medical aid and retirement fund",
+      "13th cheque",
+      "Professional certification sponsorship",
+      "Wellness programme"
+    ],
+    "skills": [
+      "Python",
+      "Spark",
+      "dbt",
+      "Snowflake"
+    ],
+    "jobBoards": [
+      "LinkedIn",
+      "Indeed",
+      "Glassdoor"
+    ],
     "applicantCount": 22,
     "shortlistedCount": 4,
     "interviewCount": 1,
@@ -74,17 +157,55 @@
     "clientId": "cl004",
     "recruiterId": "r001",
     "recruiterName": "Sarah Johnson",
-    "status": "ACTIVE",
+    "industry": "Fintech",
+    "industries": [
+      "Fintech"
+    ],
+    "status": "POSTED",
     "priority": "HIGH",
     "openDate": "2024-10-20",
     "targetCloseDate": "2024-12-10",
     "salaryBand": "R65 000 – R85 000",
+    "salaryMin": 65000,
+    "salaryMax": 85000,
     "location": "Cape Town, Western Cape",
     "workType": "Hybrid",
     "employmentType": "Permanent",
+    "experienceLevel": "Mid",
     "eeTarget": false,
     "eeRequirement": "",
-    "skills": ["Product Management", "Agile", "Fintech", "User Research"],
+    "jobDescription": "TymeBank is looking for a Product Manager to drive the strategy and execution of our digital payments products, working cross-functionally to deliver exceptional customer experiences.",
+    "requirements": [
+      "3+ years of product management experience in fintech or payments",
+      "Strong understanding of Agile methodologies",
+      "Experience conducting user research and synthesising insights",
+      "Excellent stakeholder management and communication skills",
+      "Familiarity with payment rails and regulatory landscape"
+    ],
+    "responsibilities": [
+      "Define and own the product roadmap for digital payments",
+      "Collaborate with engineering, design and compliance teams",
+      "Translate user research into actionable product requirements",
+      "Track and report on key product metrics",
+      "Identify and prioritise new product opportunities"
+    ],
+    "benefits": [
+      "Hybrid work flexibility",
+      "Competitive total cost to company package",
+      "Share appreciation rights",
+      "Learning and development allowance",
+      "Health insurance contribution"
+    ],
+    "skills": [
+      "Product Management",
+      "Agile",
+      "Fintech",
+      "User Research"
+    ],
+    "jobBoards": [
+      "LinkedIn",
+      "Careers24"
+    ],
     "applicantCount": 18,
     "shortlistedCount": 3,
     "interviewCount": 2,
@@ -106,22 +227,67 @@
     "clientId": "cl003",
     "recruiterId": "r002",
     "recruiterName": "Bongani Cele",
-    "status": "ACTIVE",
+    "industry": "Technology",
+    "industries": [
+      "Technology"
+    ],
+    "status": "POSTED",
     "priority": "CRITICAL",
     "openDate": "2024-10-22",
     "targetCloseDate": "2024-12-05",
     "salaryBand": "R90 000 – R130 000",
+    "salaryMin": 90000,
+    "salaryMax": 130000,
     "location": "Johannesburg, Gauteng",
     "workType": "Hybrid",
     "employmentType": "Permanent",
+    "experienceLevel": "Senior",
     "eeTarget": true,
     "eeRequirement": "Any EE",
-    "skills": ["AWS", "Azure", "Terraform", "Kubernetes"],
+    "jobDescription": "IBM is seeking a Cloud Solutions Architect to design and lead the implementation of enterprise-grade cloud solutions for our clients across multiple industries.",
+    "requirements": [
+      "7+ years of experience in cloud architecture",
+      "Deep expertise in AWS and Azure",
+      "Hands-on experience with Terraform and Kubernetes",
+      "Strong understanding of cloud security and governance",
+      "Relevant cloud certifications (AWS SA Professional, Azure Expert)"
+    ],
+    "responsibilities": [
+      "Design end-to-end cloud architectures aligned to business requirements",
+      "Lead technical discovery workshops with clients",
+      "Oversee cloud migration and modernisation engagements",
+      "Provide technical leadership and mentorship to engineering teams",
+      "Ensure solutions meet security, performance and cost targets"
+    ],
+    "benefits": [
+      "IBM stock purchase plan",
+      "Comprehensive medical, dental and vision cover",
+      "Flexible hybrid working",
+      "Global career mobility opportunities",
+      "Continuous learning platform access"
+    ],
+    "skills": [
+      "AWS",
+      "Azure",
+      "Terraform",
+      "Kubernetes"
+    ],
+    "jobBoards": [
+      "LinkedIn",
+      "Indeed",
+      "Glassdoor",
+      "Careers24"
+    ],
     "applicantCount": 30,
     "shortlistedCount": 6,
     "interviewCount": 3,
     "topCandidates": [
-      { "candidateId": "CAND100001", "candidateName": "Michael Smith", "matchScore": 87, "currentStage": "Screening" }
+      {
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "matchScore": 87,
+        "currentStage": "Screening"
+      }
     ],
     "pipeline": {
       "Inbound": 10,
@@ -141,17 +307,55 @@
     "clientId": "cl011",
     "recruiterId": "r003",
     "recruiterName": "Michelle van Wyk",
-    "status": "ACTIVE",
+    "industry": "Banking",
+    "industries": [
+      "Banking"
+    ],
+    "status": "DRAFT",
     "priority": "MEDIUM",
     "openDate": "2024-11-01",
     "targetCloseDate": "2025-01-15",
     "salaryBand": "R45 000 – R65 000",
+    "salaryMin": 45000,
+    "salaryMax": 65000,
     "location": "Cape Town, Western Cape",
     "workType": "On-site",
     "employmentType": "Permanent",
+    "experienceLevel": "Mid",
     "eeTarget": true,
     "eeRequirement": "Coloured or African Female",
-    "skills": ["Figma", "UX Design", "User Research", "Prototyping"],
+    "jobDescription": "Capitec Bank is looking for a UX Designer to craft intuitive and accessible digital experiences for our mobile and web banking platforms used by millions of South Africans.",
+    "requirements": [
+      "3+ years of UX design experience, preferably in financial services",
+      "Proficiency in Figma for wireframing and prototyping",
+      "Strong portfolio demonstrating user-centred design process",
+      "Experience conducting usability testing and user interviews",
+      "Understanding of WCAG accessibility standards"
+    ],
+    "responsibilities": [
+      "Conduct user research to understand needs and pain points",
+      "Create wireframes, prototypes and high-fidelity designs in Figma",
+      "Collaborate with product managers and developers to bring designs to life",
+      "Run usability tests and iterate based on findings",
+      "Contribute to and maintain the design system"
+    ],
+    "benefits": [
+      "On-site Cape Town office with modern facilities",
+      "Medical aid contribution",
+      "Performance-based bonus",
+      "Annual team off-site",
+      "Employee banking benefits"
+    ],
+    "skills": [
+      "Figma",
+      "UX Design",
+      "User Research",
+      "Prototyping"
+    ],
+    "jobBoards": [
+      "LinkedIn",
+      "Indeed"
+    ],
     "applicantCount": 15,
     "shortlistedCount": 3,
     "interviewCount": 1,
@@ -173,22 +377,67 @@
     "clientId": "cl007",
     "recruiterId": "r002",
     "recruiterName": "Bongani Cele",
-    "status": "ACTIVE",
+    "industry": "Insurance",
+    "industries": [
+      "Insurance"
+    ],
+    "status": "DRAFT",
     "priority": "MEDIUM",
     "openDate": "2024-10-28",
     "targetCloseDate": "2024-12-28",
     "salaryBand": "R50 000 – R70 000",
+    "salaryMin": 50000,
+    "salaryMax": 70000,
     "location": "Johannesburg, Gauteng",
     "workType": "Hybrid",
     "employmentType": "Permanent",
+    "experienceLevel": "Mid",
     "eeTarget": false,
     "eeRequirement": "",
-    "skills": ["React", "Angular", "TypeScript", "WCAG", "REST APIs"],
+    "jobDescription": "Discovery is seeking a Front-End Developer to build and maintain world-class digital interfaces for our insurance and wellness products, ensuring exceptional accessibility and performance.",
+    "requirements": [
+      "3+ years of front-end development experience",
+      "Proficiency in React and/or Angular with TypeScript",
+      "Strong understanding of WCAG accessibility standards",
+      "Experience integrating REST APIs",
+      "Attention to detail and a passion for pixel-perfect UI"
+    ],
+    "responsibilities": [
+      "Develop responsive, accessible web interfaces using React and Angular",
+      "Integrate with backend REST APIs",
+      "Participate in design reviews and provide technical feedback",
+      "Write unit and integration tests for front-end components",
+      "Collaborate with cross-functional squads in an Agile environment"
+    ],
+    "benefits": [
+      "Discovery Vitality membership",
+      "Subsidised medical aid",
+      "Hybrid work arrangement",
+      "Annual discretionary bonus",
+      "Internal mobility and career growth opportunities"
+    ],
+    "skills": [
+      "React",
+      "Angular",
+      "TypeScript",
+      "WCAG",
+      "REST APIs"
+    ],
+    "jobBoards": [
+      "LinkedIn",
+      "Glassdoor",
+      "Careers24"
+    ],
     "applicantCount": 42,
     "shortlistedCount": 4,
     "interviewCount": 1,
     "topCandidates": [
-      { "candidateId": "CAND100001", "candidateName": "Michael Smith", "matchScore": 84, "currentStage": "Shortlisted" }
+      {
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "matchScore": 84,
+        "currentStage": "Shortlisted"
+      }
     ],
     "pipeline": {
       "Inbound": 15,
@@ -199,5 +448,58 @@
       "Placed": 0,
       "Closed": 10
     }
+  },
+  {
+    "mandateId": "MND007",
+    "jobId": "j007",
+    "title": "uhiuhiuh",
+    "client": "iuhiuhiuh",
+    "clientId": "",
+    "recruiterId": "",
+    "recruiterName": "",
+    "industry": "trstrs",
+    "industries": [
+      "trstrs",
+      "nvnbvnv"
+    ],
+    "status": "POSTED",
+    "priority": "MEDIUM",
+    "openDate": "2026-08-12",
+    "targetCloseDate": "2026-08-14",
+    "salaryBand": "R757,575 – R879,879,868",
+    "salaryMin": 757575,
+    "salaryMax": 879879868,
+    "location": "uyguy",
+    "workType": "Remote",
+    "employmentType": "Full Time",
+    "experienceLevel": "Senior",
+    "eeTarget": false,
+    "eeRequirement": "",
+    "jobDescription": "hghg",
+    "requirements": [
+      "• ytfytf"
+    ],
+    "responsibilities": [
+      "• resresre"
+    ],
+    "benefits": [
+      "• iututuyt"
+    ],
+    "skills": [
+      "tfyt",
+      "hihohoihoh"
+    ],
+    "jobBoards": [
+      "All",
+      "LinkedIn",
+      "Indeed",
+      "Glassdoor",
+      "Careers24",
+      "PNet"
+    ],
+    "applicantCount": 0,
+    "shortlistedCount": 0,
+    "interviewCount": 0,
+    "pipeline": {}
   }
 ]

@@ -11,6 +11,7 @@
  *                             GET /candidate/:resumeId/preview  | /download
  *                             GET /candidate/:candidateId/recommended-jobs
  *                             POST /applications/:applicationId/cv/upload
+ *                             GET /candidates
  *   routes/jobs.js            GET  /jobs (public)
  *                             GET  /jobs/:jobId
  *                             POST /jobs/:jobId/save
@@ -52,6 +53,7 @@ import {
   candidateDashboardRouter,
   cvBuilderRouter,
   applicationCvRouter,
+  candidateListRouter,
 }                                                              from './routes/candidates.js';
 import {
   jobsRouter,
@@ -67,6 +69,7 @@ import { pipelineRouter }                                      from './routes/pi
 import { skillsRouter }                                        from './routes/skills.js';
 import { mancoRouter, mancoRecruiterPerformanceRouter }        from './routes/manco.js';
 import { crmRouter }                                           from './routes/crm.js';
+import { jobPostsRouter }                                      from './routes/jobPosts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
@@ -102,6 +105,7 @@ function loadDataset(name) {
 const DB = {
   users:             loadDataset('users'),
   candidateProfiles: loadDataset('candidate-profiles'),
+  candidates:        loadDataset('candidates'),
   resumes:           loadDataset('resumes'),
   skills:            loadDataset('skills'),
   userSkills:        loadDataset('user-skills'),
@@ -327,6 +331,11 @@ app.use('/candidate', cvBuilderRouter(routeCtx));
 app.use('/applications', applicationCvRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
+//  Candidate list  (GET /candidates)
+// ─────────────────────────────────────────────────────────
+app.use('/candidates', candidateListRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
 //  Jobs + Opportunities
 // ─────────────────────────────────────────────────────────
 app.use('/jobs',         jobsRouter(routeCtx));
@@ -364,6 +373,14 @@ app.use('/api/manco/recruiters',     mancoRecruiterPerformanceRouter(routeCtx));
 //  CRM
 // ─────────────────────────────────────────────────────────
 app.use('/api/v1/crm', crmRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Job Posts  (GET /job-posts, GET /job-posts/:mandateId)
+//  Mounted on both /job-posts and /api/job-posts so the
+//  route is reachable regardless of the /api/ prefix.
+// ─────────────────────────────────────────────────────────
+app.use('/job-posts',     jobPostsRouter(routeCtx));
+app.use('/api/job-posts', jobPostsRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Catch-all → .mock file fallback
@@ -431,6 +448,9 @@ app.listen(PORT, () => {
   L('║    GET   /candidate/:candidateId/recommended-jobs                        ║');
   L('║    POST  /applications/:applicationId/cv/upload                          ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  CANDIDATE LIST                                                          ║');
+  L('║    GET   /candidates  (?search=&location=&skill=&page=&limit=)           ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  JOBS                                                                    ║');
   L('║    GET   /jobs  (public)                                                 ║');
   L('║    GET   /jobs/:jobId                                                    ║');
@@ -461,6 +481,10 @@ app.listen(PORT, () => {
   L('║  CRM                                                                     ║');
   L('║    GET   /api/v1/crm/clients  (?status=)                                 ║');
   L('║    POST  /api/v1/crm/clients/:clientId/notes                             ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  JOB POSTS                                                               ║');
+  L('║    GET   /job-posts  (?status=&priority=&recruiterId=&search=)            ║');
+  L('║    GET   /job-posts/:mandateId                                           ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L(`║  Delay ${DELAY_MIN}–${DELAY_MAX} ms · Error injection ${(ERR_RATE * 100).toFixed(0)}%                              ║`);
   L('╚══════════════════════════════════════════════════════════════════════════╝');
