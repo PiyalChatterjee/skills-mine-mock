@@ -639,6 +639,8 @@ Retrieve a user's full profile, merging `users` auth data with their `candidateP
 {
   "status": "SUCCESS",
   "data": {
+    "userId": "USR100001",
+    "savedJobs": [],
     "personalDetails": {
       "userId": "USR100001",
       "firstName": "Michael",
@@ -656,7 +658,12 @@ Retrieve a user's full profile, merging `users` auth data with their `candidateP
     },
     "desiredJob": { "jobTitle": "Senior Software Engineer", "...": "..." },
     "education": [ /* Education[] */ ],
-    "experience": [ /* Experience[] */ ]
+    "experience": [ /* Experience[] */ ],
+    "authentication": {
+      "password": "...",
+      "provider": "LOCAL",
+      "accountStatus": "ACTIVE"
+    }
   }
 }
 ```

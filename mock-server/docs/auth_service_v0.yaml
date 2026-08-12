@@ -1,0 +1,458 @@
+openapi: "3.0.3"
+
+info:
+  title: SkillsMine Authentication Service
+  version: "1.0.0"
+  description: >
+    Authentication and identity endpoints for the SkillsMine platform.
+    Covers candidate self-service registration, staff invitation-based
+    registration, login (JWT issuance), password management, and
+    the current-user profile endpoint.
+
+servers:
+  - url: http://localhost:4000
+    description: Mock server
+
+tags:
+  - name: Auth
+    description: Login, logout, password management
+  - name: Candidate Registration
+    description: Candidate self-service registration
+  - name: Staff Registration
+    description: Staff invitation-based registration
+  - name: Staff Invitations
+    description: Invitation token management (admin)
+  - name: Users
+    description: Authenticated user profile
+
+# ---------------------------------------------------------------------------
+# Security
+# ---------------------------------------------------------------------------
+security:
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    # ── Tokens ──────────────────────────────────────────────────────────────
+    TokenResponse:
+      type: object
+      required: [accessToken, idToken, refreshToken, expiresIn, tokenType]
+      properties:
+        accessToken:
+          type: string
+          description: Short-lived access token (JWT)
+        idToken:
+          type: string
+          description: Identity token containing user claims (JWT)
+        refreshToken:
+          type: string
+          description: Long-lived refresh token (JWT)
+        expiresIn:
+          type: integer
+          example: 3600
+        tokenType:
+          type: string
+          enum: [Bearer]
+          example: Bearer
+
+    # ── Login ────────────────────────────────────────────────────────────────
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    # ── Candidate Registration ───────────────────────────────────────────────
+    CandidateRegisterRequest:
+      type: object
+      required: [firstName, lastName, email, mobileNumber, password]
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        mobileNumber:
+          type: string
+        password:
+          type: string
+          format: password
+
+    CandidateRegisterResponse:
+      type: object
+      required: [userId, email, role, registrationType, accountStatus]
+      properties:
+        userId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [JOB_SEEKER]
+        registrationType:
+          type: string
+          enum: [SELF_SERVICE]
+        accountStatus:
+          type: string
+          enum: [ACTIVE, PENDING_VERIFICATION]
+
+    # ── Staff Registration ───────────────────────────────────────────────────
+    StaffRegisterRequest:
+      type: object
+      required: [invitationToken, staffNumber, email, firstName, lastName, departmentCode, password]
+      properties:
+        invitationToken:
+          type: string
+        staffNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        departmentCode:
+          type: string
+        password:
+          type: string
+          format: password
+
+    StaffRegisterResponse:
+      type: object
+      required: [userId, staffNumber, email, role, accountStatus]
+      properties:
+        userId:
+          type: string
+          format: uuid
+        staffNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [RECRUITER, MANCO, EXCO, ADMIN]
+        accountStatus:
+          type: string
+          enum: [ACTIVE, PENDING_VERIFICATION]
+
+    # ── Staff Invitation Validation ──────────────────────────────────────────
+    InvitationValidateRequest:
+      type: object
+      required: [invitationToken]
+      properties:
+        invitationToken:
+          type: string
+
+    InvitationValidateResponse:
+      type: object
+      required: [valid, staffNumberMasked, invitedEmailMasked, roleCode, expiresAt]
+      properties:
+        valid:
+          type: boolean
+        staffNumberMasked:
+          type: string
+          example: "SM****01"
+        invitedEmailMasked:
+          type: string
+          example: "j***@skillsmine.com"
+        roleCode:
+          type: string
+          enum: [RECRUITER, MANCO, EXCO, ADMIN]
+        expiresAt:
+          type: string
+          format: date-time
+
+    # ── Create Staff Invitation ──────────────────────────────────────────────
+    CreateInvitationRequest:
+      type: object
+      required: [email, staffNumber, roleCode, departmentCode]
+      properties:
+        email:
+          type: string
+          format: email
+        staffNumber:
+          type: string
+        roleCode:
+          type: string
+          enum: [RECRUITER, MANCO, EXCO, ADMIN]
+        departmentCode:
+          type: string
+
+    CreateInvitationResponse:
+      type: object
+      required: [invitationToken, email, staffNumber, roleCode, expiresAt]
+      properties:
+        invitationToken:
+          type: string
+        email:
+          type: string
+          format: email
+        staffNumber:
+          type: string
+        roleCode:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+
+    # ── Password ─────────────────────────────────────────────────────────────
+    ForgotPasswordRequest:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+
+    ResetPasswordRequest:
+      type: object
+      required: [resetToken, newPassword]
+      properties:
+        resetToken:
+          type: string
+        newPassword:
+          type: string
+          format: password
+
+    # ── User Model ───────────────────────────────────────────────────────────
+    UserMe:
+      type: object
+      required: [userId, email, provider, roles, accountStatus]
+      properties:
+        userId:
+          type: string
+        email:
+          type: string
+          format: email
+        provider:
+          type: string
+          enum: [LOCAL, GOOGLE, MICROSOFT]
+          example: LOCAL
+        roles:
+          type: array
+          items:
+            type: string
+            enum: [JOB_SEEKER, RECRUITER, MANCO, EXCO, ADMIN]
+        staffProfile:
+          type: object
+          nullable: true
+          properties:
+            staffNumber:
+              type: string
+            departmentCode:
+              type: string
+        accountStatus:
+          type: string
+          enum: [ACTIVE, INACTIVE, SUSPENDED, PENDING_VERIFICATION]
+
+    # ── Error ────────────────────────────────────────────────────────────────
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        statusCode:
+          type: integer
+        message:
+          type: string
+
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+paths:
+
+  /api/v1/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/auth/candidates/register:
+    post:
+      tags: [Candidate Registration]
+      summary: Register a candidate (self-service)
+      operationId: candidateRegister
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CandidateRegisterRequest"
+      responses:
+        "201":
+          description: Candidate registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CandidateRegisterResponse"
+        "409":
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/auth/staff/register:
+    post:
+      tags: [Staff Registration]
+      summary: Register a staff member via invitation token
+      operationId: staffRegister
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StaffRegisterRequest"
+      responses:
+        "201":
+          description: Staff member registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StaffRegisterResponse"
+        "400":
+          description: Invalid or expired invitation token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/auth/staff-invitations/validate:
+    post:
+      tags: [Staff Invitations]
+      summary: Validate a staff invitation token
+      operationId: validateInvitation
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvitationValidateRequest"
+      responses:
+        "200":
+          description: Invitation token details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvitationValidateResponse"
+
+  /api/v1/admin/staff-invitations:
+    post:
+      tags: [Staff Invitations]
+      summary: Create a staff invitation token (admin only)
+      operationId: createInvitation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvitationRequest"
+      responses:
+        "201":
+          description: Invitation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInvitationResponse"
+
+  /api/v1/auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Request a password reset link
+      operationId: forgotPassword
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordRequest"
+      responses:
+        "200":
+          description: Reset link sent (always 200 to prevent user enumeration)
+
+  /api/v1/auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Reset password using a reset token
+      operationId: resetPassword
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequest"
+      responses:
+        "200":
+          description: Password reset successfully
+
+  /api/v1/auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout (invalidate token)
+      operationId: logout
+      responses:
+        "204":
+          description: Logged out successfully
+
+  /api/v1/users/me:
+    get:
+      tags: [Users]
+      summary: Get the currently authenticated user
+      operationId: getMe
+      responses:
+        "200":
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserMe"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"

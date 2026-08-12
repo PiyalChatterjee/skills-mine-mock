@@ -5,6 +5,16 @@
  *
  *   routes/auth.js            POST /auth/register | /auth/login | /auth/forgot-password
  *                             POST /auth/change-password | /auth/logout
+ *
+ *   routes/auth-v1.js         POST /api/v1/auth/login
+ *                             POST /api/v1/auth/candidates/register
+ *                             POST /api/v1/auth/staff/register
+ *                             POST /api/v1/auth/staff-invitations/validate
+ *                             POST /api/v1/auth/forgot-password
+ *                             POST /api/v1/auth/reset-password
+ *                             POST /api/v1/auth/logout
+ *                             POST /api/v1/admin/staff-invitations
+ *                             GET  /api/v1/users/me
  *   routes/users.js           GET/PUT /users/:userId | POST/DELETE /users/:userId/profile-photo
  *   routes/candidates.js      GET /candidate/:userId/dashboard
  *                             POST /candidate/buildmycv
@@ -48,6 +58,11 @@ import Handlebars                                              from 'handlebars'
 import { load as yamlLoad }                                    from 'js-yaml';
 
 import { authRouter }                                          from './routes/auth.js';
+import {
+  authV1Router,
+  adminV1Router,
+  usersV1Router,
+}                                                              from './routes/auth-v1.js';
 import { usersRouter }                                         from './routes/users.js';
 import {
   candidateDashboardRouter,
@@ -89,6 +104,12 @@ const PUBLIC_PATHS = [
   '/auth/login',
   '/auth/register',
   '/auth/forgot-password',
+  '/api/v1/auth/login',
+  '/api/v1/auth/candidates/register',
+  '/api/v1/auth/staff/register',
+  '/api/v1/auth/staff-invitations/validate',
+  '/api/v1/auth/forgot-password',
+  '/api/v1/auth/reset-password',
   '/jobs',
   '/opportunities',
   '/skills/search',
@@ -115,6 +136,9 @@ const DB = {
   recruiters:        loadDataset('recruiters'),
   clients:           loadDataset('crm-clients'),
 };
+
+// Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
+const staffInvitations = new Map(); // invitationToken → invitation record
 
 function saveDataset(name, data) {
   const p = join(__dirname, 'data', `${name}.json`);
@@ -157,6 +181,11 @@ const USERS = {
     sub: 'USR100006', userId: 'USR100006', email: 'admin@skillsmine.com',
     firstName: 'Admin', lastName: 'User',
     roles: ['ADMIN'], profileCompleted: 100,
+  },
+  'exco@skillsmine.com': {
+    sub: 'USR100009', userId: 'USR100009', email: 'exco@skillsmine.com',
+    firstName: 'Nomsa', lastName: 'Dlamini',
+    roles: ['EXCO'], staffNumber: 'SM-EXC-001', departmentCode: 'EXECUTIVE', profileCompleted: 100,
   },
   // Legacy aliases
   'candidate@skillsmine.com': {
@@ -309,12 +338,19 @@ app.use(async (req, res, next) => {
 // ─────────────────────────────────────────────────────────
 //  Route context
 // ─────────────────────────────────────────────────────────
-const routeCtx = { DB, sessions, generateToken, saveDataset };
+const routeCtx = { DB, sessions, generateToken, saveDataset, staffInvitations };
 
 // ─────────────────────────────────────────────────────────
-//  Auth
+//  Auth  (legacy — /auth/*)
 // ─────────────────────────────────────────────────────────
 app.use('/auth', authRouter({ ...routeCtx, USERS }));
+
+// ─────────────────────────────────────────────────────────
+//  Auth v1  (OpenAPI — /api/v1/auth/*)
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/auth',  authV1Router(routeCtx));
+app.use('/api/v1/admin', adminV1Router(routeCtx));
+app.use('/api/v1/users', usersV1Router(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Users / Profiles
@@ -425,12 +461,23 @@ app.listen(PORT, () => {
   L('║    SkillsMine Mock Server  ·  v2 Contract  ·  Role-based  (ESM)         ║');
   L(`║    http://localhost:${PORT}                                                ║`);
   L('╠══════════════════════════════════════════════════════════════════════════╣');
-  L('║  AUTH                                                                    ║');
+  L('║  AUTH (legacy)                                                           ║');
   L('║    POST  /auth/register                                                  ║');
   L('║    POST  /auth/login                                                     ║');
   L('║    POST  /auth/forgot-password                                           ║');
   L('║    POST  /auth/change-password                                           ║');
   L('║    POST  /auth/logout                                                    ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  AUTH v1  (auth_service_v0.yaml)                                         ║');
+  L('║    POST  /api/v1/auth/login                                              ║');
+  L('║    POST  /api/v1/auth/candidates/register                                ║');
+  L('║    POST  /api/v1/auth/staff/register                                     ║');
+  L('║    POST  /api/v1/auth/staff-invitations/validate                         ║');
+  L('║    POST  /api/v1/auth/forgot-password                                    ║');
+  L('║    POST  /api/v1/auth/reset-password                                     ║');
+  L('║    POST  /api/v1/auth/logout                          → 204              ║');
+  L('║    POST  /api/v1/admin/staff-invitations              (ADMIN only)        ║');
+  L('║    GET   /api/v1/users/me                                                ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  USERS / PROFILES                                                        ║');
   L('║    GET   /users/:userId                                                  ║');
@@ -496,6 +543,7 @@ app.listen(PORT, () => {
   L('    recruiter2@skillsmine.com  (RECRUITER  / USR100004)');
   L('    manco@skillsmine.com       (MANCO      / USR100005)');
   L('    admin@skillsmine.com       (ADMIN      / USR100006)');
+  L('    exco@skillsmine.com        (EXCO       / USR100009)');
   L('  Legacy aliases: candidate@skillsmine.com, candidate2@skillsmine.com');
   L('');
   L('  Data (loaded from mock-server/data/)');
