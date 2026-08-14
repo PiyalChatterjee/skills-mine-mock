@@ -12,6 +12,7 @@
     "profileCompleted": 82,
     "roles": ["JOB_SEEKER"],
     "savedJobs": ["j001", "j006", "j008"],
+    "recommendedJobs": ["j001", "j004", "j007", "j010", "j015", "j022"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-01-15T08:00:00Z"
@@ -29,6 +30,7 @@
     "profileCompleted": 65,
     "roles": ["JOB_SEEKER"],
     "savedJobs": ["j003", "j012"],
+    "recommendedJobs": ["j003", "j009", "j012", "j018", "j025", "j031"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-02-20T08:00:00Z"
@@ -49,6 +51,7 @@
     "staffNumber": "SM-REC-001",
     "departmentCode": "TALENT",
     "savedJobs": [],
+    "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-15T08:00:00Z"
@@ -69,6 +72,7 @@
     "staffNumber": "SM-REC-002",
     "departmentCode": "TALENT",
     "savedJobs": [],
+    "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-02-01T08:00:00Z"
@@ -88,6 +92,7 @@
     "staffNumber": "SM-MAN-001",
     "departmentCode": "MANAGEMENT",
     "savedJobs": [],
+    "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-01T08:00:00Z"
@@ -107,6 +112,7 @@
     "staffNumber": "SM-ADM-001",
     "departmentCode": "IT",
     "savedJobs": [],
+    "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-01T08:00:00Z"
@@ -124,6 +130,7 @@
     "profileCompleted": 55,
     "roles": ["JOB_SEEKER"],
     "savedJobs": ["j002"],
+    "recommendedJobs": ["j002", "j005", "j011", "j017", "j023", "j035"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-03-10T08:00:00Z"
@@ -141,6 +148,7 @@
     "profileCompleted": 70,
     "roles": ["JOB_SEEKER"],
     "savedJobs": [],
+    "recommendedJobs": ["j006", "j013", "j019", "j027", "j033", "j039"],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-04-05T08:00:00Z"
@@ -160,6 +168,7 @@
     "staffNumber": "SM-EXC-001",
     "departmentCode": "EXECUTIVE",
     "savedJobs": [],
+    "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2023-01-01T08:00:00Z"
