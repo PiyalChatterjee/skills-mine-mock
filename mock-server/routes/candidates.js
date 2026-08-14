@@ -7,6 +7,7 @@
  * GET  /candidate/:resumeId/download                 → CV download URL
  * GET  /candidate/:candidateId/recommended-jobs      → AI job recommendations
  * POST /applications/:applicationId/cv/upload        → upload & parse CV (multipart mock)
+ * GET  /candidates                                   → list all candidates (paginated, filterable)
  */
 
 import { Router } from 'express';
@@ -474,6 +475,92 @@ export function applicationCvRouter() {
           warnings: [],
         },
         uploadedAt: new Date().toISOString(),
+      },
+    });
+  });
+
+  return router;
+}
+
+// ─── Candidate list ───────────────────────────────────────────────────────────
+export function candidateListRouter({ DB }) {
+  const router = Router();
+
+  /**
+   * GET /candidates
+   *
+   * Query params (all optional):
+   *   page      {number}  default 1
+   *   limit     {number}  default 20
+   *   search    {string}  filter by first/last name or email (case-insensitive)
+   *   location  {string}  filter by location (substring, case-insensitive)
+   *   skill     {string}  filter by a skill name (substring, case-insensitive)
+   */
+  router.get('/', (req, res) => {
+    const { page = 1, limit, search, location, skill } = req.query;
+
+    let results = [...DB.candidates];
+
+    if (search) {
+      const lc = search.toLowerCase();
+      results = results.filter(c =>
+        (c.fullName  ?? '').toLowerCase().includes(lc) ||
+        (c.email     ?? '').toLowerCase().includes(lc)
+      );
+    }
+
+    if (location) {
+      const lc = location.toLowerCase();
+      results = results.filter(c =>
+        (c.location ?? '').toLowerCase().includes(lc)
+      );
+    }
+
+    if (skill) {
+      const lc = skill.toLowerCase();
+      results = results.filter(c =>
+        (c.skills ?? []).some(s => s.toLowerCase().includes(lc))
+      );
+    }
+
+    const total    = results.length;
+    const pageNum  = parseInt(page, 10);
+    const pageSize = limit !== undefined ? parseInt(limit, 10) : null;
+
+    const sliced = pageSize !== null
+      ? results.slice((pageNum - 1) * pageSize, pageNum * pageSize)
+      : results;
+
+    const mapped = sliced.map(c => ({
+      candidateId:     c.candidateId,
+      fullName:        c.fullName        ?? '',
+      email:           c.email           ?? '',
+      phone:           c.phone           ?? '',
+      location:        c.location        ?? '',
+      currentTitle:    c.currentTitle    ?? '',
+      currentCompany:  c.currentCompany  ?? '',
+      experienceYears: c.experienceYears ?? 0,
+      skills:          c.skills          ?? [],
+      education:       c.education       ?? [],
+      experience:      c.experience      ?? [],
+      documents:       c.documents       ?? [],
+      languages:       c.languages       ?? [],
+      profileComplete: c.profileComplete ?? 0,
+      applications:    c.applications    ?? [],
+    }));
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Candidates retrieved.',
+      data: {
+        candidates: mapped,
+        pagination: {
+          page:       pageNum,
+          pageSize:   pageSize ?? total,
+          total,
+          totalPages: pageSize !== null ? Math.ceil(total / pageSize) : 1,
+        },
       },
     });
   });
