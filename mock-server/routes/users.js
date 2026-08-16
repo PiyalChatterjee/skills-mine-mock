@@ -26,6 +26,7 @@ export function usersRouter({ DB }) {
       data: {
         userId: user.userId,
         savedJobs: user.savedJobs ?? [],
+        recommendedJobs: user.recommendedJobs ?? [],
         personalDetails: profile
           ? {
               userId: user.userId,
