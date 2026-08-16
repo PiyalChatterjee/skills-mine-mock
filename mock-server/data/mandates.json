@@ -9,13 +9,14 @@
     "recruiterName": "Sarah Johnson",
     "industry": "Banking",
     "industries": [
-      "Banking"
+      "Banking",
+      "Manufacturing"
     ],
     "status": "POSTED",
     "priority": "HIGH",
     "openDate": "2024-10-15",
     "targetCloseDate": "2024-12-15",
-    "salaryBand": "R70 000 – R95 000",
+    "salaryBand": "R70,000 – R95,000",
     "salaryMin": 70000,
     "salaryMax": 95000,
     "location": "Johannesburg, Gauteng",
@@ -26,25 +27,25 @@
     "eeRequirement": "African Female preferred",
     "jobDescription": "We are looking for a Senior React Developer to join the digital banking team at Standard Bank. You will lead the development of modern, scalable front-end solutions that serve millions of customers.",
     "requirements": [
-      "5+ years of experience in front-end development",
-      "Strong proficiency in React and TypeScript",
-      "Experience with Redux or similar state management",
-      "Familiarity with GraphQL and REST APIs",
-      "Ability to write clean, testable code"
+      "• 5+ years of experience in front-end development",
+      "• Strong proficiency in React and TypeScript",
+      "• Experience with Redux or similar state management",
+      "• Familiarity with GraphQL and REST APIs",
+      "• Ability to write clean, testable code"
     ],
     "responsibilities": [
-      "Architect and develop high-performance React applications",
-      "Collaborate with design and product teams to deliver features",
-      "Conduct code reviews and mentor junior developers",
-      "Optimise applications for maximum speed and scalability",
-      "Maintain and improve CI/CD pipelines"
+      "• Architect and develop high-performance React applications",
+      "• Collaborate with design and product teams to deliver features",
+      "• Conduct code reviews and mentor junior developers",
+      "• Optimise applications for maximum speed and scalability",
+      "• Maintain and improve CI/CD pipelines"
     ],
     "benefits": [
-      "Competitive salary package",
-      "Medical aid contribution",
-      "Flexible hybrid working model",
-      "Annual performance bonus",
-      "Learning and development budget"
+      "• Competitive salary package",
+      "• Medical aid contribution",
+      "• Flexible hybrid working model",
+      "• Annual performance bonus",
+      "• Learning and development budget"
     ],
     "skills": [
       "React",
@@ -88,7 +89,8 @@
     "industry": "Banking",
     "industries": [
       "Banking",
-      "finance"
+      "finance",
+      "fytfyt"
     ],
     "status": "POSTED",
     "priority": "MEDIUM",
@@ -105,31 +107,32 @@
     "eeRequirement": "African or Coloured",
     "jobDescription": "FNB is seeking a skilled Data Engineer to design and build scalable data pipelines that power our analytics and reporting platforms.",
     "requirements": [
-      "3+ years of experience in data engineering",
-      "Proficiency in Python and SQL",
-      "Hands-on experience with Spark and dbt",
-      "Familiarity with cloud data warehouses such as Snowflake",
-      "Understanding of data modelling best practices"
+      "• 3+ years of experience in data engineering",
+      "• Proficiency in Python and SQL",
+      "• Hands-on experience with Spark and dbt",
+      "• Familiarity with cloud data warehouses such as Snowflake",
+      "• Understanding of data modelling best practices"
     ],
     "responsibilities": [
-      "Design, build and maintain robust ETL/ELT pipelines",
-      "Collaborate with data analysts and scientists to deliver data products",
-      "Optimise query performance and data storage costs",
-      "Ensure data quality and reliability across pipelines",
-      "Document data flows and lineage"
+      "• Design, build and maintain robust ETL/ELT pipelines",
+      "• Collaborate with data analysts and scientists to deliver data products",
+      "• Optimise query performance and data storage costs",
+      "• Ensure data quality and reliability across pipelines",
+      "• Document data flows and line"
     ],
     "benefits": [
-      "Remote-first working arrangement",
-      "Medical aid and retirement fund",
-      "13th cheque",
-      "Professional certification sponsorship",
-      "Wellness programme"
+      "• Remote-first working arrangement",
+      "• Medical aid and retirement fund",
+      "• 13th cheque",
+      "• Professional certification sponsorship",
+      "• Wellness programme"
     ],
     "skills": [
       "Python",
       "Spark",
       "dbt",
-      "Snowflake"
+      "Snowflake",
+      "ytfytf"
     ],
     "jobBoards": [
       "LinkedIn",
