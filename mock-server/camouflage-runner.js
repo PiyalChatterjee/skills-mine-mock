@@ -21,7 +21,7 @@
  *                             GET  /candidates/profile/
  *                             GET|POST|PUT /candidates/cv-build/
  *                             GET  /candidates/recommended-positions
- *                             GET|POST /candidates/saved-jobs
+ *                             GET|POST|DELETE /candidates/saved-jobs[/{jobId}]
  *                             GET  /candidates/ai-actions/
  *                             GET  /candidates                   (list)
  *                             GET  /candidate/:userId/dashboard  (legacy)
@@ -129,6 +129,7 @@ const PUBLIC_PATHS = [
   '/jobs',
   '/opportunities',
   '/skills/search',
+  '/candidates/landing',
 ];
 
 // ─────────────────────────────────────────────────────────
@@ -514,7 +515,21 @@ app.listen(PORT, () => {
   L('║    POST  /users/:userId/profile-photo                                    ║');
   L('║    DELETE /users/:userId/profile-photo                                   ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
-  L('║  CANDIDATE                                                               ║');
+  L('║  CANDIDATE  (candidate_api_swagger_v0)                                   ║');
+  L('║    GET   /candidates/landing                          (public)            ║');
+  L('║    GET   /candidates/dashboard                                           ║');
+  L('║    GET   /candidates/profile/                                            ║');
+  L('║    GET   /candidates/cv-build/                                           ║');
+  L('║    POST  /candidates/cv-build/                        (create)           ║');
+  L('║    PUT   /candidates/cv-build/                        (partial update)   ║');
+  L('║    GET   /candidates/recommended-positions                               ║');
+  L('║    GET   /candidates/saved-jobs                                          ║');
+  L('║    POST  /candidates/saved-jobs                                          ║');
+  L('║    DELETE /candidates/saved-jobs/:jobId                                  ║');
+  L('║    GET   /candidates/ai-actions/                                         ║');
+  L('║    GET   /candidates  (?search=&location=&skill=&page=&limit=)           ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  CANDIDATE  (legacy /candidate/*)                                        ║');
   L('║    GET   /candidate/:userId/dashboard                                    ║');
   L('║    GET   /candidate/buildmycv   (read)                                   ║');
   L('║    POST  /candidate/buildmycv   (create)                                 ║');
@@ -524,13 +539,11 @@ app.listen(PORT, () => {
   L('║    GET   /candidate/:candidateId/recommended-jobs                        ║');
   L('║    POST  /applications/:applicationId/cv/upload                          ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
-  L('║  CANDIDATE LIST                                                          ║');
-  L('║    GET   /candidates  (?search=&location=&skill=&page=&limit=)           ║');
-  L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  JOBS                                                                    ║');
   L('║    GET   /jobs  (public)                                                 ║');
   L('║    GET   /jobs/:jobId                                                    ║');
   L('║    POST  /jobs/:jobId/save                                               ║');
+  L('║    DELETE /jobs/:jobId/save                                              ║');
   L('║    POST  /jobs/:jobId/apply                                              ║');
   L('║    POST  /jobs  (recruiter)                                              ║');
   L('║    GET   /opportunities  (public)                                        ║');

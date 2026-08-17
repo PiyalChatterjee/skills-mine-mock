@@ -386,19 +386,9 @@ export function cvBuilderRouter({ DB }) {
       .filter(j => j.status === 'Open')
       .slice(0, 6)
       .map(j => {
-        const overlap = (j.skills ?? []).filter(s => candidateSkills.includes(s)).length;
+        const overlap    = (j.skills ?? []).filter(s => candidateSkills.includes(s)).length;
         const matchScore = Math.min(99, 55 + overlap * 6 + Math.floor(Math.random() * 15));
-        return {
-          jobId: j.jobId,
-          title: j.title,
-          company: j.company,
-          location: j.location,
-          workType: j.workType,
-          salaryRange: j.salaryRange,
-          matchScore,
-          skills: j.skills ?? [],
-          postedDate: j.postedDate,
-        };
+        return { ...j, matchScore };
       })
       .sort((a, b) => b.matchScore - a.matchScore);
 
@@ -967,17 +957,7 @@ export function candidateRecommendedPositionsRouter({ DB }) {
       .map(j => {
         const overlap    = (j.skills ?? []).filter(s => skills.includes(s)).length;
         const matchScore = Math.min(99, 55 + overlap * 6 + Math.floor(Math.random() * 15));
-        return {
-          jobId:       j.jobId,
-          title:       j.title,
-          company:     j.company,
-          location:    j.location,
-          workType:    j.workType,
-          salaryRange: j.salaryRange,
-          matchScore,
-          skills:      j.skills ?? [],
-          postedDate:  j.postedDate,
-        };
+        return { ...j, matchScore };
       })
       .sort((a, b) => b.matchScore - a.matchScore);
 
@@ -1004,21 +984,13 @@ export function candidateSavedJobsRouter({ DB }) {
 
     const savedJobIds = profile?.savedJobs ?? [];
     const jobs = savedJobIds.map(entry => {
-      const jobId    = typeof entry === 'string' ? entry : entry.jobId;
-      const savedAt  = typeof entry === 'object' ? entry.savedAt : null;
-      const job      = DB.jobs.find(j => j.jobId === jobId);
+      const jobId   = typeof entry === 'string' ? entry : entry.jobId;
+      const savedAt = typeof entry === 'object' ? entry.savedAt : null;
+      const job     = DB.jobs.find(j => j.jobId === jobId);
       if (!job) return null;
       return {
-        jobId:          job.jobId,
-        title:          job.title,
-        company:        job.company,
-        location:       job.location,
-        workType:       job.workType,
-        employmentType: job.employmentType,
-        salaryRange:    job.salaryRange,
-        skills:         job.skills ?? [],
-        postedDate:     job.postedDate,
-        savedAt:        savedAt ?? new Date().toISOString(),
+        ...job,
+        savedAt: savedAt ?? new Date().toISOString(),
       };
     }).filter(Boolean);
 
@@ -1027,6 +999,25 @@ export function candidateSavedJobsRouter({ DB }) {
       statusCode: 200,
       message:    'Saved jobs retrieved.',
       data: { candidateId, jobs, total: jobs.length },
+    });
+  });
+
+  // DELETE /candidates/saved-jobs/:jobId
+  router.delete('/saved-jobs/:jobId', (req, res) => {
+    const userId  = req.currentUser?.userId ?? 'USR100001';
+    const { jobId } = req.params;
+
+    const profile = DB.candidateProfiles.find(p => p.userId === userId);
+    if (profile && Array.isArray(profile.savedJobs)) {
+      profile.savedJobs = profile.savedJobs.filter(e =>
+        (typeof e === 'string' ? e : e.jobId) !== jobId
+      );
+    }
+
+    return res.status(200).json({
+      success:    true,
+      statusCode: 200,
+      message:    `Job ${jobId} removed from saved jobs.`,
     });
   });
 
