@@ -16,6 +16,7 @@
       "currentPosition": "Senior Software Engineer",
       "noticePeriod": "1 month",
       "idNumber": "9001015800086",
+      "eeStatus": "African Male",
       "profileImageUrl": "https://mock-cdn.skillsmine.com/profiles/USR100001/photo.jpg",
       "thumbnailUrl": "https://mock-cdn.skillsmine.com/profiles/USR100001/thumb.jpg",
       "linkedinUrl": "https://linkedin.com/in/michael-smith-dev",
@@ -112,6 +113,10 @@
         "updatedAt": "2024-11-12T11:00:00Z",
         "matchScore": 84
       }
+    ],
+    "savedJobs": [
+      { "jobId": "j001", "savedAt": "2025-01-05T08:00:00Z" },
+      { "jobId": "j004", "savedAt": "2025-01-10T09:30:00Z" }
     ]
   },
   {
@@ -141,17 +146,17 @@
       "industries": ["FinTech", "E-Commerce"],
       "locations": ["Cape Town", "Johannesburg"]
     },
-    "education": [
-      {
-        "educationId": "edu-003",
-        "institution": "University of Cape Town",
-        "qualification": "BBusSci Information Systems",
-        "fieldOfStudy": "Information Systems",
-        "startYear": 2013,
-        "endYear": 2017,
-        "completed": true
-      }
-    ],
+    "education": {
+      "secondaryEducation": [],
+      "tertiaryEducation": [
+        {
+          "institution": "University of Cape Town",
+          "qualification": "BBusSci Information Systems",
+          "fieldOfStudy": "Information Systems",
+          "yearCompleted": 2017
+        }
+      ]
+    },
     "experience": [
       {
         "experienceId": "exp-003",
@@ -168,6 +173,9 @@
     "languages": [
       { "language": "English", "proficiency": "Native" },
       { "language": "Afrikaans", "proficiency": "Basic" }
+    ],
+    "savedJobs": [
+      { "jobId": "j003", "savedAt": "2025-01-08T10:00:00Z" }
     ]
   },
   {
@@ -197,17 +205,17 @@
       "industries": ["Financial Services", "Technology"],
       "locations": ["Johannesburg", "Remote"]
     },
-    "education": [
-      {
-        "educationId": "edu-005",
-        "institution": "University of Johannesburg",
-        "qualification": "BSc Information Technology",
-        "fieldOfStudy": "Information Technology",
-        "startYear": 2014,
-        "endYear": 2018,
-        "completed": true
-      }
-    ],
+    "education": {
+      "secondaryEducation": [],
+      "tertiaryEducation": [
+        {
+          "institution": "University of Johannesburg",
+          "qualification": "BSc Information Technology",
+          "fieldOfStudy": "Information Technology",
+          "yearCompleted": 2018
+        }
+      ]
+    },
     "experience": [
       {
         "experienceId": "exp-005",
@@ -224,6 +232,7 @@
     "languages": [
       { "language": "English", "proficiency": "Fluent" },
       { "language": "Sotho", "proficiency": "Native" }
-    ]
+    ],
+    "savedJobs": []
   }
 ]

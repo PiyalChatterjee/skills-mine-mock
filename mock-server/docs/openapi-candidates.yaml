@@ -1,0 +1,1873 @@
+openapi: 3.0.3
+info:
+  title: SkillsMine – Candidate API
+  description: >
+    All candidate-facing and recruiter-facing endpoints for candidate data
+    served by the SkillsMine mock server (camouflage-runner.js, port 4000).
+    Covers the candidate landing page, dashboard, profile, CV builder,
+    resume preview/download, recommended positions, saved jobs, AI actions,
+    CV upload, candidate list, candidate search, and the recruiter
+    candidate-profile view.
+  version: "2.1.0"
+  contact:
+    name: SkillsMine Mock Server
+    url: http://localhost:4000
+
+servers:
+  - url: http://localhost:4000
+    description: Local mock server
+
+tags:
+  - name: Candidate Landing
+    description: Public landing-page summary for the candidate portal
+  - name: Candidate Dashboard
+    description: Authenticated candidate home dashboard
+  - name: Candidate Profile
+    description: Candidate self-service profile and recruiter profile view
+  - name: CV Build
+    description: Build My CV – create, retrieve, and update a structured CV
+  - name: Resume
+    description: Resume preview and download URL generation
+  - name: Recommended Positions
+    description: AI-powered job recommendations for candidates
+  - name: Saved Jobs
+    description: Candidate saved / bookmarked jobs
+  - name: AI Actions
+    description: AI-triggered candidate actions
+  - name: CV Upload
+    description: CV upload and extraction for an application
+  - name: Candidate List
+    description: Paginated, filterable list of all candidates (recruiter/admin)
+  - name: Candidate Search
+    description: Recruiter ATS candidate search
+
+security:
+  - bearerAuth: []
+
+# ─────────────────────────────────────────────────────────────────────────────
+paths:
+
+  # ── Landing ────────────────────────────────────────────────────────────────
+  /candidates/landing:
+    get:
+      tags: [Candidate Landing]
+      summary: Get candidate landing-page summary
+      description: >
+        Returns aggregate platform stats and a preview list of open positions
+        for the unauthenticated (or pre-login) candidate landing page.
+      operationId: getCandidateLanding
+      security: []
+      responses:
+        '200':
+          description: Landing-page data retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CandidateLanding'
+
+  # ── Dashboard ──────────────────────────────────────────────────────────────
+  /candidates/dashboard:
+    get:
+      tags: [Candidate Dashboard]
+      summary: Get candidate dashboard
+      description: >
+        Returns summary counts, recent activity, top-5 application cards with
+        pipeline stage, and quick-link shortcuts for the authenticated candidate.
+      operationId: getCandidateDashboard
+      responses:
+        '200':
+          description: Dashboard data retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CandidateDashboard'
+              example:
+                success: true
+                statusCode: 200
+                message: Dashboard data retrieved.
+                data:
+                  id: USR100001
+                  candidateId: CAND100001
+                  summary:
+                    totalApplications: 3
+                    submitted: 0
+                    inProgress: 2
+                    successful: 0
+                  activity:
+                    jobsAppliedThisWeek: 2
+                    recruiterProfileViewsThisWeek: 3
+                    coursesCompletedThisWeek: 0
+                  applications:
+                    - id: APP-MS-001
+                      job:
+                        id: j001
+                        title: Senior React Developer
+                        company: Standard Bank
+                      stage: INTERVIEW
+                      statusMessage: You have been selected for an interview.
+                      pipeline: [APPLIED, SCREENING, ASSESSMENT, INTERVIEW, SHORTLISTED, OFFER]
+                  quickLinks: [CV_BUILDER, SAVED_JOBS, LATEST_JOBS, RECOMMENDED_JOBS]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Candidate Profile (self) ───────────────────────────────────────────────
+  /candidates/profile/:
+    get:
+      tags: [Candidate Profile]
+      summary: Get authenticated candidate's own profile
+      description: >
+        Returns the full profile for the currently authenticated candidate.
+      operationId: getCandidateProfile
+      responses:
+        '200':
+          description: Candidate profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CandidateProfileFull'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ── CV Build ───────────────────────────────────────────────────────────────
+  /candidates/cv-build/:
+    get:
+      tags: [CV Build]
+      summary: Get Build My CV data
+      description: >
+        Returns the current user's saved Build My CV state. Never errors —
+        returns an empty template when no record exists yet.
+      operationId: getCvBuild
+      responses:
+        '200':
+          description: CV builder data retrieved (or empty template returned)
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [CV Build]
+      summary: Create or update Build My CV
+      description: >
+        Creates a new Build My CV record (HTTP 201) when none exists, or
+        updates the existing one (HTTP 200).
+      operationId: postCvBuild
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CvBuilderBody'
+      responses:
+        '200':
+          description: Build My CV updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '201':
+          description: Build My CV created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    put:
+      tags: [CV Build]
+      summary: Partially update Build My CV
+      description: >
+        Partially updates an existing Build My CV record.
+      operationId: putCvBuild
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CvBuilderBody'
+      responses:
+        '200':
+          description: Build My CV updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Recommended Positions ──────────────────────────────────────────────────
+  /candidates/recommended-positions:
+    get:
+      tags: [Recommended Positions]
+      summary: Get AI-recommended positions for the authenticated candidate
+      description: >
+        Returns up to 6 open jobs ranked by a computed match score.
+        Resolves the candidateId from the bearer token.
+      operationId: getRecommendedPositions
+      responses:
+        '200':
+          description: Recommended positions retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/RecommendedPositionsResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Saved Jobs ─────────────────────────────────────────────────────────────
+  /candidates/saved-jobs:
+    get:
+      tags: [Saved Jobs]
+      summary: Get saved / bookmarked jobs for the authenticated candidate
+      operationId: getSavedJobs
+      responses:
+        '200':
+          description: Saved jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/SavedJobsResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [Saved Jobs]
+      summary: Save / bookmark a job
+      description: >
+        Adds a job to the authenticated candidate's saved-jobs list.
+        Idempotent — saving an already-saved job returns 200 without error.
+      operationId: saveJob
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveJobRequest'
+      responses:
+        '200':
+          description: Job saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ── AI Actions ─────────────────────────────────────────────────────────────
+  /candidates/ai-actions/:
+    get:
+      tags: [AI Actions]
+      summary: Get available AI actions for the authenticated candidate
+      operationId: getCandidateAiActions
+      responses:
+        '200':
+          description: AI actions retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AiActionsResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── CV Upload ──────────────────────────────────────────────────────────────
+  /applications/{applicationId}/cv/upload:
+    post:
+      tags: [CV Upload]
+      summary: Upload and parse a CV for an application
+      description: >
+        Accepts a multipart CV upload (mock). Returns extracted CV data.
+      operationId: uploadApplicationCv
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CV file (PDF or DOCX)
+      responses:
+        '200':
+          description: CV uploaded and parsed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvUploadResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Candidate List ─────────────────────────────────────────────────────────
+  /candidates:
+    get:
+      tags: [Candidate List]
+      summary: List all candidates (paginated and filterable)
+      operationId: listCandidates
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number (1-based)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Number of results per page (omit for all results)
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Filter by full name or email (case-insensitive substring)
+        - name: location
+          in: query
+          schema:
+            type: string
+          description: Filter by location (case-insensitive substring)
+        - name: skill
+          in: query
+          schema:
+            type: string
+          description: Filter by skill name (case-insensitive substring)
+      responses:
+        '200':
+          description: Candidates retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CandidateListResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Recruiter Candidate Search ─────────────────────────────────────────────
+  /recruiter/candidates/search:
+    get:
+      tags: [Candidate Search]
+      summary: ATS candidate search (recruiter)
+      operationId: recruiterCandidateSearch
+      parameters:
+        - name: skill
+          in: query
+          schema:
+            type: string
+          description: Filter by skill name (case-insensitive substring)
+        - name: eeStatus
+          in: query
+          schema:
+            type: string
+          description: Filter by EE status (e.g. "African Male")
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Candidates retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/RecruiterCandidateSearchResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Recruiter Candidate Profile ────────────────────────────────────────────
+  /api/v1/candidates/{candidateId}/profile:
+    get:
+      tags: [Candidate Profile]
+      summary: Get full candidate profile (recruiter view)
+      operationId: getRecruiterCandidateProfile
+      parameters:
+        - $ref: '#/components/parameters/CandidateId'
+      responses:
+        '200':
+          description: Candidate profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/RecruiterCandidateProfile'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── Legacy paths (deprecated) ──────────────────────────────────────────────
+  /candidate/{userId}/dashboard:
+    get:
+      tags: [Candidate Dashboard]
+      summary: Get candidate dashboard (legacy — prefer /candidates/dashboard)
+      operationId: getCandidateDashboardLegacy
+      deprecated: true
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Dashboard data retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CandidateDashboard'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /candidate/buildmycv:
+    get:
+      tags: [CV Build]
+      summary: Get Build My CV data (legacy — prefer /candidates/cv-build/)
+      operationId: getCvBuilderLegacy
+      deprecated: true
+      responses:
+        '200':
+          description: CV builder data
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [CV Build]
+      summary: Create or update Build My CV (legacy)
+      operationId: postCvBuilderLegacy
+      deprecated: true
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CvBuilderBody'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      tags: [CV Build]
+      summary: Partially update Build My CV (legacy)
+      operationId: putCvBuilderLegacy
+      deprecated: true
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CvBuilderBody'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CvBuilderRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /candidate/{resumeId}/preview:
+    get:
+      tags: [Resume]
+      summary: Get CV preview URL (legacy — prefer /candidates/cv-build/)
+      operationId: getResumePreview
+      deprecated: true
+      parameters:
+        - $ref: '#/components/parameters/ResumeId'
+      responses:
+        '200':
+          description: Preview URL generated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ResumePreview'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /candidate/{resumeId}/download:
+    get:
+      tags: [Resume]
+      summary: Get CV download URL (legacy)
+      operationId: getResumeDownload
+      deprecated: true
+      parameters:
+        - $ref: '#/components/parameters/ResumeId'
+      responses:
+        '200':
+          description: Download URL generated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ResumeDownload'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /candidate/{candidateId}/recommended-jobs:
+    get:
+      tags: [Recommended Positions]
+      summary: Get recommended jobs by candidateId (legacy — prefer /candidates/recommended-positions)
+      operationId: getRecommendedJobs
+      deprecated: true
+      parameters:
+        - $ref: '#/components/parameters/CandidateId'
+      responses:
+        '200':
+          description: Recommended jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/RecommendedPositionsResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+# ─────────────────────────────────────────────────────────────────────────────
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  # ── Reusable parameters ────────────────────────────────────────────────────
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: USR100001
+      description: User ID or the literal string `me` to resolve to the authenticated user
+
+    CandidateId:
+      name: candidateId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: CAND100001
+      description: Unique candidate identifier
+
+    ResumeId:
+      name: resumeId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: RES100001
+      description: Unique resume identifier
+
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: APP-MS-001
+      description: Unique application identifier
+
+  # ── Reusable responses ─────────────────────────────────────────────────────
+  responses:
+    Unauthorized:
+      description: Missing or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            success: false
+            statusCode: 401
+            message: Unauthorized
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            success: false
+            statusCode: 404
+            message: Resource not found.
+
+  # ── Schemas ────────────────────────────────────────────────────────────────
+  schemas:
+
+    # ── Shared envelopes ─────────────────────────────────────────────────────
+    SuccessEnvelope:
+      type: object
+      required: [success, statusCode, message]
+      properties:
+        success:
+          type: boolean
+          example: true
+        statusCode:
+          type: integer
+          example: 200
+        message:
+          type: string
+
+    ErrorEnvelope:
+      type: object
+      required: [success, statusCode, message]
+      properties:
+        success:
+          type: boolean
+          example: false
+        statusCode:
+          type: integer
+          example: 404
+        message:
+          type: string
+
+    Pagination:
+      type: object
+      required: [page, pageSize, total, totalPages]
+      properties:
+        page:
+          type: integer
+          example: 1
+        pageSize:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 87
+        totalPages:
+          type: integer
+          example: 5
+
+    # ── Application pipeline enum values ─────────────────────────────────────
+    PipelineStageEnum:
+      type: string
+      enum: [APPLIED, SCREENING, ASSESSMENT, INTERVIEW, SHORTLISTED, OFFER]
+
+    InternalStageEnum:
+      type: string
+      enum: [Inbound, Screening, Assessment, Interview, Shortlisted, Offer, Placed, Closed]
+
+    # ── Language entry ────────────────────────────────────────────────────────
+    LanguageEntry:
+      type: object
+      required: [language, proficiency]
+      properties:
+        language:
+          type: string
+          example: English
+        proficiency:
+          type: string
+          example: Native
+
+    # ── Education ─────────────────────────────────────────────────────────────
+    SecondaryEducation:
+      type: object
+      required: [schoolName, qualification, yearCompleted]
+      properties:
+        schoolName:
+          type: string
+          example: High School of Gauteng
+        qualification:
+          type: string
+          example: Grade 12
+        yearCompleted:
+          type: integer
+          example: 2012
+
+    TertiaryEducation:
+      type: object
+      required: [institution, qualification]
+      properties:
+        institution:
+          type: string
+          example: University of the Witwatersrand
+        qualification:
+          type: string
+          example: BSc Computer Science
+        fieldOfStudy:
+          type: string
+          example: Computer Science
+        yearCompleted:
+          type: integer
+          nullable: true
+          example: 2016
+
+    EducationRecord:
+      type: object
+      properties:
+        secondaryEducation:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryEducation'
+        tertiaryEducation:
+          type: array
+          items:
+            $ref: '#/components/schemas/TertiaryEducation'
+
+    # ── Career history / experience ───────────────────────────────────────────
+    CareerHistoryEntry:
+      type: object
+      required: [company, jobTitle, startDate]
+      properties:
+        company:
+          type: string
+          example: Accenture
+        jobTitle:
+          type: string
+          example: Senior Software Engineer
+        startDate:
+          type: string
+          example: "2020-03"
+        endDate:
+          type: string
+          nullable: true
+          example: "Present"
+        responsibilities:
+          type: string
+          example: Lead frontend development using React and Node.js.
+
+    ExperienceEntry:
+      allOf:
+        - $ref: '#/components/schemas/CareerHistoryEntry'
+        - type: object
+          properties:
+            experienceId:
+              type: string
+              example: exp-001
+            current:
+              type: boolean
+              example: true
+            skills:
+              type: array
+              items:
+                type: string
+              example: [React, Node.js, TypeScript, AWS]
+
+    # ── Personal details ──────────────────────────────────────────────────────
+    PersonalDetails:
+      type: object
+      required: [firstName, lastName, email]
+      properties:
+        firstName:
+          type: string
+          example: Michael
+        lastName:
+          type: string
+          example: Smith
+        email:
+          type: string
+          format: email
+          example: michael.smith@email.com
+        mobileNumber:
+          type: string
+          example: "+27821234567"
+        race:
+          type: string
+          example: African
+        gender:
+          type: string
+          example: Male
+        disabilityStatus:
+          type: string
+          example: None
+        nationality:
+          type: string
+          example: South African
+        location:
+          type: string
+          example: Johannesburg
+        currentCompany:
+          type: string
+          example: Accenture
+        currentPosition:
+          type: string
+          example: Senior Software Engineer
+        noticePeriod:
+          type: string
+          example: 1 month
+        idNumber:
+          type: string
+          example: "9001015800086"
+        eeStatus:
+          type: string
+          nullable: true
+          example: African Male
+        profileImageUrl:
+          type: string
+          example: https://mock-cdn.skillsmine.com/profiles/USR100001/photo.jpg
+        thumbnailUrl:
+          type: string
+          example: https://mock-cdn.skillsmine.com/profiles/USR100001/thumb.jpg
+        linkedinUrl:
+          type: string
+          example: https://linkedin.com/in/michael-smith-dev
+        portfolioUrl:
+          type: string
+          example: ""
+
+    # ── Desired job ───────────────────────────────────────────────────────────
+    DesiredJob:
+      type: object
+      properties:
+        jobTitle:
+          type: string
+          example: Senior Software Engineer
+        jobType:
+          type: string
+          example: Permanent
+        workType:
+          type: string
+          example: Hybrid
+        salaryExpectation:
+          type: number
+          example: 85000
+        currency:
+          type: string
+          example: ZAR
+        availableFrom:
+          type: string
+          format: date
+          example: "2025-02-01"
+        industries:
+          type: array
+          items:
+            type: string
+          example: [Technology, Financial Services]
+        locations:
+          type: array
+          items:
+            type: string
+          example: [Johannesburg, Remote]
+
+    # ── Landing ───────────────────────────────────────────────────────────────
+    CandidateLanding:
+      type: object
+      required: [stats, featuredJobs]
+      properties:
+        stats:
+          type: object
+          required: [totalJobs, totalCandidates, totalPlacements]
+          properties:
+            totalJobs:
+              type: integer
+              example: 42
+            totalCandidates:
+              type: integer
+              example: 312
+            totalPlacements:
+              type: integer
+              example: 87
+        featuredJobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeaturedJob'
+
+    FeaturedJob:
+      type: object
+      required: [jobId, title, company, location, workType, employmentType]
+      properties:
+        jobId:
+          type: string
+          example: j001
+        title:
+          type: string
+          example: Senior React Developer
+        company:
+          type: string
+          example: Standard Bank
+        location:
+          type: string
+          example: Johannesburg, Gauteng
+        workType:
+          type: string
+          example: Hybrid
+        employmentType:
+          type: string
+          example: Permanent
+        salaryRange:
+          type: string
+          example: R70 000 – R95 000
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, TypeScript]
+        postedDate:
+          type: string
+          format: date
+          example: "2024-10-15"
+
+    # ── Application summary ───────────────────────────────────────────────────
+    ApplicationSummary:
+      type: object
+      required: [applicationId, jobId, jobTitle, company, currentStage, appliedDate, matchScore]
+      properties:
+        applicationId:
+          type: string
+          example: APP-MS-001
+        jobId:
+          type: string
+          example: j001
+        mandateId:
+          type: string
+          nullable: true
+          example: MND001
+        recruiterId:
+          type: string
+          nullable: true
+          example: r001
+        jobTitle:
+          type: string
+          example: Senior React Developer
+        company:
+          type: string
+          example: Standard Bank
+        currentStage:
+          $ref: '#/components/schemas/InternalStageEnum'
+        appliedDate:
+          type: string
+          format: date
+          example: "2024-10-16"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2024-11-10T09:00:00Z"
+        matchScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 92
+
+    # ── Dashboard ─────────────────────────────────────────────────────────────
+    DashboardApplicationCard:
+      type: object
+      required: [id, job, stage, statusMessage, pipeline]
+      properties:
+        id:
+          type: string
+          example: APP-MS-001
+        job:
+          type: object
+          required: [id, title, company]
+          properties:
+            id:
+              type: string
+              example: j001
+            title:
+              type: string
+              example: Senior React Developer
+            company:
+              type: string
+              example: Standard Bank
+        stage:
+          $ref: '#/components/schemas/PipelineStageEnum'
+        statusMessage:
+          type: string
+          example: You have been selected for an interview.
+        pipeline:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStageEnum'
+
+    CandidateDashboard:
+      type: object
+      required: [id, candidateId, summary, activity, applications, quickLinks]
+      properties:
+        id:
+          type: string
+          description: User ID
+          example: USR100001
+        candidateId:
+          type: string
+          nullable: true
+          example: CAND100001
+        summary:
+          type: object
+          required: [totalApplications, submitted, inProgress, successful]
+          properties:
+            totalApplications:
+              type: integer
+              example: 3
+            submitted:
+              type: integer
+              example: 0
+            inProgress:
+              type: integer
+              example: 2
+            successful:
+              type: integer
+              example: 0
+        activity:
+          type: object
+          required: [jobsAppliedThisWeek, recruiterProfileViewsThisWeek, coursesCompletedThisWeek]
+          properties:
+            jobsAppliedThisWeek:
+              type: integer
+              example: 2
+            recruiterProfileViewsThisWeek:
+              type: integer
+              example: 3
+            coursesCompletedThisWeek:
+              type: integer
+              example: 0
+        applications:
+          type: array
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/DashboardApplicationCard'
+        quickLinks:
+          type: array
+          items:
+            type: string
+          example: [CV_BUILDER, SAVED_JOBS, LATEST_JOBS, RECOMMENDED_JOBS]
+
+    # ── Candidate Self-Profile ────────────────────────────────────────────────
+    CandidateProfileFull:
+      type: object
+      required: [candidateId, userId, personalDetails]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        userId:
+          type: string
+          example: USR100001
+        accountStatus:
+          type: string
+          example: ACTIVE
+        profileCompleted:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 85
+        personalDetails:
+          $ref: '#/components/schemas/PersonalDetails'
+        desiredJob:
+          $ref: '#/components/schemas/DesiredJob'
+        education:
+          $ref: '#/components/schemas/EducationRecord'
+        experience:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExperienceEntry'
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, Node.js, TypeScript, AWS]
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/LanguageEntry'
+        resume:
+          $ref: '#/components/schemas/ResumeRef'
+          nullable: true
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationSummary'
+        savedJobs:
+          type: array
+          items:
+            type: string
+          description: Array of saved job IDs
+          example: [j001, j003]
+
+    # ── CV Builder ────────────────────────────────────────────────────────────
+    CvBuilderPersonalDetails:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Michael
+        lastName:
+          type: string
+          example: Smith
+        race:
+          type: string
+          example: African
+        gender:
+          type: string
+          example: Male
+        disabilityStatus:
+          type: string
+          example: None
+        nationality:
+          type: string
+          example: South African
+        location:
+          type: string
+          example: Johannesburg
+        currentCompany:
+          type: string
+          example: Accenture
+        currentPosition:
+          type: string
+          example: Senior Software Engineer
+        noticePeriod:
+          type: string
+          example: 1 month
+
+    CvBuilderBody:
+      type: object
+      description: >
+        Partial update body. Only the sections present in the request body are
+        merged; absent sections are left unchanged.
+      properties:
+        personalDetails:
+          $ref: '#/components/schemas/CvBuilderPersonalDetails'
+        careerHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/CareerHistoryEntry'
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, Node.js, TypeScript]
+        education:
+          $ref: '#/components/schemas/EducationRecord'
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/LanguageEntry'
+        extractionStatus:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+          example: COMPLETED
+        validation:
+          type: array
+          items:
+            type: object
+
+    CvBuilderRecord:
+      allOf:
+        - $ref: '#/components/schemas/CvBuilderBody'
+        - type: object
+          required: [userId, source, extractionStatus, lastModified, createdAt]
+          properties:
+            userId:
+              type: string
+              example: USR100001
+            source:
+              type: string
+              example: BuildCV
+            createdAt:
+              type: string
+              format: date-time
+              nullable: true
+              example: "2024-11-01T14:30:00Z"
+            lastModified:
+              type: string
+              format: date-time
+              nullable: true
+              example: "2024-11-05T09:15:00Z"
+
+    # ── Resume preview / download ─────────────────────────────────────────────
+    ResumePreview:
+      type: object
+      required: [resumeId, previewUrl, generatedAt, expiresIn]
+      properties:
+        resumeId:
+          type: string
+          example: RES100001
+        previewUrl:
+          type: string
+          format: uri
+          example: https://mock-cdn.skillsmine.com/resumes/RES100001/preview.pdf
+        generatedAt:
+          type: string
+          format: date-time
+          example: "2025-01-15T10:00:00Z"
+        expiresIn:
+          type: integer
+          description: Seconds until the URL expires
+          example: 3600
+
+    ResumeDownload:
+      type: object
+      required: [resumeId, downloadUrl, filename, generatedAt, expiresIn]
+      properties:
+        resumeId:
+          type: string
+          example: RES100001
+        downloadUrl:
+          type: string
+          format: uri
+          example: https://mock-cdn.skillsmine.com/resumes/RES100001/download.pdf
+        filename:
+          type: string
+          example: Michael-Smith-Senior-Software-Engineer-CV.pdf
+        generatedAt:
+          type: string
+          format: date-time
+          example: "2025-01-15T10:00:00Z"
+        expiresIn:
+          type: integer
+          description: Seconds until the URL expires
+          example: 900
+
+    ResumeRef:
+      type: object
+      required: [resumeId, previewUrl, downloadUrl, updatedAt]
+      properties:
+        resumeId:
+          type: string
+          example: RES100001
+        previewUrl:
+          type: string
+          format: uri
+          example: https://mock-cdn.skillsmine.com/resumes/RES100001/preview.pdf
+        downloadUrl:
+          type: string
+          format: uri
+          example: https://mock-cdn.skillsmine.com/resumes/RES100001/download.pdf
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2024-11-01T14:30:00Z"
+
+    # ── Recommended Positions ─────────────────────────────────────────────────
+    RecommendedJob:
+      type: object
+      required: [jobId, title, company, matchScore]
+      properties:
+        jobId:
+          type: string
+          example: j001
+        title:
+          type: string
+          example: Senior React Developer
+        company:
+          type: string
+          example: Standard Bank
+        location:
+          type: string
+          example: Johannesburg
+        workType:
+          type: string
+          example: Hybrid
+        salaryRange:
+          type: string
+          example: R70 000 – R90 000
+        matchScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 88
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, TypeScript, Node.js]
+        postedDate:
+          type: string
+          format: date
+          example: "2024-10-01"
+
+    RecommendedPositionsResult:
+      type: object
+      required: [candidateId, jobs, total]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendedJob'
+        total:
+          type: integer
+          example: 6
+
+    # ── Kept for backwards compatibility with older clients ───────────────────
+    RecommendedJobsResult:
+      $ref: '#/components/schemas/RecommendedPositionsResult'
+
+    # ── Saved Jobs ────────────────────────────────────────────────────────────
+    SavedJob:
+      type: object
+      required: [jobId, title, company]
+      properties:
+        jobId:
+          type: string
+          example: j001
+        title:
+          type: string
+          example: Senior React Developer
+        company:
+          type: string
+          example: Standard Bank
+        location:
+          type: string
+          example: Johannesburg, Gauteng
+        workType:
+          type: string
+          example: Hybrid
+        employmentType:
+          type: string
+          example: Permanent
+        salaryRange:
+          type: string
+          example: R70 000 – R95 000
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, TypeScript]
+        postedDate:
+          type: string
+          format: date
+          example: "2024-10-15"
+        savedAt:
+          type: string
+          format: date-time
+          example: "2025-01-10T08:00:00Z"
+
+    SavedJobsResult:
+      type: object
+      required: [candidateId, jobs, total]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SavedJob'
+        total:
+          type: integer
+          example: 2
+
+    SaveJobRequest:
+      type: object
+      required: [jobId]
+      properties:
+        jobId:
+          type: string
+          example: j001
+
+    # ── AI Actions ────────────────────────────────────────────────────────────
+    AiAction:
+      type: object
+      required: [actionId, type, label]
+      properties:
+        actionId:
+          type: string
+          example: ai-action-001
+        type:
+          type: string
+          enum: [MATCH_SUMMARY, SKILL_GAP, CAREER_NUDGE, SEND_MATCHED_JOBS]
+          example: MATCH_SUMMARY
+        label:
+          type: string
+          example: "Your profile is 88% matched to 3 open roles"
+        description:
+          type: string
+          example: "Update your skills to improve match score."
+        payload:
+          type: object
+          nullable: true
+          additionalProperties: true
+
+    AiActionsResult:
+      type: object
+      required: [candidateId, actions]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiAction'
+
+    # ── CV Upload ─────────────────────────────────────────────────────────────
+    CvUploadValidation:
+      type: object
+      required: [isComplete, missingFields, warnings]
+      properties:
+        isComplete:
+          type: boolean
+          example: true
+        missingFields:
+          type: array
+          items:
+            type: string
+          example: []
+        warnings:
+          type: array
+          items:
+            type: string
+          example: []
+
+    CvUploadResult:
+      type: object
+      required: [applicationId, documentId, extractionStatus, uploadedAt]
+      properties:
+        applicationId:
+          type: string
+          example: APP-MS-001
+        documentId:
+          type: string
+          example: DOC45231
+        extractionStatus:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+          example: COMPLETED
+        personalDetails:
+          type: object
+          properties:
+            firstName:
+              type: string
+              example: Michael
+            lastName:
+              type: string
+              example: Smith
+            email:
+              type: string
+              format: email
+              example: michael.smith@email.com
+            mobileNumber:
+              type: string
+              example: "+27821234567"
+            location:
+              type: string
+              example: Johannesburg, Gauteng
+            linkedinUrl:
+              type: string
+              example: https://linkedin.com/in/michael-smith-dev
+        careerHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/CareerHistoryEntry'
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, Node.js, TypeScript, AWS, PostgreSQL, GraphQL]
+        education:
+          type: array
+          items:
+            type: object
+            properties:
+              institution:
+                type: string
+                example: University of the Witwatersrand
+              qualification:
+                type: string
+                example: BSc Computer Science
+              year:
+                type: integer
+                example: 2016
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/LanguageEntry'
+        validation:
+          $ref: '#/components/schemas/CvUploadValidation'
+        uploadedAt:
+          type: string
+          format: date-time
+          example: "2025-01-15T10:00:00Z"
+
+    # ── Candidate list (GET /candidates) ──────────────────────────────────────
+    CandidateDocument:
+      type: object
+      required: [docId, type, uploadedAt]
+      properties:
+        docId:
+          type: string
+          example: doc-001
+        type:
+          type: string
+          example: CV
+        uploadedAt:
+          type: string
+          format: date-time
+          example: "2024-10-15T09:00:00Z"
+
+    CandidateEducationEntry:
+      type: object
+      required: [institution, qualification, year]
+      properties:
+        institution:
+          type: string
+          example: University of the Witwatersrand
+        qualification:
+          type: string
+          example: BSc Computer Science
+        year:
+          type: integer
+          example: 2016
+
+    CandidateExperienceEntry:
+      type: object
+      required: [company, title, from, to]
+      properties:
+        company:
+          type: string
+          example: Accenture
+        title:
+          type: string
+          example: Senior Software Engineer
+        from:
+          type: string
+          example: "2020-03"
+        to:
+          type: string
+          example: Present
+
+    CandidateListItem:
+      type: object
+      required: [candidateId, fullName, email, profileComplete]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        fullName:
+          type: string
+          example: Michael Smith
+        email:
+          type: string
+          format: email
+          example: michael.smith@email.com
+        phone:
+          type: string
+          example: "+27821234567"
+        location:
+          type: string
+          example: Johannesburg
+        currentTitle:
+          type: string
+          example: Senior Software Engineer
+        currentCompany:
+          type: string
+          example: Accenture
+        experienceYears:
+          type: integer
+          example: 8
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, Node.js, TypeScript]
+        education:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateEducationEntry'
+        experience:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateExperienceEntry'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateDocument'
+        languages:
+          type: array
+          items:
+            type: string
+          example: [English, Zulu]
+        profileComplete:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 85
+        applications:
+          type: array
+          description: Array of application IDs
+          items:
+            type: string
+          example: [APP-MS-001, APP-MS-002]
+
+    CandidateListResult:
+      type: object
+      required: [candidates, pagination]
+      properties:
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateListItem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # ── Recruiter candidate search ─────────────────────────────────────────────
+    RecruiterCandidateSearchItem:
+      type: object
+      required: [candidateId, userId, firstName, lastName, email]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        userId:
+          type: string
+          example: USR100001
+        firstName:
+          type: string
+          example: Michael
+        lastName:
+          type: string
+          example: Smith
+        email:
+          type: string
+          format: email
+          example: michael.smith@email.com
+        location:
+          type: string
+          example: Johannesburg
+        eeStatus:
+          type: string
+          nullable: true
+          example: African Male
+        currentTitle:
+          type: string
+          example: Senior Software Engineer
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, TypeScript, Node.js]
+        profileCompleted:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 85
+        matchScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 78
+
+    RecruiterCandidateSearchResult:
+      type: object
+      required: [candidates, pagination]
+      properties:
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecruiterCandidateSearchItem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # ── Recruiter full candidate profile ──────────────────────────────────────
+    RecruiterApplicationEntry:
+      type: object
+      required: [applicationId, jobId, jobTitle, company, currentStage, appliedDate, matchScore]
+      properties:
+        applicationId:
+          type: string
+          example: APP-MS-001
+        jobId:
+          type: string
+          example: j001
+        jobTitle:
+          type: string
+          example: Senior React Developer
+        company:
+          type: string
+          example: Standard Bank
+        currentStage:
+          $ref: '#/components/schemas/InternalStageEnum'
+        appliedDate:
+          type: string
+          format: date
+          example: "2024-10-16"
+        matchScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 92
+
+    RecruiterCandidateProfile:
+      type: object
+      required: [candidateId, userId, personalDetails]
+      properties:
+        candidateId:
+          type: string
+          example: CAND100001
+        userId:
+          type: string
+          example: USR100001
+        accountStatus:
+          type: string
+          example: ACTIVE
+        profileCompleted:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 85
+        personalDetails:
+          $ref: '#/components/schemas/PersonalDetails'
+        desiredJob:
+          $ref: '#/components/schemas/DesiredJob'
+        education:
+          $ref: '#/components/schemas/EducationRecord'
+        experience:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExperienceEntry'
+        skills:
+          type: array
+          items:
+            type: string
+          example: [React, Node.js, TypeScript, AWS]
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/LanguageEntry'
+        resume:
+          $ref: '#/components/schemas/ResumeRef'
+          nullable: true
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecruiterApplicationEntry'
+        matchScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 82
+

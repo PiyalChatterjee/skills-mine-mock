@@ -16,12 +16,20 @@
  *                             POST /api/v1/admin/staff-invitations
  *                             GET  /api/v1/users/me
  *   routes/users.js           GET/PUT /users/:userId | POST/DELETE /users/:userId/profile-photo
- *   routes/candidates.js      GET /candidate/:userId/dashboard
- *                             POST /candidate/buildmycv
- *                             GET /candidate/:resumeId/preview  | /download
- *                             GET /candidate/:candidateId/recommended-jobs
+ *   routes/candidates.js      GET  /candidates/landing           (public)
+ *                             GET  /candidates/dashboard
+ *                             GET  /candidates/profile/
+ *                             GET|POST|PUT /candidates/cv-build/
+ *                             GET  /candidates/recommended-positions
+ *                             GET|POST /candidates/saved-jobs
+ *                             GET  /candidates/ai-actions/
+ *                             GET  /candidates                   (list)
+ *                             GET  /candidate/:userId/dashboard  (legacy)
+ *                             GET|POST|PUT /candidate/buildmycv  (legacy)
+ *                             GET  /candidate/:resumeId/preview  (legacy)
+ *                             GET  /candidate/:resumeId/download (legacy)
+ *                             GET  /candidate/:candidateId/recommended-jobs (legacy)
  *                             POST /applications/:applicationId/cv/upload
- *                             GET /candidates
  *   routes/jobs.js            GET  /jobs (public)
  *                             GET  /jobs/:jobId
  *                             POST /jobs/:jobId/save
@@ -69,6 +77,13 @@ import {
   cvBuilderRouter,
   applicationCvRouter,
   candidateListRouter,
+  candidateLandingRouter,
+  candidateSelfDashboardRouter,
+  candidateProfileRouter,
+  candidateCvBuildRouter,
+  candidateRecommendedPositionsRouter,
+  candidateSavedJobsRouter,
+  candidateAiActionsRouter,
 }                                                              from './routes/candidates.js';
 import {
   jobsRouter,
@@ -358,18 +373,25 @@ app.use('/api/v1/users', usersV1Router(routeCtx));
 app.use('/users', usersRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
-//  Candidate (dashboard, CV builder, recommendations)
+//  Candidates  (new contract: /candidates/*)
+// ─────────────────────────────────────────────────────────
+app.use('/candidates', candidateLandingRouter(routeCtx));           // GET  /candidates/landing        (public)
+app.use('/candidates', candidateSelfDashboardRouter(routeCtx));     // GET  /candidates/dashboard
+app.use('/candidates', candidateProfileRouter(routeCtx));           // GET  /candidates/profile/
+app.use('/candidates', candidateCvBuildRouter(routeCtx));           // GET|POST|PUT /candidates/cv-build/
+app.use('/candidates', candidateRecommendedPositionsRouter(routeCtx)); // GET /candidates/recommended-positions
+app.use('/candidates', candidateSavedJobsRouter(routeCtx));         // GET|POST /candidates/saved-jobs
+app.use('/candidates', candidateAiActionsRouter(routeCtx));         // GET  /candidates/ai-actions/
+app.use('/candidates', candidateListRouter(routeCtx));              // GET  /candidates  (list, must be last)
+
+// ─────────────────────────────────────────────────────────
+//  Candidate (legacy paths: /candidate/*)
 // ─────────────────────────────────────────────────────────
 app.use('/candidate', candidateDashboardRouter(routeCtx));
 app.use('/candidate', cvBuilderRouter(routeCtx));
 
 // Applications CV upload: POST /applications/:applicationId/cv/upload
 app.use('/applications', applicationCvRouter(routeCtx));
-
-// ─────────────────────────────────────────────────────────
-//  Candidate list  (GET /candidates)
-// ─────────────────────────────────────────────────────────
-app.use('/candidates', candidateListRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Jobs + Opportunities

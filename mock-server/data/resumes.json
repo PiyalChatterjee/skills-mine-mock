@@ -85,13 +85,17 @@
       }
     ],
     "skills": ["Product Management", "Agile", "Roadmap Planning", "User Research", "SQL", "JIRA"],
-    "education": [
-      {
-        "institution": "University of Cape Town",
-        "qualification": "BBusSci Information Systems",
-        "year": 2017
-      }
-    ],
+    "education": {
+      "secondaryEducation": [],
+      "tertiaryEducation": [
+        {
+          "institution": "University of Cape Town",
+          "qualification": "BBusSci Information Systems",
+          "fieldOfStudy": "Information Systems",
+          "yearCompleted": 2017
+        }
+      ]
+    },
     "languages": [
       { "language": "English", "proficiency": "Native" },
       { "language": "Afrikaans", "proficiency": "Basic" }

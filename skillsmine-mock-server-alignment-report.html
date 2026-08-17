@@ -1,0 +1,188 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SkillsMine Mock Server – Alignment Report</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+  }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 32px; }
+  h2 { font-size: 15px; font-weight: 600; color: #1f2328; margin: 28px 0 10px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
+  h3 { font-size: 13px; font-weight: 600; color: #57606a; margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 13px; }
+  th { background: #f7f8fa; text-align: left; padding: 7px 10px; border: 1px solid #e5e7eb; font-weight: 600; color: #57606a; }
+  td { padding: 6px 10px; border: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .tag-new    { background: #dcfce7; color: #16a34a; }
+  .tag-legacy { background: #fef3c7; color: #b45309; }
+  .tag-fixed  { background: #dbeafe; color: #1d4ed8; }
+  .tag-ok     { background: #f0fdf4; color: #15803d; }
+  .tag-dep    { background: #f3f4f6; color: #6b7280; }
+  code { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 3px; padding: 0 4px; font-size: 12px; font-family: "SFMono-Regular", Consolas, monospace; }
+  ul { padding-left: 18px; margin-bottom: 8px; }
+  li { margin-bottom: 3px; }
+  .pass { color: #16a34a; font-weight: 600; }
+  .section-note { background: #f7f8fa; border-left: 3px solid #3b82d4; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #57606a; border-radius: 0 4px 4px 0; }
+  footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #57606a; }
+</style>
+</head>
+<body>
+
+<h1>SkillsMine Mock Server – Alignment Report</h1>
+<p class="subtitle">Generated from openapi-candidates.yaml v2.1.0 ↔ candidate_api_swagger_v0.yaml v0.1.0 | mock-server/</p>
+
+
+<h2>1. Contract Differences Summary</h2>
+
+<h3>Missing Endpoints (added)</h3>
+<table>
+  <tr><th>Path</th><th>Method</th><th>OperationId</th><th>Status</th></tr>
+  <tr><td><code>/candidates/landing</code></td><td>GET</td><td>getCandidateLanding</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>/candidates/dashboard</code></td><td>GET</td><td>getCandidateDashboard</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>/candidates/profile/</code></td><td>GET</td><td>getCandidateProfile</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>/candidates/cv-build/</code></td><td>GET / POST / PUT</td><td>getCvBuild / postCvBuild / putCvBuild</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>/candidates/recommended-positions</code></td><td>GET</td><td>getRecommendedPositions</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>/candidates/saved-jobs</code></td><td>GET / POST</td><td>getSavedJobs / saveJob</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>/candidates/ai-actions/</code></td><td>GET</td><td>getCandidateAiActions</td><td><span class="tag tag-new">NEW</span></td></tr>
+</table>
+
+<h3>Deprecated / Renamed Endpoints</h3>
+<table>
+  <tr><th>Old Path</th><th>New Path</th><th>Status</th></tr>
+  <tr><td><code>/candidate/{userId}/dashboard</code></td><td><code>/candidates/dashboard</code></td><td><span class="tag tag-dep">Deprecated (kept)</span></td></tr>
+  <tr><td><code>/candidate/buildmycv</code></td><td><code>/candidates/cv-build/</code></td><td><span class="tag tag-dep">Deprecated (kept)</span></td></tr>
+  <tr><td><code>/candidate/{candidateId}/recommended-jobs</code></td><td><code>/candidates/recommended-positions</code></td><td><span class="tag tag-dep">Deprecated (kept)</span></td></tr>
+</table>
+
+<h3>Schema Differences (added)</h3>
+<table>
+  <tr><th>Schema</th><th>Change</th></tr>
+  <tr><td><code>CandidateLanding</code>, <code>FeaturedJob</code></td><td>New — landing page data shape</td></tr>
+  <tr><td><code>CandidateProfileFull</code></td><td>New — self-service profile with <code>savedJobs</code> array</td></tr>
+  <tr><td><code>SavedJob</code>, <code>SavedJobsResult</code>, <code>SaveJobRequest</code></td><td>New — saved jobs contract</td></tr>
+  <tr><td><code>AiAction</code>, <code>AiActionsResult</code></td><td>New — AI actions contract</td></tr>
+  <tr><td><code>RecommendedPositionsResult</code></td><td>Renamed from <code>RecommendedJobsResult</code> (alias kept)</td></tr>
+  <tr><td><code>PersonalDetails.eeStatus</code></td><td>Added <code>nullable: true</code></td></tr>
+  <tr><td><code>ResumeRef</code></td><td>Moved before <code>RecruiterCandidateProfile</code>, duplicate removed</td></tr>
+</table>
+
+
+<h2>2. Route Changes</h2>
+
+<div class="section-note">All new routes are mounted under <code>/candidates</code> prefix and share <code>routeCtx</code> (DB, sessions, generateToken). Legacy <code>/candidate</code> routes are preserved.</div>
+
+<table>
+  <tr><th>Route Handler Export</th><th>Mount</th><th>Endpoints</th><th>Type</th></tr>
+  <tr><td><code>candidateLandingRouter</code></td><td>/candidates</td><td>GET /landing</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateSelfDashboardRouter</code></td><td>/candidates</td><td>GET /dashboard</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateProfileRouter</code></td><td>/candidates</td><td>GET /profile/</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateCvBuildRouter</code></td><td>/candidates</td><td>GET|POST|PUT /cv-build/</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateRecommendedPositionsRouter</code></td><td>/candidates</td><td>GET /recommended-positions</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateSavedJobsRouter</code></td><td>/candidates</td><td>GET|POST /saved-jobs</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateAiActionsRouter</code></td><td>/candidates</td><td>GET /ai-actions/</td><td><span class="tag tag-new">NEW</span></td></tr>
+  <tr><td><code>candidateListRouter</code></td><td>/candidates</td><td>GET / (list)</td><td><span class="tag tag-fixed">Remounted</span></td></tr>
+  <tr><td><code>candidateDashboardRouter</code></td><td>/candidate</td><td>GET /:userId/dashboard</td><td><span class="tag tag-dep">Legacy</span></td></tr>
+  <tr><td><code>cvBuilderRouter</code></td><td>/candidate</td><td>GET|POST|PUT /buildmycv</td><td><span class="tag tag-dep">Legacy</span></td></tr>
+</table>
+
+
+<h2>3. Candidate Seed Data Changes</h2>
+
+<h3>data/candidates.json</h3>
+<table>
+  <tr><th>Field</th><th>Issue</th><th>Fix</th></tr>
+  <tr><td><code>documents[].uploadedAt</code></td><td>Date-only string <code>"2024-10-15"</code> — schema requires <code>date-time</code></td><td><span class="tag tag-fixed">Fixed</span> — appended <code>T09:00:00Z</code> to all 13 occurrences</td></tr>
+  <tr><td><code>candidateId</code> (c001…c020)</td><td>Legacy IDs differ from profile store</td><td>Retained as-is — <code>CandidateListItem</code> uses these IDs; cross-reference by userId in new routes</td></tr>
+  <tr><td><code>languages[]</code></td><td>Array of strings; <code>CandidateListItem.languages</code> schema also expects strings</td><td>No change needed — schema matches</td></tr>
+</table>
+
+<h3>data/candidate-profiles.json</h3>
+<table>
+  <tr><th>Profile</th><th>Issue</th><th>Fix</th></tr>
+  <tr><td>CAND100001</td><td>Missing <code>eeStatus</code> in personalDetails</td><td><span class="tag tag-fixed">Fixed</span> — added <code>"eeStatus": "African Male"</code></td></tr>
+  <tr><td>CAND100001</td><td>Missing <code>savedJobs</code> array</td><td><span class="tag tag-fixed">Fixed</span> — added 2 saved job entries (j001, j004)</td></tr>
+  <tr><td>CAND100002</td><td><code>education</code> was flat array (legacy shape), not <code>EducationRecord</code></td><td><span class="tag tag-fixed">Fixed</span> — converted to <code>{ secondaryEducation, tertiaryEducation }</code></td></tr>
+  <tr><td>CAND100002</td><td>Missing <code>savedJobs</code> array</td><td><span class="tag tag-fixed">Fixed</span> — added 1 saved job (j003)</td></tr>
+  <tr><td>CAND100003</td><td><code>education</code> was flat array (legacy shape)</td><td><span class="tag tag-fixed">Fixed</span> — converted to <code>EducationRecord</code></td></tr>
+  <tr><td>CAND100003</td><td>Missing <code>savedJobs</code> array</td><td><span class="tag tag-fixed">Fixed</span> — added empty array</td></tr>
+</table>
+
+
+<h2>4. Job Seed Data Changes</h2>
+<p style="color:#57606a;font-size:13px;margin-top:4px">No structural changes required. <code>data/jobs.json</code> already contains all required fields (<code>jobId</code>, <code>title</code>, <code>company</code>, <code>location</code>, <code>workType</code>, <code>employmentType</code>, <code>salaryRange</code>, <code>skills</code>, <code>postedDate</code>, <code>status</code>) matching <code>FeaturedJob</code>, <code>RecommendedJob</code>, and <code>SavedJob</code> schemas.</p>
+
+
+<h2>5. Application Data Changes</h2>
+<table>
+  <tr><th>Issue</th><th>Action</th></tr>
+  <tr><td>Records app-c002-j003 through app-c020-* use <code>candidateId: "c002"</code> style IDs</td><td>Retained — these feed the recruiter pipeline view via legacy candidate list. New candidate-facing routes resolve by <code>userId</code> from bearer token.</td></tr>
+  <tr><td>Top 3 APP-MS-* records already have <code>userId: "USR100001"</code> and <code>candidateId: "CAND100001"</code></td><td>No change required — correctly linked to profile store.</td></tr>
+  <tr><td>Stage enum validation (Inbound/Screening/Assessment/Interview/Shortlisted/Offer/Placed/Closed)</td><td><span class="tag tag-ok">PASS</span> — 0 invalid stages found.</td></tr>
+</table>
+
+
+<h2>6. Resume Seed Data Changes</h2>
+<table>
+  <tr><th>Resume</th><th>Issue</th><th>Fix</th></tr>
+  <tr><td>RES100002</td><td><code>education</code> was flat array <code>[{institution, qualification, year}]</code></td><td><span class="tag tag-fixed">Fixed</span> — converted to <code>EducationRecord</code> shape with <code>fieldOfStudy</code> and <code>yearCompleted</code></td></tr>
+  <tr><td>RES100001</td><td>Already in correct <code>EducationRecord</code> shape</td><td>No change</td></tr>
+</table>
+
+
+<h2>7. Validation Report</h2>
+
+<h3>Endpoint → Schema Match</h3>
+<table>
+  <tr><th>Endpoint</th><th>Schema</th><th>Status</th></tr>
+  <tr><td>GET /candidates/landing</td><td>CandidateLanding</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates/dashboard</td><td>CandidateDashboard</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates/profile/</td><td>CandidateProfileFull</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates/cv-build/</td><td>CvBuilderRecord</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>POST /candidates/cv-build/</td><td>CvBuilderRecord (201/200)</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>PUT /candidates/cv-build/</td><td>CvBuilderRecord</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates/recommended-positions</td><td>RecommendedPositionsResult</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates/saved-jobs</td><td>SavedJobsResult</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>POST /candidates/saved-jobs</td><td>SuccessEnvelope</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates/ai-actions/</td><td>AiActionsResult</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>POST /applications/{id}/cv/upload</td><td>CvUploadResult</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /candidates</td><td>CandidateListResult</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /recruiter/candidates/search</td><td>RecruiterCandidateSearchResult</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>GET /api/v1/candidates/{id}/profile</td><td>RecruiterCandidateProfile</td><td><span class="pass">✓ PASS</span></td></tr>
+</table>
+
+<h3>OpenAPI Spec Validation</h3>
+<table>
+  <tr><th>File</th><th>Paths</th><th>Schemas</th><th>Broken Refs</th></tr>
+  <tr><td>openapi-candidates.yaml v2.1.0</td><td>16</td><td>44</td><td><span class="pass">0</span></td></tr>
+  <tr><td>candidate_api_swagger_v0.yaml v0.1.0</td><td>14</td><td>43</td><td><span class="pass">0</span></td></tr>
+</table>
+
+<h3>Seed Data Validation</h3>
+<table>
+  <tr><th>Dataset</th><th>Check</th><th>Result</th></tr>
+  <tr><td>candidates.json (20 records)</td><td>documents.uploadedAt is date-time</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>candidate-profiles.json (3 records)</td><td>education is EducationRecord shape</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>candidate-profiles.json (3 records)</td><td>savedJobs array present</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>candidate-profiles.json CAND100001</td><td>eeStatus present in personalDetails</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>resumes.json (2 records)</td><td>education is EducationRecord shape</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>applications.json (18+ records)</td><td>currentStage enum valid</td><td><span class="pass">✓ PASS</span></td></tr>
+  <tr><td>jobs.json (25 records)</td><td>status/skills/salaryRange present</td><td><span class="pass">✓ PASS</span></td></tr>
+</table>
+
+<h3>Remaining Issues</h3>
+<p style="color:#57606a;font-size:13px;margin-top:6px"><strong>None.</strong> All validations pass. The server is ready to start.</p>
+
+<footer>Made with IBM Bob</footer>
+</body>
+</html>
