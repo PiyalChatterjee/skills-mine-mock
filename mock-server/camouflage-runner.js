@@ -100,6 +100,7 @@ import { skillsRouter }                                        from './routes/sk
 import { mancoRouter, mancoRecruiterPerformanceRouter }        from './routes/manco.js';
 import { crmRouter }                                           from './routes/crm.js';
 import { jobPostsRouter }                                      from './routes/jobPosts.js';
+import { industriesRouter }                                    from './routes/industries.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
@@ -150,6 +151,7 @@ const DB = {
   mandates:          loadDataset('mandates'),
   recruiters:        loadDataset('recruiters'),
   clients:           loadDataset('crm-clients'),
+  industries:        loadDataset('industries'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -403,6 +405,11 @@ app.use('/opportunities', opportunitiesRouter(routeCtx));
 //  Skills
 // ─────────────────────────────────────────────────────────
 app.use('/skills', skillsRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Industries
+// ─────────────────────────────────────────────────────────
+app.use('/industries', industriesRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Recruiter
