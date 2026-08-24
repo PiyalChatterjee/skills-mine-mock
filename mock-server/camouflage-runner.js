@@ -49,11 +49,18 @@
  *                             GET  /api/manco/recruiters/:id/performance
  *   routes/crm.js             GET  /api/v1/crm/clients
  *                             POST /api/v1/crm/clients/:clientId/notes
+ *   routes/documents.js       POST   /documents/resume
+ *                             POST   /documents
+ *                             GET    /documents/owner/:ownerType/:ownerId
+ *                             GET    /documents/:documentId
+ *                             DELETE /documents/:documentId
+ *                             GET    /documents/:documentId/download
  *
  * Data files (loaded once at startup, mutated in-memory):
  *   data/users.json            data/candidate-profiles.json  data/resumes.json
  *   data/skills.json           data/jobs.json                data/applications.json
  *   data/mandates.json         data/recruiters.json          data/crm-clients.json
+ *   data/documents.json
  *
  * Run:  node mock-server/camouflage-runner.js
  */
@@ -100,8 +107,7 @@ import { skillsRouter }                                        from './routes/sk
 import { mancoRouter, mancoRecruiterPerformanceRouter }        from './routes/manco.js';
 import { crmRouter }                                           from './routes/crm.js';
 import { jobPostsRouter }                                      from './routes/jobPosts.js';
-import { industriesRouter }                                    from './routes/industries.js';
-
+import { industriesRouter }                                    from './routes/industries.js';import { documentsRouter }                                      from './routes/documents.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
 
@@ -153,6 +159,7 @@ const DB = {
   recruiters:        loadDataset('recruiters'),
   clients:           loadDataset('crm-clients'),
   industries:        loadDataset('industries'),
+  documents:         loadDataset('documents'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -449,6 +456,11 @@ app.use('/job-posts',     jobPostsRouter(routeCtx));
 app.use('/api/job-posts', jobPostsRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
+//  Documents  (document_api_v0.yaml — dummy S3-backed storage)
+// ─────────────────────────────────────────────────────────
+app.use('/documents', documentsRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
 //  Catch-all → .mock file fallback
 //  Only reached if no named route above matched.
 // ─────────────────────────────────────────────────────────
@@ -574,6 +586,14 @@ app.listen(PORT, () => {
   L('║  JOB POSTS                                                               ║');
   L('║    GET   /job-posts  (?status=&priority=&recruiterId=&search=)            ║');
   L('║    GET   /job-posts/:mandateId                                           ║');
+  L('╠══════════════════════════════════════════════════════════════════════════╣');
+  L('║  DOCUMENTS  (document_api_v0.yaml — dummy S3 storage)                    ║');
+  L('║    POST   /documents/resume                                              ║');
+  L('║    POST   /documents                                                     ║');
+  L('║    GET    /documents/owner/:ownerType/:ownerId                          ║');
+  L('║    GET    /documents/:documentId                                        ║');
+  L('║    DELETE /documents/:documentId                                        ║');
+  L('║    GET    /documents/:documentId/download                               ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L(`║  Delay ${DELAY_MIN}–${DELAY_MAX} ms · Error injection ${(ERR_RATE * 100).toFixed(0)}%                              ║`);
   L('╚══════════════════════════════════════════════════════════════════════════╝');
