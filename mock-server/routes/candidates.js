@@ -558,12 +558,53 @@ export function candidateListRouter({ DB }) {
   return router;
 }
 
-// ─── Candidates landing page (public, no auth required) ──────────────────────
+// ─── Candidates landing page ──────────────────────────────────────────────────
+// Public (no auth required) when hit anonymously — returns marketing stats + featured jobs.
+// When hit with a valid bearer token, returns the authenticated candidate's historical
+// application statistics instead (see CandidateLandingResponse in candidate_api_swagger_v0.yaml,
+// operationId: getCandidateLanding). Both shapes are served from GET /candidates/landing.
 export function candidateLandingRouter({ DB }) {
   const router = Router();
 
   // GET /candidates/landing
   router.get('/landing', (req, res) => {
+    if (req.currentUser) {
+      const userId  = req.currentUser.userId;
+      const profile = DB.candidateProfiles.find(p => p.userId === userId);
+      const user    = DB.users?.find(u => u.userId === userId);
+      const apps    = DB.applications.filter(
+        a => a.userId === userId || (profile && a.candidateId === profile.candidateId)
+      );
+
+      const successful = apps.filter(a => ['Offer', 'Placed'].includes(a.currentStage)).length;
+      const inProgress = apps.filter(a =>
+        ['Screening', 'Assessment', 'Interview', 'Shortlisted'].includes(a.currentStage)
+      ).length;
+      const rejected   = apps.filter(a => ['Rejected', 'Closed'].includes(a.currentStage)).length;
+
+      return res.status(200).json({
+        success:    true,
+        statusCode: 200,
+        message:    'Landing page data retrieved successfully',
+        data: {
+          candidate_id: profile?.candidateId ?? null,
+          statistics: {
+            total_applications:       apps.length,
+            successful_applications:  successful,
+            in_progress_applications: inProgress,
+            rejected_applications:    rejected,
+          },
+          profile_summary: {
+            first_name:     profile?.personalDetails?.firstName ?? user?.firstName ?? '',
+            last_name:      profile?.personalDetails?.lastName  ?? user?.lastName  ?? '',
+            email:          profile?.personalDetails?.email     ?? user?.email     ?? '',
+            profile_status: user?.accountStatus ?? 'INCOMPLETE',
+          },
+          created_at: user?.createdAt ?? null,
+        },
+      });
+    }
+
     const openJobs = DB.jobs.filter(j => j.status === 'Open');
 
     // Feature up to 6 open jobs on the landing page

@@ -355,6 +355,15 @@ app.use(async (req, res, next) => {
         message: 'Not authenticated. Please login first.',
       });
     req.currentUser = sessions.get(token);
+  } else {
+    // Public routes don't require auth, but still resolve the caller's
+    // identity when a valid token is supplied (e.g. /candidates/landing
+    // returns candidate-specific data for logged-in requests).
+    const raw   = req.headers['authorization'] ?? '';
+    const token = raw.startsWith('Bearer ') ? raw.slice(7) : null;
+    if (token && sessions.has(token)) {
+      req.currentUser = sessions.get(token);
+    }
   }
 
   next();
@@ -385,7 +394,7 @@ app.use('/users', usersRouter(routeCtx));
 // ─────────────────────────────────────────────────────────
 //  Candidates  (new contract: /candidates/*)
 // ─────────────────────────────────────────────────────────
-app.use('/candidates', candidateLandingRouter(routeCtx));           // GET  /candidates/landing        (public)
+app.use('/candidates', candidateLandingRouter(routeCtx));           // GET  /candidates/landing        (public + auth-aware)
 app.use('/candidates', candidateSelfDashboardRouter(routeCtx));     // GET  /candidates/dashboard
 app.use('/candidates', candidateProfileRouter(routeCtx));           // GET  /candidates/profile/
 app.use('/candidates', candidateCvBuildRouter(routeCtx));           // GET|POST|PUT /candidates/cv-build/
