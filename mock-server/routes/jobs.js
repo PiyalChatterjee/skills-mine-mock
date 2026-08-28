@@ -121,8 +121,9 @@ export function jobsRouter({ DB }) {
     } = req.query;
 
     let results = [...DB.jobs];
-    if (status) results = results.filter(j => j.status?.toLowerCase() === status.toLowerCase());
-    else        results = results.filter(j => j.status === 'Open');
+    // Default filter aligns with Mandate_Service_v2's statusCode enum (POSTED, DRAFT, ...)
+    if (status) results = results.filter(j => j.statusCode?.toLowerCase() === status.toLowerCase() || j.status?.toLowerCase() === status.toLowerCase());
+    else        results = results.filter(j => j.statusCode === 'POSTED');
     if (industry) results = results.filter(j => j.industry?.toLowerCase().includes(industry.toLowerCase()));
     if (location) results = results.filter(j => j.location?.toLowerCase().includes(location.toLowerCase()));
     if (q) results = results.filter(j =>

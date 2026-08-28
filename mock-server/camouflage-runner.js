@@ -117,6 +117,12 @@ import {
   aiCandidateMatchScoreRouter,
   aiCandidateActionsRouter,
 }                                                                from './routes/ai.js';
+import {
+  mandateServiceJobsRouter,
+  mandateServiceIndustriesRouter,
+  mandateServiceCompaniesRouter,
+  mandateServiceCandidatesRouter,
+}                                                                from './routes/mandateService.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
 
@@ -174,6 +180,7 @@ const DB = {
   aiGenerationRuns:  loadDataset('ai-generation-runs'),
   aiScoringRuns:     loadDataset('ai-scoring-runs'),
   candidateAiActions: loadDataset('candidate-ai-actions'),
+  companies:         loadDataset('companies'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -488,6 +495,16 @@ app.use('/api/job-posts', jobPostsRouter(routeCtx));
 //  Documents  (document_api_v0.yaml — dummy S3-backed storage)
 // ─────────────────────────────────────────────────────────
 app.use('/documents', documentsRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Mandate (Job) Service  (Mandate_Service_v2.yaml)
+//  Namespaced under /api/v1/job-service to avoid colliding with the
+//  candidate-facing /jobs and /candidates contracts.
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/job-service', mandateServiceJobsRouter(routeCtx));
+app.use('/api/v1/job-service/industries', mandateServiceIndustriesRouter(routeCtx));
+app.use('/api/v1/job-service/companies', mandateServiceCompaniesRouter(routeCtx));
+app.use('/api/v1/job-service/candidates', mandateServiceCandidatesRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Catch-all → .mock file fallback
