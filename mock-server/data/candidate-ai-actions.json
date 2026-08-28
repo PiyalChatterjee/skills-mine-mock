@@ -1,0 +1,81 @@
+[
+  {
+    "candidateId": "CAND100001",
+    "candidateUuid": "c0000000-0000-4000-8000-000000000001",
+    "actions": [
+      {
+        "actionType": "MOVE_TO_NEXT_STAGE",
+        "priority": "HIGH",
+        "title": "Move to Interview",
+        "description": "Michael scored 92% against the Senior React Developer role at Standard Bank and has passed screening. Consider scheduling an interview.",
+        "jobProfileId": "b0000000-0000-4000-8000-000000000001",
+        "jobTitle": "Senior React Developer",
+        "companyName": "Standard Bank",
+        "ctaLabel": "Schedule Interview",
+        "ctaAction": "ADVANCE_STAGE"
+      },
+      {
+        "actionType": "REQUEST_MISSING_SKILLS",
+        "priority": "MEDIUM",
+        "title": "Profile gap: Kubernetes, Terraform",
+        "description": "2 required skills for the Cloud Solutions Architect role are missing from Michael's profile.",
+        "jobProfileId": "b0000000-0000-4000-8000-000000000004",
+        "jobTitle": "Cloud Solutions Architect",
+        "companyName": "IBM",
+        "ctaLabel": "Generate Skills",
+        "ctaAction": "TRIGGER_SKILL_GENERATION"
+      },
+      {
+        "actionType": "UPDATE_MATCH_SCORE",
+        "priority": "LOW",
+        "title": "Refresh match score",
+        "description": "The match score for the Front-End Developer role at Discovery is over a week old.",
+        "jobProfileId": "b0000000-0000-4000-8000-000000000006",
+        "jobTitle": "Front-End Developer",
+        "companyName": "Discovery",
+        "ctaLabel": "Recalculate Score",
+        "ctaAction": "TRIGGER_SCORING"
+      }
+    ],
+    "generatedAt": "2026-08-20T10:30:00Z",
+    "savedAt": "2026-08-20T10:30:01Z"
+  },
+  {
+    "candidateId": "CAND100002",
+    "candidateUuid": "c0000000-0000-4000-8000-000000000002",
+    "actions": [
+      {
+        "actionType": "COMPLETE_CANDIDATE_PROFILE",
+        "priority": "MEDIUM",
+        "title": "Profile incomplete",
+        "description": "Ayesha's profile is missing career history detail, which limits AI matching accuracy.",
+        "jobProfileId": null,
+        "jobTitle": null,
+        "companyName": null,
+        "ctaLabel": "View Profile",
+        "ctaAction": "OPEN_PROFILE"
+      }
+    ],
+    "generatedAt": "2026-08-15T09:00:00Z",
+    "savedAt": "2026-08-15T09:00:01Z"
+  },
+  {
+    "candidateId": "CAND100003",
+    "candidateUuid": "c0000000-0000-4000-8000-000000000003",
+    "actions": [
+      {
+        "actionType": "SCHEDULE_INTERVIEW",
+        "priority": "HIGH",
+        "title": "Schedule Interview",
+        "description": "Thabo passed screening for the Data Engineer role at FNB with no interview scheduled yet.",
+        "jobProfileId": "b0000000-0000-4000-8000-000000000002",
+        "jobTitle": "Data Engineer",
+        "companyName": "FNB",
+        "ctaLabel": "Schedule Interview",
+        "ctaAction": "ADVANCE_STAGE"
+      }
+    ],
+    "generatedAt": "2026-08-22T14:10:00Z",
+    "savedAt": "2026-08-22T14:10:01Z"
+  }
+]

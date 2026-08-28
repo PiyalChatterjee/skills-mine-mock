@@ -53,7 +53,8 @@
     "applications": [
       "app-c001-j001",
       "app-c001-j004"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000001"
   },
   {
     "candidateId": "c002",
@@ -109,7 +110,8 @@
     "profileComplete": 92,
     "applications": [
       "app-c002-j003"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000002"
   },
   {
     "candidateId": "c003",
@@ -165,7 +167,8 @@
     "profileComplete": 85,
     "applications": [
       "app-c003-j002"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000003"
   },
   {
     "candidateId": "c004",
@@ -221,7 +224,8 @@
     "profileComplete": 79,
     "applications": [
       "app-c004-j005"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000004"
   },
   {
     "candidateId": "c005",
@@ -277,7 +281,8 @@
     "profileComplete": 95,
     "applications": [
       "app-c005-j004"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000005"
   },
   {
     "candidateId": "c006",
@@ -325,7 +330,8 @@
       "Tswana"
     ],
     "profileComplete": 72,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000006"
   },
   {
     "candidateId": "c007",
@@ -379,7 +385,8 @@
       "Sotho"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000007"
   },
   {
     "candidateId": "c008",
@@ -432,7 +439,8 @@
       "Afrikaans"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000008"
   },
   {
     "candidateId": "c009",
@@ -486,7 +494,8 @@
       "Xhosa"
     ],
     "profileComplete": 76,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000009"
   },
   {
     "candidateId": "c010",
@@ -527,7 +536,8 @@
       "Afrikaans"
     ],
     "profileComplete": 65,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000010"
   },
   {
     "candidateId": "c011",
@@ -580,7 +590,8 @@
       "Xhosa"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000011"
   },
   {
     "candidateId": "c012",
@@ -633,7 +644,8 @@
       "Zulu"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000012"
   },
   {
     "candidateId": "c013",
@@ -685,7 +697,8 @@
       "Zulu"
     ],
     "profileComplete": 77,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000013"
   },
   {
     "candidateId": "c014",
@@ -738,7 +751,8 @@
       "Afrikaans"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000014"
   },
   {
     "candidateId": "c015",
@@ -791,7 +805,8 @@
       "Zulu"
     ],
     "profileComplete": 94,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000015"
   },
   {
     "candidateId": "c016",
@@ -844,7 +859,8 @@
       "Xhosa"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000016"
   },
   {
     "candidateId": "c017",
@@ -897,7 +913,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000017"
   },
   {
     "candidateId": "c018",
@@ -952,7 +969,8 @@
       "Zulu"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000018"
   },
   {
     "candidateId": "c019",
@@ -1006,7 +1024,8 @@
       "Tswana"
     ],
     "profileComplete": 81,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000019"
   },
   {
     "candidateId": "c020",
@@ -1059,7 +1078,8 @@
       "Afrikaans"
     ],
     "profileComplete": 86,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000020"
   },
   {
     "candidateId": "c021",
@@ -1112,7 +1132,8 @@
       "Zulu"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000021"
   },
   {
     "candidateId": "c022",
@@ -1164,7 +1185,8 @@
       "Afrikaans"
     ],
     "profileComplete": 89,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000022"
   },
   {
     "candidateId": "c023",
@@ -1217,7 +1239,8 @@
       "Zulu"
     ],
     "profileComplete": 97,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000023"
   },
   {
     "candidateId": "c024",
@@ -1270,7 +1293,8 @@
       "Afrikaans"
     ],
     "profileComplete": 74,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000024"
   },
   {
     "candidateId": "c025",
@@ -1323,7 +1347,8 @@
       "Zulu"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000025"
   },
   {
     "candidateId": "c026",
@@ -1377,7 +1402,8 @@
       "Tswana"
     ],
     "profileComplete": 76,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000026"
   },
   {
     "candidateId": "c027",
@@ -1430,7 +1456,8 @@
       "Afrikaans"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000027"
   },
   {
     "candidateId": "c028",
@@ -1482,7 +1509,8 @@
       "Zulu"
     ],
     "profileComplete": 78,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000028"
   },
   {
     "candidateId": "c029",
@@ -1535,7 +1563,8 @@
       "Afrikaans"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000029"
   },
   {
     "candidateId": "c030",
@@ -1589,7 +1618,8 @@
       "Sotho"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000030"
   },
   {
     "candidateId": "c031",
@@ -1643,7 +1673,8 @@
       "Yoruba"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000031"
   },
   {
     "candidateId": "c032",
@@ -1697,7 +1728,8 @@
       "Afrikaans"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000032"
   },
   {
     "candidateId": "c033",
@@ -1743,7 +1775,8 @@
       "Zulu"
     ],
     "profileComplete": 68,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000033"
   },
   {
     "candidateId": "c034",
@@ -1796,7 +1829,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000034"
   },
   {
     "candidateId": "c035",
@@ -1850,7 +1884,8 @@
       "Sotho"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000035"
   },
   {
     "candidateId": "c036",
@@ -1903,7 +1938,8 @@
       "Afrikaans"
     ],
     "profileComplete": 73,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000036"
   },
   {
     "candidateId": "c037",
@@ -1956,7 +1992,8 @@
       "Zulu"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000037"
   },
   {
     "candidateId": "c038",
@@ -2009,7 +2046,8 @@
       "Afrikaans"
     ],
     "profileComplete": 92,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000038"
   },
   {
     "candidateId": "c039",
@@ -2063,7 +2101,8 @@
       "Tswana"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000039"
   },
   {
     "candidateId": "c040",
@@ -2116,7 +2155,8 @@
       "Afrikaans"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000040"
   },
   {
     "candidateId": "c041",
@@ -2157,7 +2197,8 @@
       "Zulu"
     ],
     "profileComplete": 71,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000041"
   },
   {
     "candidateId": "c042",
@@ -2209,7 +2250,8 @@
       "Afrikaans"
     ],
     "profileComplete": 77,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000042"
   },
   {
     "candidateId": "c043",
@@ -2262,7 +2304,8 @@
       "Zulu"
     ],
     "profileComplete": 86,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000043"
   },
   {
     "candidateId": "c044",
@@ -2315,7 +2358,8 @@
       "Afrikaans"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000044"
   },
   {
     "candidateId": "c045",
@@ -2369,7 +2413,8 @@
       "Sotho"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000045"
   },
   {
     "candidateId": "c046",
@@ -2423,7 +2468,8 @@
       "Afrikaans"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000046"
   },
   {
     "candidateId": "c047",
@@ -2476,7 +2522,8 @@
       "Sotho"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000047"
   },
   {
     "candidateId": "c048",
@@ -2529,7 +2576,8 @@
       "Afrikaans"
     ],
     "profileComplete": 89,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000048"
   },
   {
     "candidateId": "c049",
@@ -2582,7 +2630,8 @@
       "Zulu"
     ],
     "profileComplete": 81,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000049"
   },
   {
     "candidateId": "c050",
@@ -2635,7 +2684,8 @@
       "Afrikaans"
     ],
     "profileComplete": 96,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000050"
   },
   {
     "candidateId": "c051",
@@ -2681,7 +2731,8 @@
       "Zulu"
     ],
     "profileComplete": 78,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000051"
   },
   {
     "candidateId": "c052",
@@ -2734,7 +2785,8 @@
       "Afrikaans"
     ],
     "profileComplete": 94,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000052"
   },
   {
     "candidateId": "c053",
@@ -2788,7 +2840,8 @@
       "Xhosa"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000053"
   },
   {
     "candidateId": "c054",
@@ -2841,7 +2894,8 @@
       "Afrikaans"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000054"
   },
   {
     "candidateId": "c055",
@@ -2895,7 +2949,8 @@
       "Sotho"
     ],
     "profileComplete": 74,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000055"
   },
   {
     "candidateId": "c056",
@@ -2948,7 +3003,8 @@
       "Hindi"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000056"
   },
   {
     "candidateId": "c057",
@@ -3001,7 +3057,8 @@
       "Sotho"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000057"
   },
   {
     "candidateId": "c058",
@@ -3054,7 +3111,8 @@
       "Afrikaans"
     ],
     "profileComplete": 77,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000058"
   },
   {
     "candidateId": "c059",
@@ -3107,7 +3165,8 @@
       "Zulu"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000059"
   },
   {
     "candidateId": "c060",
@@ -3160,7 +3219,8 @@
       "Afrikaans"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000060"
   },
   {
     "candidateId": "c061",
@@ -3201,7 +3261,8 @@
       "Sotho"
     ],
     "profileComplete": 68,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000061"
   },
   {
     "candidateId": "c062",
@@ -3248,7 +3309,8 @@
       "Tswana"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000062"
   },
   {
     "candidateId": "c063",
@@ -3301,7 +3363,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000063"
   },
   {
     "candidateId": "c064",
@@ -3342,7 +3405,8 @@
       "Zulu"
     ],
     "profileComplete": 69,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000064"
   },
   {
     "candidateId": "c065",
@@ -3395,7 +3459,8 @@
       "Afrikaans"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000065"
   },
   {
     "candidateId": "c066",
@@ -3448,7 +3513,8 @@
       "Zulu"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000066"
   },
   {
     "candidateId": "c067",
@@ -3501,7 +3567,8 @@
       "Afrikaans"
     ],
     "profileComplete": 96,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000067"
   },
   {
     "candidateId": "c068",
@@ -3548,7 +3615,8 @@
       "Xhosa"
     ],
     "profileComplete": 67,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000068"
   },
   {
     "candidateId": "c069",
@@ -3600,7 +3668,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000069"
   },
   {
     "candidateId": "c070",
@@ -3654,7 +3723,8 @@
       "Xhosa"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000070"
   },
   {
     "candidateId": "c071",
@@ -3701,7 +3771,8 @@
       "Afrikaans"
     ],
     "profileComplete": 81,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000071"
   },
   {
     "candidateId": "c072",
@@ -3754,7 +3825,8 @@
       "Zulu"
     ],
     "profileComplete": 75,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000072"
   },
   {
     "candidateId": "c073",
@@ -3807,7 +3879,8 @@
       "Afrikaans"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000073"
   },
   {
     "candidateId": "c074",
@@ -3861,7 +3934,8 @@
       "Ndebele"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000074"
   },
   {
     "candidateId": "c075",
@@ -3901,7 +3975,8 @@
       "Sotho"
     ],
     "profileComplete": 55,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000075"
   },
   {
     "candidateId": "c076",
@@ -3949,7 +4024,8 @@
       "Tswana"
     ],
     "profileComplete": 76,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000076"
   },
   {
     "candidateId": "c077",
@@ -3995,7 +4071,8 @@
       "Zulu"
     ],
     "profileComplete": 72,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000077"
   },
   {
     "candidateId": "c078",
@@ -4036,7 +4113,8 @@
       "Afrikaans"
     ],
     "profileComplete": 60,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000078"
   },
   {
     "candidateId": "c079",
@@ -4089,7 +4167,8 @@
       "Zulu"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000079"
   },
   {
     "candidateId": "c080",
@@ -4129,7 +4208,8 @@
       "Afrikaans"
     ],
     "profileComplete": 52,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000080"
   },
   {
     "candidateId": "c081",
@@ -4182,7 +4262,8 @@
       "Afrikaans"
     ],
     "profileComplete": 86,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000081"
   },
   {
     "candidateId": "c082",
@@ -4230,7 +4311,8 @@
       "Xhosa"
     ],
     "profileComplete": 98,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000082"
   },
   {
     "candidateId": "c083",
@@ -4283,7 +4365,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000083"
   },
   {
     "candidateId": "c084",
@@ -4336,7 +4419,8 @@
       "Zulu"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000084"
   },
   {
     "candidateId": "c085",
@@ -4389,7 +4473,8 @@
       "Afrikaans"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000085"
   },
   {
     "candidateId": "c086",
@@ -4443,7 +4528,8 @@
       "Zulu"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000086"
   },
   {
     "candidateId": "c087",
@@ -4491,7 +4577,8 @@
       "Portuguese"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000087"
   },
   {
     "candidateId": "c088",
@@ -4539,7 +4626,8 @@
       "Tswana"
     ],
     "profileComplete": 73,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000088"
   },
   {
     "candidateId": "c089",
@@ -4592,7 +4680,8 @@
       "Afrikaans"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000089"
   },
   {
     "candidateId": "c090",
@@ -4646,7 +4735,8 @@
       "Sotho"
     ],
     "profileComplete": 95,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000090"
   },
   {
     "candidateId": "c091",
@@ -4700,7 +4790,8 @@
       "Xhosa"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000091"
   },
   {
     "candidateId": "c092",
@@ -4748,7 +4839,8 @@
       "Mandarin (basic)"
     ],
     "profileComplete": 78,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000092"
   },
   {
     "candidateId": "c093",
@@ -4801,7 +4893,8 @@
       "Zulu"
     ],
     "profileComplete": 89,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000093"
   },
   {
     "candidateId": "c094",
@@ -4854,7 +4947,8 @@
       "Afrikaans"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000094"
   },
   {
     "candidateId": "c095",
@@ -4907,7 +5001,8 @@
       "Zulu"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000095"
   },
   {
     "candidateId": "c096",
@@ -4961,7 +5056,8 @@
       "Afrikaans"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000096"
   },
   {
     "candidateId": "c097",
@@ -5009,7 +5105,8 @@
       "Afrikaans"
     ],
     "profileComplete": 71,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000097"
   },
   {
     "candidateId": "c098",
@@ -5063,7 +5160,8 @@
       "Hindi"
     ],
     "profileComplete": 95,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000098"
   },
   {
     "candidateId": "c099",
@@ -5116,7 +5214,8 @@
       "Hebrew"
     ],
     "profileComplete": 99,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000099"
   },
   {
     "candidateId": "c100",
@@ -5156,7 +5255,8 @@
       "Zulu"
     ],
     "profileComplete": 45,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000100"
   },
   {
     "candidateId": "candidate-1101",
@@ -5166,7 +5266,8 @@
     "phone": "95376681",
     "role": "candidate",
     "registeredAt": "2026-07-24T15:57:17.951Z",
-    "profileComplete": 15
+    "profileComplete": 15,
+    "candidateUuid": "d0000-0000-4000-8000-000000000101"
   },
   {
     "candidateId": "candidate-1102",
@@ -5176,6 +5277,7 @@
     "password": "Password123",
     "role": "candidate",
     "registeredAt": "2026-07-24T16:07:54.349Z",
-    "profileComplete": 15
+    "profileComplete": 15,
+    "candidateUuid": "d0000-0000-4000-8000-000000000102"
   }
 ]

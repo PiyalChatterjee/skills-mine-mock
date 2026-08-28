@@ -29,8 +29,14 @@
       "salaryExpectation": 85000,
       "currency": "ZAR",
       "availableFrom": "2025-02-01",
-      "industries": ["Technology", "Financial Services"],
-      "locations": ["Johannesburg", "Remote"]
+      "industries": [
+        "Technology",
+        "Financial Services"
+      ],
+      "locations": [
+        "Johannesburg",
+        "Remote"
+      ]
     },
     "education": {
       "secondaryEducation": [
@@ -58,7 +64,12 @@
         "endDate": null,
         "current": true,
         "responsibilities": "Lead frontend development for enterprise clients using React and Node.js.",
-        "skills": ["React", "Node.js", "TypeScript", "AWS"]
+        "skills": [
+          "React",
+          "Node.js",
+          "TypeScript",
+          "AWS"
+        ]
       },
       {
         "experienceId": "exp-002",
@@ -68,13 +79,31 @@
         "endDate": "2020-02",
         "current": false,
         "responsibilities": "Built and maintained banking web applications.",
-        "skills": ["Angular", "Java", "SQL"]
+        "skills": [
+          "Angular",
+          "Java",
+          "SQL"
+        ]
       }
     ],
-    "skills": ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL", "Docker"],
+    "skills": [
+      "React",
+      "Node.js",
+      "TypeScript",
+      "AWS",
+      "PostgreSQL",
+      "GraphQL",
+      "Docker"
+    ],
     "languages": [
-      { "language": "English", "proficiency": "Native" },
-      { "language": "Zulu", "proficiency": "Conversational" }
+      {
+        "language": "English",
+        "proficiency": "Native"
+      },
+      {
+        "language": "Zulu",
+        "proficiency": "Conversational"
+      }
     ],
     "applications": [
       {
@@ -115,9 +144,16 @@
       }
     ],
     "savedJobs": [
-      { "jobId": "j001", "savedAt": "2025-01-05T08:00:00Z" },
-      { "jobId": "j004", "savedAt": "2025-01-10T09:30:00Z" }
-    ]
+      {
+        "jobId": "j001",
+        "savedAt": "2025-01-05T08:00:00Z"
+      },
+      {
+        "jobId": "j004",
+        "savedAt": "2025-01-10T09:30:00Z"
+      }
+    ],
+    "candidateUuid": "c0000-0000-4000-8000-000000000001"
   },
   {
     "userId": "USR100002",
@@ -143,8 +179,14 @@
       "salaryExpectation": 70000,
       "currency": "ZAR",
       "availableFrom": "2025-01-15",
-      "industries": ["FinTech", "E-Commerce"],
-      "locations": ["Cape Town", "Johannesburg"]
+      "industries": [
+        "FinTech",
+        "E-Commerce"
+      ],
+      "locations": [
+        "Cape Town",
+        "Johannesburg"
+      ]
     },
     "education": {
       "secondaryEducation": [],
@@ -166,17 +208,38 @@
         "endDate": null,
         "current": true,
         "responsibilities": "Own the product roadmap for digital payments and drive feature delivery.",
-        "skills": ["Product Management", "Agile", "User Research", "JIRA"]
+        "skills": [
+          "Product Management",
+          "Agile",
+          "User Research",
+          "JIRA"
+        ]
       }
     ],
-    "skills": ["Product Management", "Agile", "Roadmap Planning", "User Research", "SQL"],
+    "skills": [
+      "Product Management",
+      "Agile",
+      "Roadmap Planning",
+      "User Research",
+      "SQL"
+    ],
     "languages": [
-      { "language": "English", "proficiency": "Native" },
-      { "language": "Afrikaans", "proficiency": "Basic" }
+      {
+        "language": "English",
+        "proficiency": "Native"
+      },
+      {
+        "language": "Afrikaans",
+        "proficiency": "Basic"
+      }
     ],
     "savedJobs": [
-      { "jobId": "j003", "savedAt": "2025-01-08T10:00:00Z" }
-    ]
+      {
+        "jobId": "j003",
+        "savedAt": "2025-01-08T10:00:00Z"
+      }
+    ],
+    "candidateUuid": "c0000-0000-4000-8000-000000000002"
   },
   {
     "userId": "USR100007",
@@ -202,8 +265,14 @@
       "salaryExpectation": 65000,
       "currency": "ZAR",
       "availableFrom": "2025-03-01",
-      "industries": ["Financial Services", "Technology"],
-      "locations": ["Johannesburg", "Remote"]
+      "industries": [
+        "Financial Services",
+        "Technology"
+      ],
+      "locations": [
+        "Johannesburg",
+        "Remote"
+      ]
     },
     "education": {
       "secondaryEducation": [],
@@ -225,14 +294,34 @@
         "endDate": null,
         "current": true,
         "responsibilities": "Build and maintain data pipelines for BI and ML workloads.",
-        "skills": ["Python", "Spark", "dbt", "Snowflake"]
+        "skills": [
+          "Python",
+          "Spark",
+          "dbt",
+          "Snowflake"
+        ]
       }
     ],
-    "skills": ["Python", "Apache Spark", "dbt", "Snowflake", "Kafka", "Airflow", "SQL"],
-    "languages": [
-      { "language": "English", "proficiency": "Fluent" },
-      { "language": "Sotho", "proficiency": "Native" }
+    "skills": [
+      "Python",
+      "Apache Spark",
+      "dbt",
+      "Snowflake",
+      "Kafka",
+      "Airflow",
+      "SQL"
     ],
-    "savedJobs": []
+    "languages": [
+      {
+        "language": "English",
+        "proficiency": "Fluent"
+      },
+      {
+        "language": "Sotho",
+        "proficiency": "Native"
+      }
+    ],
+    "savedJobs": [],
+    "candidateUuid": "c0000-0000-4000-8000-000000000003"
   }
 ]

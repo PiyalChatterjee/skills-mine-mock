@@ -107,7 +107,16 @@ import { skillsRouter }                                        from './routes/sk
 import { mancoRouter, mancoRecruiterPerformanceRouter }        from './routes/manco.js';
 import { crmRouter }                                           from './routes/crm.js';
 import { jobPostsRouter }                                      from './routes/jobPosts.js';
-import { industriesRouter }                                    from './routes/industries.js';import { documentsRouter }                                      from './routes/documents.js';
+import { industriesRouter }                                    from './routes/industries.js';
+import { documentsRouter }                                      from './routes/documents.js';
+import {
+  aiSkillsGenerateRouter,
+  aiJobSkillsGenerateRouter,
+  aiRecommendedJobsRouter,
+  aiMatchScoringRouter,
+  aiCandidateMatchScoreRouter,
+  aiCandidateActionsRouter,
+}                                                                from './routes/ai.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
 
@@ -135,6 +144,7 @@ const PUBLIC_PATHS = [
   '/jobs',
   '/opportunities',
   '/skills/search',
+  '/skills/generate',
   '/candidates/landing',
 ];
 
@@ -160,6 +170,10 @@ const DB = {
   clients:           loadDataset('crm-clients'),
   industries:        loadDataset('industries'),
   documents:         loadDataset('documents'),
+  visitorProfiles:   loadDataset('visitor-profiles'),
+  aiGenerationRuns:  loadDataset('ai-generation-runs'),
+  aiScoringRuns:     loadDataset('ai-scoring-runs'),
+  candidateAiActions: loadDataset('candidate-ai-actions'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -401,6 +415,9 @@ app.use('/candidates', candidateCvBuildRouter(routeCtx));           // GET|POST|
 app.use('/candidates', candidateRecommendedPositionsRouter(routeCtx)); // GET /candidates/recommended-positions
 app.use('/candidates', candidateSavedJobsRouter(routeCtx));         // GET|POST /candidates/saved-jobs
 app.use('/candidates', candidateAiActionsRouter(routeCtx));         // GET  /candidates/ai-actions/
+app.use('/candidates', aiRecommendedJobsRouter(routeCtx));          // GET  /candidates/:candidateId/recommended-jobs        [AI service]
+app.use('/candidates', aiCandidateMatchScoreRouter(routeCtx));      // GET  /candidates/:candidateId/match-score/:jobProfileId [AI service]
+app.use('/candidates', aiCandidateActionsRouter(routeCtx));         // GET|POST /candidates/:candidateId/ai-actions           [AI service]
 app.use('/candidates', candidateListRouter(routeCtx));              // GET  /candidates  (list, must be last)
 
 // ─────────────────────────────────────────────────────────
@@ -415,12 +432,15 @@ app.use('/applications', applicationCvRouter(routeCtx));
 // ─────────────────────────────────────────────────────────
 //  Jobs + Opportunities
 // ─────────────────────────────────────────────────────────
+app.use('/jobs',         aiJobSkillsGenerateRouter(routeCtx));      // POST /jobs/skills/generate                   [AI service]
+app.use('/jobs',         aiMatchScoringRouter(routeCtx));           // POST /jobs/:jobProfileId/match-scores        [AI service]
 app.use('/jobs',         jobsRouter(routeCtx));
 app.use('/opportunities', opportunitiesRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Skills
 // ─────────────────────────────────────────────────────────
+app.use('/skills', aiSkillsGenerateRouter(routeCtx));               // POST /skills/generate                       [AI service]
 app.use('/skills', skillsRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────

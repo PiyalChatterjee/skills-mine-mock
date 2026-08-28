@@ -1,0 +1,17 @@
+﻿{
+  "subject_type": "VISITOR",
+  "input_source": "PROFILE",
+  "visitor_registration": {
+    "email": "test.visitor@example.com",
+    "first_name": "Test",
+    "last_name": "Visitor",
+    "phone_number": "+27820000000"
+  },
+  "career_history": [
+    {
+      "company_name": "Acme",
+      "position_held": "React Developer",
+      "responsibilities": ["Built React and TypeScript apps with AWS"]
+    }
+  ]
+}

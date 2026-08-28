@@ -23,11 +23,19 @@
       "Mentor juniors",
       "Stakeholder demos"
     ],
-    "skills": ["React", "TypeScript", "Redux", "GraphQL", "Jest"],
+    "skills": [
+      "React",
+      "TypeScript",
+      "Redux",
+      "GraphQL",
+      "Jest"
+    ],
     "postedDate": "2024-10-15",
     "status": "Open",
     "applicationCount": 35,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000001",
+    "jobReferenceNumber": "JOB-2026-0001"
   },
   {
     "jobId": "j002",
@@ -53,11 +61,20 @@
       "Performance tuning",
       "Collaboration with data science"
     ],
-    "skills": ["Python", "Spark", "dbt", "Snowflake", "Kafka", "Airflow"],
+    "skills": [
+      "Python",
+      "Spark",
+      "dbt",
+      "Snowflake",
+      "Kafka",
+      "Airflow"
+    ],
     "postedDate": "2024-10-18",
     "status": "Open",
     "applicationCount": 22,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000002",
+    "jobReferenceNumber": "JOB-2026-0002"
   },
   {
     "jobId": "j003",
@@ -82,11 +99,20 @@
       "Sprint facilitation",
       "Metrics ownership"
     ],
-    "skills": ["Product Strategy", "Jira", "Figma", "SQL", "Agile", "Payments"],
+    "skills": [
+      "Product Strategy",
+      "Jira",
+      "Figma",
+      "SQL",
+      "Agile",
+      "Payments"
+    ],
     "postedDate": "2024-10-20",
     "status": "Open",
     "applicationCount": 28,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000003",
+    "jobReferenceNumber": "JOB-2026-0003"
   },
   {
     "jobId": "j004",
@@ -123,7 +149,9 @@
     "postedDate": "2024-10-22",
     "status": "Open",
     "applicationCount": 16,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000004",
+    "jobReferenceNumber": "JOB-2026-0004"
   },
   {
     "jobId": "j005",
@@ -159,7 +187,9 @@
     "postedDate": "2024-10-25",
     "status": "Open",
     "applicationCount": 19,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000005",
+    "jobReferenceNumber": "JOB-2026-0005"
   },
   {
     "jobId": "j006",
@@ -183,11 +213,19 @@
       "Performance optimisation",
       "Cross-browser testing"
     ],
-    "skills": ["React", "Angular", "TypeScript", "WCAG", "REST APIs"],
+    "skills": [
+      "React",
+      "Angular",
+      "TypeScript",
+      "WCAG",
+      "REST APIs"
+    ],
     "postedDate": "2024-10-28",
     "status": "Open",
     "applicationCount": 42,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000006",
+    "jobReferenceNumber": "JOB-2026-0006"
   },
   {
     "jobId": "j007",
@@ -224,7 +262,9 @@
     "postedDate": "2024-11-01",
     "status": "Open",
     "applicationCount": 27,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000007",
+    "jobReferenceNumber": "JOB-2026-0007"
   },
   {
     "jobId": "j008",
@@ -259,7 +299,9 @@
     "postedDate": "2024-11-02",
     "status": "Open",
     "applicationCount": 52,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000008",
+    "jobReferenceNumber": "JOB-2026-0008"
   },
   {
     "jobId": "j009",
@@ -296,7 +338,9 @@
     "postedDate": "2024-11-03",
     "status": "Open",
     "applicationCount": 18,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000009",
+    "jobReferenceNumber": "JOB-2026-0009"
   },
   {
     "jobId": "j010",
@@ -333,7 +377,9 @@
     "postedDate": "2024-11-04",
     "status": "Open",
     "applicationCount": 23,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000010",
+    "jobReferenceNumber": "JOB-2026-0010"
   },
   {
     "jobId": "j011",
@@ -359,11 +405,19 @@
       "Reporting",
       "Data quality"
     ],
-    "skills": ["SQL", "Python", "Power BI", "Excel", "Statistics"],
+    "skills": [
+      "SQL",
+      "Python",
+      "Power BI",
+      "Excel",
+      "Statistics"
+    ],
     "postedDate": "2024-11-05",
     "status": "Open",
     "applicationCount": 38,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000011",
+    "jobReferenceNumber": "JOB-2026-0011"
   },
   {
     "jobId": "j012",
@@ -398,7 +452,9 @@
     "postedDate": "2024-11-06",
     "status": "Open",
     "applicationCount": 31,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000012",
+    "jobReferenceNumber": "JOB-2026-0012"
   },
   {
     "jobId": "j013",
@@ -412,7 +468,12 @@
     "salaryMax": 90000,
     "salaryRange": "R65 000 – R90 000",
     "description": "Build high-throughput transaction processing services at Investec.",
-    "requirements": ["Java 11+", "Spring Boot", "Kafka", "4+ years backend"],
+    "requirements": [
+      "Java 11+",
+      "Spring Boot",
+      "Kafka",
+      "4+ years backend"
+    ],
     "responsibilities": [
       "Microservice development",
       "Performance tuning",
@@ -430,7 +491,9 @@
     "postedDate": "2024-11-07",
     "status": "Open",
     "applicationCount": 20,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000013",
+    "jobReferenceNumber": "JOB-2026-0013"
   },
   {
     "jobId": "j014",
@@ -466,7 +529,9 @@
     "postedDate": "2024-11-08",
     "status": "Open",
     "applicationCount": 14,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000014",
+    "jobReferenceNumber": "JOB-2026-0014"
   },
   {
     "jobId": "j015",
@@ -492,11 +557,19 @@
       "User acceptance testing",
       "Training"
     ],
-    "skills": ["SAP FICO", "SAP MM", "S/4HANA", "ABAP Basics", "Finance"],
+    "skills": [
+      "SAP FICO",
+      "SAP MM",
+      "S/4HANA",
+      "ABAP Basics",
+      "Finance"
+    ],
     "postedDate": "2024-11-09",
     "status": "Open",
     "applicationCount": 11,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000015",
+    "jobReferenceNumber": "JOB-2026-0015"
   },
   {
     "jobId": "j016",
@@ -522,11 +595,20 @@
       "UAT coordination",
       "Documentation"
     ],
-    "skills": ["BPMN", "UML", "SQL", "Jira", "Confluence", "Agile"],
+    "skills": [
+      "BPMN",
+      "UML",
+      "SQL",
+      "Jira",
+      "Confluence",
+      "Agile"
+    ],
     "postedDate": "2024-11-10",
     "status": "Open",
     "applicationCount": 29,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000016",
+    "jobReferenceNumber": "JOB-2026-0016"
   },
   {
     "jobId": "j017",
@@ -561,7 +643,9 @@
     "postedDate": "2024-11-11",
     "status": "Open",
     "applicationCount": 17,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000017",
+    "jobReferenceNumber": "JOB-2026-0017"
   },
   {
     "jobId": "j018",
@@ -587,11 +671,20 @@
       "Onboarding product teams",
       "Cost optimisation"
     ],
-    "skills": ["GCP", "Kubernetes", "Terraform", "Helm", "CI/CD", "Linux"],
+    "skills": [
+      "GCP",
+      "Kubernetes",
+      "Terraform",
+      "Helm",
+      "CI/CD",
+      "Linux"
+    ],
     "postedDate": "2024-11-12",
     "status": "Open",
     "applicationCount": 13,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000018",
+    "jobReferenceNumber": "JOB-2026-0018"
   },
   {
     "jobId": "j019",
@@ -627,7 +720,9 @@
     "postedDate": "2024-11-13",
     "status": "Open",
     "applicationCount": 25,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000019",
+    "jobReferenceNumber": "JOB-2026-0019"
   },
   {
     "jobId": "j020",
@@ -664,7 +759,9 @@
     "postedDate": "2024-11-13",
     "status": "Open",
     "applicationCount": 16,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000020",
+    "jobReferenceNumber": "JOB-2026-0020"
   },
   {
     "jobId": "j021",
@@ -699,7 +796,9 @@
     "postedDate": "2024-11-14",
     "status": "Open",
     "applicationCount": 9,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000021",
+    "jobReferenceNumber": "JOB-2026-0021"
   },
   {
     "jobId": "j022",
@@ -736,7 +835,9 @@
     "postedDate": "2024-11-14",
     "status": "Open",
     "applicationCount": 36,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000022",
+    "jobReferenceNumber": "JOB-2026-0022"
   },
   {
     "jobId": "j023",
@@ -773,7 +874,9 @@
     "postedDate": "2024-11-14",
     "status": "Open",
     "applicationCount": 7,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000023",
+    "jobReferenceNumber": "JOB-2026-0023"
   },
   {
     "jobId": "j024",
@@ -787,7 +890,11 @@
     "salaryMax": 60000,
     "salaryRange": "R40 000 – R60 000",
     "description": "Support Webber Wentzel's compliance practice advising financial services clients.",
-    "requirements": ["LLB or LLM", "POPIA knowledge", "3+ years compliance"],
+    "requirements": [
+      "LLB or LLM",
+      "POPIA knowledge",
+      "3+ years compliance"
+    ],
     "responsibilities": [
       "Compliance reviews",
       "Policy drafting",
@@ -804,7 +911,9 @@
     "postedDate": "2024-11-14",
     "status": "Open",
     "applicationCount": 21,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000024",
+    "jobReferenceNumber": "JOB-2026-0024"
   },
   {
     "jobId": "j025",
@@ -841,7 +950,9 @@
     "postedDate": "2024-11-15",
     "status": "Open",
     "applicationCount": 12,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000025",
+    "jobReferenceNumber": "JOB-2026-0025"
   },
   {
     "jobId": "j026",
@@ -877,7 +988,9 @@
     "postedDate": "2024-10-10",
     "status": "Closed",
     "applicationCount": 45,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000026",
+    "jobReferenceNumber": "JOB-2026-0026"
   },
   {
     "jobId": "j027",
@@ -903,11 +1016,20 @@
       "Product collaboration",
       "A/B testing"
     ],
-    "skills": ["Python", "R", "Machine Learning", "NLP", "SQL", "Tableau"],
+    "skills": [
+      "Python",
+      "R",
+      "Machine Learning",
+      "NLP",
+      "SQL",
+      "Tableau"
+    ],
     "postedDate": "2024-10-08",
     "status": "Closed",
     "applicationCount": 38,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000027",
+    "jobReferenceNumber": "JOB-2026-0027"
   },
   {
     "jobId": "j028",
@@ -932,11 +1054,19 @@
       "Metrics tracking",
       "Coaching"
     ],
-    "skills": ["Scrum", "SAFe", "Jira", "Confluence", "Agile Coaching"],
+    "skills": [
+      "Scrum",
+      "SAFe",
+      "Jira",
+      "Confluence",
+      "Agile Coaching"
+    ],
     "postedDate": "2024-09-25",
     "status": "Closed",
     "applicationCount": 29,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000028",
+    "jobReferenceNumber": "JOB-2026-0028"
   },
   {
     "jobId": "j029",
@@ -961,11 +1091,20 @@
       "Reporting",
       "SOX compliance"
     ],
-    "skills": ["IT Audit", "COBIT", "SOX", "ITGC", "Data Analytics", "ACL"],
+    "skills": [
+      "IT Audit",
+      "COBIT",
+      "SOX",
+      "ITGC",
+      "Data Analytics",
+      "ACL"
+    ],
     "postedDate": "2024-09-20",
     "status": "Closed",
     "applicationCount": 22,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000029",
+    "jobReferenceNumber": "JOB-2026-0029"
   },
   {
     "jobId": "j030",
@@ -990,11 +1129,19 @@
       "Performance testing",
       "Play Store releases"
     ],
-    "skills": ["Kotlin", "Android SDK", "Jetpack Compose", "MVVM", "Firebase"],
+    "skills": [
+      "Kotlin",
+      "Android SDK",
+      "Jetpack Compose",
+      "MVVM",
+      "Firebase"
+    ],
     "postedDate": "2024-09-15",
     "status": "Closed",
     "applicationCount": 31,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000030",
+    "jobReferenceNumber": "JOB-2026-0030"
   },
   {
     "jobId": "j031",
@@ -1019,11 +1166,20 @@
       "Agency coordination",
       "Reporting"
     ],
-    "skills": ["Google Ads", "Meta Ads", "SEO", "Analytics", "CRO", "HubSpot"],
+    "skills": [
+      "Google Ads",
+      "Meta Ads",
+      "SEO",
+      "Analytics",
+      "CRO",
+      "HubSpot"
+    ],
     "postedDate": "2024-09-10",
     "status": "Closed",
     "applicationCount": 44,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000031",
+    "jobReferenceNumber": "JOB-2026-0031"
   },
   {
     "jobId": "j032",
@@ -1049,11 +1205,19 @@
       "User training",
       "Report maintenance"
     ],
-    "skills": ["Power BI", "DAX", "SQL", "Azure Synapse", "Power Query"],
+    "skills": [
+      "Power BI",
+      "DAX",
+      "SQL",
+      "Azure Synapse",
+      "Power Query"
+    ],
     "postedDate": "2024-09-05",
     "status": "Closed",
     "applicationCount": 27,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000032",
+    "jobReferenceNumber": "JOB-2026-0032"
   },
   {
     "jobId": "j033",
@@ -1088,7 +1252,9 @@
     "postedDate": "2024-09-01",
     "status": "Closed",
     "applicationCount": 18,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000033",
+    "jobReferenceNumber": "JOB-2026-0033"
   },
   {
     "jobId": "j034",
@@ -1123,7 +1289,9 @@
     "postedDate": "2024-08-28",
     "status": "Closed",
     "applicationCount": 35,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000034",
+    "jobReferenceNumber": "JOB-2026-0034"
   },
   {
     "jobId": "j035",
@@ -1160,7 +1328,9 @@
     "postedDate": "2024-08-20",
     "status": "Closed",
     "applicationCount": 24,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000035",
+    "jobReferenceNumber": "JOB-2026-0035"
   },
   {
     "jobId": "j036",
@@ -1174,13 +1344,27 @@
     "salaryMax": 100000,
     "salaryRange": "R70 000 – R100 000",
     "description": "React development role for Absa's digital banking platform (Draft – pending budget approval).",
-    "requirements": ["5+ years React", "TypeScript", "Banking experience"],
-    "responsibilities": ["Feature development", "Architecture input"],
-    "skills": ["React", "TypeScript", "Redux", "REST APIs"],
+    "requirements": [
+      "5+ years React",
+      "TypeScript",
+      "Banking experience"
+    ],
+    "responsibilities": [
+      "Feature development",
+      "Architecture input"
+    ],
+    "skills": [
+      "React",
+      "TypeScript",
+      "Redux",
+      "REST APIs"
+    ],
     "postedDate": "2024-11-15",
     "status": "Draft",
     "applicationCount": 0,
-    "recruiterId": "r002"
+    "recruiterId": "r002",
+    "jobProfileId": "b0000-0000-4000-8000-000000000036",
+    "jobReferenceNumber": "JOB-2026-0036"
   },
   {
     "jobId": "j037",
@@ -1204,11 +1388,19 @@
       "Client delivery",
       "Methodology development"
     ],
-    "skills": ["Analytics", "Python", "Power BI", "SQL", "Leadership"],
+    "skills": [
+      "Analytics",
+      "Python",
+      "Power BI",
+      "SQL",
+      "Leadership"
+    ],
     "postedDate": "2024-11-15",
     "status": "Draft",
     "applicationCount": 0,
-    "recruiterId": "r004"
+    "recruiterId": "r004",
+    "jobProfileId": "b0000-0000-4000-8000-000000000037",
+    "jobReferenceNumber": "JOB-2026-0037"
   },
   {
     "jobId": "j038",
@@ -1242,7 +1434,9 @@
     "postedDate": "2024-11-15",
     "status": "Draft",
     "applicationCount": 0,
-    "recruiterId": "r005"
+    "recruiterId": "r005",
+    "jobProfileId": "b0000-0000-4000-8000-000000000038",
+    "jobReferenceNumber": "JOB-2026-0038"
   },
   {
     "jobId": "j039",
@@ -1267,11 +1461,18 @@
       "System copy",
       "Performance monitoring"
     ],
-    "skills": ["SAP Basis", "HANA", "Transport Management", "S/4HANA"],
+    "skills": [
+      "SAP Basis",
+      "HANA",
+      "Transport Management",
+      "S/4HANA"
+    ],
     "postedDate": "2024-11-15",
     "status": "Draft",
     "applicationCount": 0,
-    "recruiterId": "r001"
+    "recruiterId": "r001",
+    "jobProfileId": "b0000-0000-4000-8000-000000000039",
+    "jobReferenceNumber": "JOB-2026-0039"
   },
   {
     "jobId": "j040",
@@ -1306,6 +1507,8 @@
     "postedDate": "2024-11-15",
     "status": "Draft",
     "applicationCount": 0,
-    "recruiterId": "r003"
+    "recruiterId": "r003",
+    "jobProfileId": "b0000-0000-4000-8000-000000000040",
+    "jobReferenceNumber": "JOB-2026-0040"
   }
 ]
