@@ -2,7 +2,7 @@ openapi: "3.0.3"
 
 info:
   title: SkillsMine Authentication Service (Current / v2)
-  version: "2.0.0"
+  version: "2.1.0"
   description: >
     Authentication and identity endpoints currently consumed by the
     skills-mine-frontend application (per src/services/api/endpoints.ts and
@@ -95,6 +95,34 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/LoginResponseData'
+
+    V1LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    V1TokenResponse:
+      type: object
+      required: [accessToken, idToken, refreshToken, expiresIn, tokenType]
+      properties:
+        accessToken:
+          type: string
+        idToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: integer
+          example: 3600
+        tokenType:
+          type: string
+          example: Bearer
 
     Role:
       type: string
@@ -287,11 +315,13 @@ components:
     # ── Staff registration ───────────────────────────────────────────────────
     StaffRegisterRequest:
       type: object
-      required: [firstName, lastName, email, password, confirmPassword]
+      required: [invitationToken, staffNumber, email, firstName, lastName, departmentCode, password]
       properties:
         invitationToken:
           type: string
           format: uuid
+        staffNumber:
+          type: string
         firstName:
           type: string
         lastName:
@@ -300,6 +330,8 @@ components:
           type: string
           format: email
         mobileNumber:
+          type: string
+        departmentCode:
           type: string
         password:
           type: string
@@ -355,6 +387,40 @@ components:
         roleCode:
           type: string
           enum: [RECRUITER, MANCO, EXCO, ADMIN, '']
+        expiresAt:
+          type: string
+          format: date-time
+
+    StaffInvitationCreateRequest:
+      type: object
+      required: [email, staffNumber, roleCode, departmentCode]
+      properties:
+        email:
+          type: string
+          format: email
+        staffNumber:
+          type: string
+        roleCode:
+          type: string
+          enum: [RECRUITER, MANCO, EXCO, ADMIN]
+        departmentCode:
+          type: string
+
+    StaffInvitationCreateResponse:
+      type: object
+      required: [invitationToken, email, staffNumber, roleCode, expiresAt]
+      properties:
+        invitationToken:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        staffNumber:
+          type: string
+        roleCode:
+          type: string
+          enum: [RECRUITER, MANCO, EXCO, ADMIN]
         expiresAt:
           type: string
           format: date-time
@@ -416,6 +482,44 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/auth/login:
+    post:
+      tags: [Auth]
+      summary: Log in through the v1 identity contract
+      description: Returns a flat token response, unlike the `/auth/login` success envelope.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/V1LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1TokenResponse'
+        '400':
+          description: email and password are required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Account is inactive or suspended
           content:
             application/json:
               schema:
@@ -624,6 +728,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /api/v1/auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Request a password reset link through the v1 contract
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+      responses:
+        '200':
+          description: Reset-link request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+        '400':
+          description: email is required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /api/v1/auth/reset-password:
     post:
       tags: [Auth]
@@ -644,6 +773,52 @@ paths:
                 $ref: '#/components/schemas/ResetPasswordResponse'
         '400':
           description: Missing fields or password too short
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/auth/logout:
+    post:
+      tags: [Auth]
+      summary: Invalidate the v1 session token
+      description: Returns no response body on success, unlike `/auth/logout`.
+      responses:
+        '204':
+          description: Session invalidated
+
+  /api/v1/admin/staff-invitations:
+    post:
+      tags: [Staff Invitations]
+      summary: Create a staff-registration invitation
+      description: Requires an authenticated user with the `ADMIN` role.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffInvitationCreateRequest'
+      responses:
+        '201':
+          description: Invitation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffInvitationCreateResponse'
+        '400':
+          description: Required fields are missing or roleCode is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: ADMIN role required
           content:
             application/json:
               schema:

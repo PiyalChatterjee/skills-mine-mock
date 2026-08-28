@@ -8,7 +8,7 @@ info:
     resume preview/download, recommended positions, saved jobs, AI actions,
     CV upload, candidate list, candidate search, and the recruiter
     candidate-profile view.
-  version: "2.1.0"
+  version: "2.2.0"
   contact:
     name: SkillsMine Mock Server
     url: http://localhost:4000
@@ -151,6 +151,9 @@ paths:
       tags: [CV Build]
       summary: Get Build My CV data
       description: >
+        Current CV Builder route. The legacy `/candidate/buildmycv` contract
+        is retained separately in `openapi-cv-builder.yaml` for older clients.
+
         Returns the current user's saved Build My CV state. Never errors —
         returns an empty template when no record exists yet.
       operationId: getCvBuild

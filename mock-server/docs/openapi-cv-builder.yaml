@@ -3,9 +3,13 @@ info:
   title: SkillsMine Mock API – CV Builder
   version: "3.0.0"
   description: |
-    Endpoints for the Build My CV feature.
+    Legacy endpoints for the Build My CV feature.
     All three endpoints share the same response data model.
     Data is persisted in-memory for the lifetime of the mock server process.
+
+    New integrations should use `/candidates/cv-build/`, documented in
+    `openapi-candidates.yaml`. The `/candidate/buildmycv` routes remain
+    available for compatibility with older frontend clients.
 
 servers:
   - url: http://localhost:4000
@@ -221,12 +225,14 @@ security:
 paths:
 
   /candidate/buildmycv:
-
     # ──────────────────────────────────────────────────────────────────────────
     get:
       tags: [CV Builder]
       summary: Read – Fetch Build My CV data
+      deprecated: true
       description: |
+        Legacy route. New clients should use `GET /candidates/cv-build/`.
+
         Returns the authenticated user's saved Build My CV record.
 
         **Never errors.** When no record exists, returns a UI-ready empty
