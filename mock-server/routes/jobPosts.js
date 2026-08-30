@@ -70,6 +70,7 @@ export function jobPostsRouter({ DB, saveDataset }) {
       title:            body.positionTitle    ?? '',
       client:           body.companyName      ?? '',
       clientId:         '',
+      clientRate:       body.clientRate       ?? '',
       recruiterId:      body.recruiterId      ?? '',
       recruiterName:    body.recruiterName    ?? '',
       industry:         Array.isArray(body.industries) && body.industries.length > 0
@@ -161,6 +162,7 @@ export function jobPostsRouter({ DB, saveDataset }) {
       ...DB.mandates[idx],
       title:           body.positionTitle    ?? DB.mandates[idx].title,
       client:          body.companyName      ?? DB.mandates[idx].client,
+      clientRate:      body.clientRate       ?? DB.mandates[idx].clientRate,
       location:        body.location         ?? DB.mandates[idx].location,
       targetCloseDate: body.fillByDate       ?? DB.mandates[idx].targetCloseDate,
       workType:        body.workType         ?? DB.mandates[idx].workType,

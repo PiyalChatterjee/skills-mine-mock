@@ -1,13 +1,16 @@
 /**
  * RECRUITER ROUTES  (v2 contract)
  *
- * GET  /recruiter/dashboard                              → recruiter home dashboard
- * GET  /recruiter/mandates                               → mandate list for this recruiter
- * GET  /mandates/:mandateId                              → single mandate detail
- * GET  /applications/:applicationId/stage-transition    → stage history grouped by stage
- * PUT  /recruiter/applications/:applicationId/stage     → manually move candidate stage
- * GET  /recruiter/candidates/search                     → ATS candidate search
- * GET  /api/v1/candidates/:candidateId/profile          → recruiter candidate profile view
+ * GET   /recruiter/dashboard                              → recruiter home dashboard
+ * GET   /recruiter/mandates                               → mandate list for this recruiter
+ * GET   /mandates/:mandateId                              → single mandate detail
+ * GET   /applications/:applicationId/stage-transition    → stage history grouped by stage
+ * PUT   /recruiter/applications/:applicationId/stage     → manually move candidate stage
+ * GET   /recruiter/candidates/search                     → ATS candidate search
+ * GET   /api/v1/candidates/:candidateId/profile          → recruiter candidate profile view
+ *
+ * GET   /api/v1/recruiters/me/tour-status                → has this recruiter seen the tour?
+ * PATCH /api/v1/recruiters/me/tour-status                → mark tour as seen
  */
 
 import { Router } from 'express';
@@ -353,6 +356,43 @@ export function recruiterCandidateProfileRouter({ DB }) {
         })),
         matchScore: Math.floor(Math.random() * 30) + 65,
       },
+    });
+  });
+
+  return router;
+}
+
+// ─── Tour status  (GET + PATCH /api/v1/recruiters/me/tour-status) ─────────────
+export function recruiterTourRouter({ DB }) {
+  const router = Router();
+
+  // GET /me/tour-status — has this recruiter already seen the onboarding tour?
+  router.get('/me/tour-status', (req, res) => {
+    const user   = req.currentUser;
+    const dbUser = DB.users.find(u => u.userId === (user?.userId ?? user?.sub));
+    if (!dbUser)
+      return res.status(401).json({ success: false, statusCode: 401, message: 'Not authenticated.' });
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: { tourSeen: dbUser.tourSeen ?? false },
+    });
+  });
+
+  // PATCH /me/tour-status — mark the tour as seen for this recruiter
+  router.patch('/me/tour-status', (req, res) => {
+    const user   = req.currentUser;
+    const dbUser = DB.users.find(u => u.userId === (user?.userId ?? user?.sub));
+    if (!dbUser)
+      return res.status(401).json({ success: false, statusCode: 401, message: 'Not authenticated.' });
+
+    dbUser.tourSeen = true;
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: { tourSeen: true },
     });
   });
 

@@ -54,6 +54,7 @@
     "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
+    "tourSeen": true,
     "createdAt": "2023-01-15T08:00:00Z"
   },
   {
@@ -75,6 +76,7 @@
     "recommendedJobs": [],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
+    "tourSeen": true,
     "createdAt": "2023-02-01T08:00:00Z"
   },
   {

@@ -132,11 +132,54 @@ export function authV1Router({ DB, sessions, generateToken, staffInvitations }) 
     });
   });
 
+  // ── POST /recruiters/register ─────────────────────────────────────────────
+  // Self-service recruiter sign-up (no invitation token required).
+  router.post('/recruiters/register', (req, res) => {
+    const { firstName, lastName, email, mobileNumber, password } = req.body ?? {};
+
+    if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !password)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'Required fields missing.' });
+
+    const exists = DB.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
+    if (exists)
+      return res.status(409).json({ success: false, statusCode: 409, message: 'Email already registered.' });
+
+    const userId = crypto.randomUUID();
+    const recruiterId = `r${Date.now()}`;
+    const newUser = {
+      userId,
+      userType: 'RECRUITER',
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.toLowerCase(),
+      mobileNumber: mobileNumber ?? '',
+      password,
+      provider: 'LOCAL',
+      accountStatus: 'ACTIVE',
+      profileCompleted: 100,
+      roles: ['RECRUITER'],
+      recruiterId,
+      acceptTerms: true,
+      acceptPrivacyPolicy: true,
+      tourSeen: false,
+      createdAt: new Date().toISOString(),
+    };
+    DB.users.push(newUser);
+
+    return res.status(201).json({
+      userId,
+      email: newUser.email,
+      role: 'RECRUITER',
+      registrationType: 'SELF_SERVICE',
+      accountStatus: 'ACTIVE',
+    });
+  });
+
   // ── POST /staff/register ───────────────────────────────────────────────────
   router.post('/staff/register', (req, res) => {
-    const { invitationToken, staffNumber, email, firstName, lastName, departmentCode, password } = req.body ?? {};
+    const { invitationToken, email, firstName, lastName, password } = req.body ?? {};
 
-    if (!invitationToken || !staffNumber || !email || !firstName || !lastName || !departmentCode || !password)
+    if (!invitationToken || !email || !firstName || !lastName || !password)
       return res.status(400).json({ success: false, statusCode: 400, message: 'Required fields missing.' });
 
     // Validate the invitation token
@@ -147,11 +190,11 @@ export function authV1Router({ DB, sessions, generateToken, staffInvitations }) 
     if (new Date(invitation.expiresAt) < new Date())
       return res.status(400).json({ success: false, statusCode: 400, message: 'Invitation token has expired.' });
 
-    if (invitation.staffNumber !== staffNumber)
-      return res.status(400).json({ success: false, statusCode: 400, message: 'Staff number does not match invitation.' });
-
     if (invitation.email.toLowerCase() !== email.toLowerCase())
       return res.status(400).json({ success: false, statusCode: 400, message: 'Email does not match invitation.' });
+
+    // staffNumber and departmentCode come from the invitation — no need to supply them in the request
+    const { staffNumber, departmentCode } = invitation;
 
     const exists = DB.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
     if (exists)
@@ -173,6 +216,7 @@ export function authV1Router({ DB, sessions, generateToken, staffInvitations }) 
       roles: [invitation.roleCode],
       acceptTerms: false,
       acceptPrivacyPolicy: false,
+      tourSeen: false,
       createdAt: new Date().toISOString(),
     };
     DB.users.push(newUser);

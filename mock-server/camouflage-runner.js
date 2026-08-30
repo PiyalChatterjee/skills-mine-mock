@@ -35,6 +35,8 @@
  *                             GET  /mandates/:mandateId
  *                             GET  /applications/:applicationId/stage-transition
  *                             GET  /api/v1/candidates/:candidateId/profile
+ *                             GET  /api/v1/recruiters/me/tour-status
+ *                             PATCH /api/v1/recruiters/me/tour-status
  *   routes/pipeline.js        PATCH /api/v1/pipeline/:pipelineId/stage
  *   routes/skills.js          GET  /skills/search
  *   routes/manco.js           GET  /api/v1/manco/:mancoId/dashboard
@@ -79,6 +81,7 @@ import {
   mandatesRouter,
   applicationStageRouter,
   recruiterCandidateProfileRouter,
+  recruiterTourRouter,
 }                                                              from './routes/recruiter.js';
 import { pipelineRouter }                                      from './routes/pipeline.js';
 import { skillsRouter }                                        from './routes/skills.js';
@@ -107,6 +110,7 @@ const PUBLIC_PATHS = [
   '/auth/forgot-password',
   '/api/v1/auth/login',
   '/api/v1/auth/candidates/register',
+  '/api/v1/auth/recruiters/register',
   '/api/v1/auth/staff/register',
   '/api/v1/auth/staff-invitations/validate',
   '/api/v1/auth/forgot-password',
@@ -405,6 +409,11 @@ app.use('/api/v1/pipeline', pipelineRouter(routeCtx));
 //  Recruiter candidate profile  (GET /api/v1/candidates/:candidateId/profile)
 // ─────────────────────────────────────────────────────────
 app.use('/api/v1/candidates', recruiterCandidateProfileRouter(routeCtx));
+
+// ─────────────────────────────────────────────────────────
+//  Recruiter tour status  (GET/PATCH /api/v1/recruiters/me/tour-status)
+// ─────────────────────────────────────────────────────────
+app.use('/api/v1/recruiters', recruiterTourRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  MANCO
