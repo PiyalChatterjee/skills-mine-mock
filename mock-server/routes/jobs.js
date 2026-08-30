@@ -121,8 +121,9 @@ export function jobsRouter({ DB }) {
     } = req.query;
 
     let results = [...DB.jobs];
-    if (status) results = results.filter(j => j.status?.toLowerCase() === status.toLowerCase());
-    else        results = results.filter(j => j.status === 'Open');
+    // Default filter aligns with Mandate_Service_v2's statusCode enum (POSTED, DRAFT, ...)
+    if (status) results = results.filter(j => j.statusCode?.toLowerCase() === status.toLowerCase() || j.status?.toLowerCase() === status.toLowerCase());
+    else        results = results.filter(j => j.statusCode === 'POSTED');
     if (industry) results = results.filter(j => j.industry?.toLowerCase().includes(industry.toLowerCase()));
     if (location) results = results.filter(j => j.location?.toLowerCase().includes(location.toLowerCase()));
     if (q) results = results.filter(j =>
@@ -178,6 +179,36 @@ export function jobsRouter({ DB }) {
         if (!userRecord.savedJobs.includes(jobId)) {
           userRecord.savedJobs.push(jobId);
         }
+      }
+      const profile = DB.candidateProfiles.find(p => p.userId === user.userId);
+      if (profile) {
+        if (!Array.isArray(profile.savedJobs)) profile.savedJobs = [];
+        if (!profile.savedJobs.some(entry => (typeof entry === 'string' ? entry : entry.jobId) === jobId)) {
+          profile.savedJobs.push({ jobId, savedAt: new Date().toISOString() });
+        }
+      }
+    }
+
+    return res.status(200).json({ success: true });
+  });
+
+  // DELETE /jobs/:jobId/save
+  router.delete('/:jobId/save', (req, res) => {
+    const { jobId } = req.params;
+    const job = DB.jobs.find(j => j.jobId === jobId);
+    if (!job) return res.status(404).json({ success: false, statusCode: 404, message: `Job ${jobId} not found.` });
+
+    const user = req.currentUser;
+    if (user?.userId) {
+      const userRecord = DB.users.find(u => u.userId === user.userId);
+      if (userRecord && Array.isArray(userRecord.savedJobs)) {
+        userRecord.savedJobs = userRecord.savedJobs.filter(id => id !== jobId);
+      }
+      const profile = DB.candidateProfiles.find(p => p.userId === user.userId);
+      if (profile && Array.isArray(profile.savedJobs)) {
+        profile.savedJobs = profile.savedJobs.filter(entry =>
+          (typeof entry === 'string' ? entry : entry.jobId) !== jobId
+        );
       }
     }
 

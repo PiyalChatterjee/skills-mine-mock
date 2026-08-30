@@ -42,7 +42,7 @@
       {
         "docId": "doc-c001-1",
         "type": "CV",
-        "uploadedAt": "2024-10-15"
+        "uploadedAt": "2024-10-15T09:00:00Z"
       }
     ],
     "languages": [
@@ -53,7 +53,8 @@
     "applications": [
       "app-c001-j001",
       "app-c001-j004"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000001"
   },
   {
     "candidateId": "c002",
@@ -98,7 +99,7 @@
       {
         "docId": "doc-c002-1",
         "type": "CV",
-        "uploadedAt": "2024-10-20"
+        "uploadedAt": "2024-10-20T09:00:00Z"
       }
     ],
     "languages": [
@@ -109,7 +110,8 @@
     "profileComplete": 92,
     "applications": [
       "app-c002-j003"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000002"
   },
   {
     "candidateId": "c003",
@@ -154,7 +156,7 @@
       {
         "docId": "doc-c003-1",
         "type": "CV",
-        "uploadedAt": "2024-11-01"
+        "uploadedAt": "2024-11-01T09:00:00Z"
       }
     ],
     "languages": [
@@ -165,7 +167,8 @@
     "profileComplete": 85,
     "applications": [
       "app-c003-j002"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000003"
   },
   {
     "candidateId": "c004",
@@ -210,7 +213,7 @@
       {
         "docId": "doc-c004-1",
         "type": "CV",
-        "uploadedAt": "2024-10-28"
+        "uploadedAt": "2024-10-28T09:00:00Z"
       }
     ],
     "languages": [
@@ -221,7 +224,8 @@
     "profileComplete": 79,
     "applications": [
       "app-c004-j005"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000004"
   },
   {
     "candidateId": "c005",
@@ -266,7 +270,7 @@
       {
         "docId": "doc-c005-1",
         "type": "CV",
-        "uploadedAt": "2024-11-05"
+        "uploadedAt": "2024-11-05T09:00:00Z"
       }
     ],
     "languages": [
@@ -277,7 +281,8 @@
     "profileComplete": 95,
     "applications": [
       "app-c005-j004"
-    ]
+    ],
+    "candidateUuid": "d0000-0000-4000-8000-000000000005"
   },
   {
     "candidateId": "c006",
@@ -325,7 +330,8 @@
       "Tswana"
     ],
     "profileComplete": 72,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000006"
   },
   {
     "candidateId": "c007",
@@ -370,7 +376,7 @@
       {
         "docId": "doc-c007-1",
         "type": "CV",
-        "uploadedAt": "2024-10-10"
+        "uploadedAt": "2024-10-10T09:00:00Z"
       }
     ],
     "languages": [
@@ -379,7 +385,8 @@
       "Sotho"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000007"
   },
   {
     "candidateId": "c008",
@@ -424,7 +431,7 @@
       {
         "docId": "doc-c008-1",
         "type": "CV",
-        "uploadedAt": "2024-09-30"
+        "uploadedAt": "2024-09-30T09:00:00Z"
       }
     ],
     "languages": [
@@ -432,7 +439,8 @@
       "Afrikaans"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000008"
   },
   {
     "candidateId": "c009",
@@ -477,7 +485,7 @@
       {
         "docId": "doc-c009-1",
         "type": "CV",
-        "uploadedAt": "2024-11-03"
+        "uploadedAt": "2024-11-03T09:00:00Z"
       }
     ],
     "languages": [
@@ -486,7 +494,8 @@
       "Xhosa"
     ],
     "profileComplete": 76,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000009"
   },
   {
     "candidateId": "c010",
@@ -527,7 +536,8 @@
       "Afrikaans"
     ],
     "profileComplete": 65,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000010"
   },
   {
     "candidateId": "c011",
@@ -571,7 +581,7 @@
       {
         "docId": "doc-c011-1",
         "type": "CV",
-        "uploadedAt": "2024-10-18"
+        "uploadedAt": "2024-10-18T09:00:00Z"
       }
     ],
     "languages": [
@@ -580,7 +590,8 @@
       "Xhosa"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000011"
   },
   {
     "candidateId": "c012",
@@ -625,7 +636,7 @@
       {
         "docId": "doc-c012-1",
         "type": "CV",
-        "uploadedAt": "2024-11-07"
+        "uploadedAt": "2024-11-07T09:00:00Z"
       }
     ],
     "languages": [
@@ -633,7 +644,8 @@
       "Zulu"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000012"
   },
   {
     "candidateId": "c013",
@@ -677,7 +689,7 @@
       {
         "docId": "doc-c013-1",
         "type": "CV",
-        "uploadedAt": "2024-10-25"
+        "uploadedAt": "2024-10-25T09:00:00Z"
       }
     ],
     "languages": [
@@ -685,7 +697,8 @@
       "Zulu"
     ],
     "profileComplete": 77,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000013"
   },
   {
     "candidateId": "c014",
@@ -730,7 +743,7 @@
       {
         "docId": "doc-c014-1",
         "type": "CV",
-        "uploadedAt": "2024-10-12"
+        "uploadedAt": "2024-10-12T09:00:00Z"
       }
     ],
     "languages": [
@@ -738,7 +751,8 @@
       "Afrikaans"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000014"
   },
   {
     "candidateId": "c015",
@@ -783,7 +797,7 @@
       {
         "docId": "doc-c015-1",
         "type": "CV",
-        "uploadedAt": "2024-11-08"
+        "uploadedAt": "2024-11-08T09:00:00Z"
       }
     ],
     "languages": [
@@ -791,7 +805,8 @@
       "Zulu"
     ],
     "profileComplete": 94,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000015"
   },
   {
     "candidateId": "c016",
@@ -835,7 +850,7 @@
       {
         "docId": "doc-c016-1",
         "type": "CV",
-        "uploadedAt": "2024-10-30"
+        "uploadedAt": "2024-10-30T09:00:00Z"
       }
     ],
     "languages": [
@@ -844,7 +859,8 @@
       "Xhosa"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000016"
   },
   {
     "candidateId": "c017",
@@ -889,7 +905,7 @@
       {
         "docId": "doc-c017-1",
         "type": "CV",
-        "uploadedAt": "2024-09-20"
+        "uploadedAt": "2024-09-20T09:00:00Z"
       }
     ],
     "languages": [
@@ -897,7 +913,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000017"
   },
   {
     "candidateId": "c018",
@@ -943,7 +960,7 @@
       {
         "docId": "doc-c018-1",
         "type": "CV",
-        "uploadedAt": "2024-11-02"
+        "uploadedAt": "2024-11-02T09:00:00Z"
       }
     ],
     "languages": [
@@ -952,7 +969,8 @@
       "Zulu"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000018"
   },
   {
     "candidateId": "c019",
@@ -997,7 +1015,7 @@
       {
         "docId": "doc-c019-1",
         "type": "CV",
-        "uploadedAt": "2024-10-22"
+        "uploadedAt": "2024-10-22T09:00:00Z"
       }
     ],
     "languages": [
@@ -1006,7 +1024,8 @@
       "Tswana"
     ],
     "profileComplete": 81,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000019"
   },
   {
     "candidateId": "c020",
@@ -1051,7 +1070,7 @@
       {
         "docId": "doc-c020-1",
         "type": "CV",
-        "uploadedAt": "2024-10-14"
+        "uploadedAt": "2024-10-14T09:00:00Z"
       }
     ],
     "languages": [
@@ -1059,7 +1078,8 @@
       "Afrikaans"
     ],
     "profileComplete": 86,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000020"
   },
   {
     "candidateId": "c021",
@@ -1104,7 +1124,7 @@
       {
         "docId": "doc-c021-1",
         "type": "CV",
-        "uploadedAt": "2024-11-04"
+        "uploadedAt": "2024-11-04T09:00:00Z"
       }
     ],
     "languages": [
@@ -1112,7 +1132,8 @@
       "Zulu"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000021"
   },
   {
     "candidateId": "c022",
@@ -1156,7 +1177,7 @@
       {
         "docId": "doc-c022-1",
         "type": "CV",
-        "uploadedAt": "2024-10-08"
+        "uploadedAt": "2024-10-08T09:00:00Z"
       }
     ],
     "languages": [
@@ -1164,7 +1185,8 @@
       "Afrikaans"
     ],
     "profileComplete": 89,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000022"
   },
   {
     "candidateId": "c023",
@@ -1209,7 +1231,7 @@
       {
         "docId": "doc-c023-1",
         "type": "CV",
-        "uploadedAt": "2024-11-06"
+        "uploadedAt": "2024-11-06T09:00:00Z"
       }
     ],
     "languages": [
@@ -1217,7 +1239,8 @@
       "Zulu"
     ],
     "profileComplete": 97,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000023"
   },
   {
     "candidateId": "c024",
@@ -1262,7 +1285,7 @@
       {
         "docId": "doc-c024-1",
         "type": "CV",
-        "uploadedAt": "2024-10-26"
+        "uploadedAt": "2024-10-26T09:00:00Z"
       }
     ],
     "languages": [
@@ -1270,7 +1293,8 @@
       "Afrikaans"
     ],
     "profileComplete": 74,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000024"
   },
   {
     "candidateId": "c025",
@@ -1315,7 +1339,7 @@
       {
         "docId": "doc-c025-1",
         "type": "CV",
-        "uploadedAt": "2024-11-01"
+        "uploadedAt": "2024-11-01T09:00:00Z"
       }
     ],
     "languages": [
@@ -1323,7 +1347,8 @@
       "Zulu"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000025"
   },
   {
     "candidateId": "c026",
@@ -1368,7 +1393,7 @@
       {
         "docId": "doc-c026-1",
         "type": "CV",
-        "uploadedAt": "2024-10-17"
+        "uploadedAt": "2024-10-17T09:00:00Z"
       }
     ],
     "languages": [
@@ -1377,7 +1402,8 @@
       "Tswana"
     ],
     "profileComplete": 76,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000026"
   },
   {
     "candidateId": "c027",
@@ -1422,7 +1448,7 @@
       {
         "docId": "doc-c027-1",
         "type": "CV",
-        "uploadedAt": "2024-11-09"
+        "uploadedAt": "2024-11-09T09:00:00Z"
       }
     ],
     "languages": [
@@ -1430,7 +1456,8 @@
       "Afrikaans"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000027"
   },
   {
     "candidateId": "c028",
@@ -1474,7 +1501,7 @@
       {
         "docId": "doc-c028-1",
         "type": "CV",
-        "uploadedAt": "2024-10-29"
+        "uploadedAt": "2024-10-29T09:00:00Z"
       }
     ],
     "languages": [
@@ -1482,7 +1509,8 @@
       "Zulu"
     ],
     "profileComplete": 78,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000028"
   },
   {
     "candidateId": "c029",
@@ -1527,7 +1555,7 @@
       {
         "docId": "doc-c029-1",
         "type": "CV",
-        "uploadedAt": "2024-10-05"
+        "uploadedAt": "2024-10-05T09:00:00Z"
       }
     ],
     "languages": [
@@ -1535,7 +1563,8 @@
       "Afrikaans"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000029"
   },
   {
     "candidateId": "c030",
@@ -1580,7 +1609,7 @@
       {
         "docId": "doc-c030-1",
         "type": "CV",
-        "uploadedAt": "2024-10-21"
+        "uploadedAt": "2024-10-21T09:00:00Z"
       }
     ],
     "languages": [
@@ -1589,7 +1618,8 @@
       "Sotho"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000030"
   },
   {
     "candidateId": "c031",
@@ -1634,7 +1664,7 @@
       {
         "docId": "doc-c031-1",
         "type": "CV",
-        "uploadedAt": "2024-11-05"
+        "uploadedAt": "2024-11-05T09:00:00Z"
       }
     ],
     "languages": [
@@ -1643,7 +1673,8 @@
       "Yoruba"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000031"
   },
   {
     "candidateId": "c032",
@@ -1689,7 +1720,7 @@
       {
         "docId": "doc-c032-1",
         "type": "CV",
-        "uploadedAt": "2024-09-28"
+        "uploadedAt": "2024-09-28T09:00:00Z"
       }
     ],
     "languages": [
@@ -1697,7 +1728,8 @@
       "Afrikaans"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000032"
   },
   {
     "candidateId": "c033",
@@ -1743,7 +1775,8 @@
       "Zulu"
     ],
     "profileComplete": 68,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000033"
   },
   {
     "candidateId": "c034",
@@ -1788,7 +1821,7 @@
       {
         "docId": "doc-c034-1",
         "type": "CV",
-        "uploadedAt": "2024-10-11"
+        "uploadedAt": "2024-10-11T09:00:00Z"
       }
     ],
     "languages": [
@@ -1796,7 +1829,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000034"
   },
   {
     "candidateId": "c035",
@@ -1841,7 +1875,7 @@
       {
         "docId": "doc-c035-1",
         "type": "CV",
-        "uploadedAt": "2024-11-03"
+        "uploadedAt": "2024-11-03T09:00:00Z"
       }
     ],
     "languages": [
@@ -1850,7 +1884,8 @@
       "Sotho"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000035"
   },
   {
     "candidateId": "c036",
@@ -1895,7 +1930,7 @@
       {
         "docId": "doc-c036-1",
         "type": "CV",
-        "uploadedAt": "2024-10-24"
+        "uploadedAt": "2024-10-24T09:00:00Z"
       }
     ],
     "languages": [
@@ -1903,7 +1938,8 @@
       "Afrikaans"
     ],
     "profileComplete": 73,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000036"
   },
   {
     "candidateId": "c037",
@@ -1948,7 +1984,7 @@
       {
         "docId": "doc-c037-1",
         "type": "CV",
-        "uploadedAt": "2024-10-16"
+        "uploadedAt": "2024-10-16T09:00:00Z"
       }
     ],
     "languages": [
@@ -1956,7 +1992,8 @@
       "Zulu"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000037"
   },
   {
     "candidateId": "c038",
@@ -2001,7 +2038,7 @@
       {
         "docId": "doc-c038-1",
         "type": "CV",
-        "uploadedAt": "2024-09-25"
+        "uploadedAt": "2024-09-25T09:00:00Z"
       }
     ],
     "languages": [
@@ -2009,7 +2046,8 @@
       "Afrikaans"
     ],
     "profileComplete": 92,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000038"
   },
   {
     "candidateId": "c039",
@@ -2054,7 +2092,7 @@
       {
         "docId": "doc-c039-1",
         "type": "CV",
-        "uploadedAt": "2024-11-06"
+        "uploadedAt": "2024-11-06T09:00:00Z"
       }
     ],
     "languages": [
@@ -2063,7 +2101,8 @@
       "Tswana"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000039"
   },
   {
     "candidateId": "c040",
@@ -2108,7 +2147,7 @@
       {
         "docId": "doc-c040-1",
         "type": "CV",
-        "uploadedAt": "2024-10-19"
+        "uploadedAt": "2024-10-19T09:00:00Z"
       }
     ],
     "languages": [
@@ -2116,7 +2155,8 @@
       "Afrikaans"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000040"
   },
   {
     "candidateId": "c041",
@@ -2157,7 +2197,8 @@
       "Zulu"
     ],
     "profileComplete": 71,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000041"
   },
   {
     "candidateId": "c042",
@@ -2201,7 +2242,7 @@
       {
         "docId": "doc-c042-1",
         "type": "CV",
-        "uploadedAt": "2024-10-27"
+        "uploadedAt": "2024-10-27T09:00:00Z"
       }
     ],
     "languages": [
@@ -2209,7 +2250,8 @@
       "Afrikaans"
     ],
     "profileComplete": 77,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000042"
   },
   {
     "candidateId": "c043",
@@ -2254,7 +2296,7 @@
       {
         "docId": "doc-c043-1",
         "type": "CV",
-        "uploadedAt": "2024-11-01"
+        "uploadedAt": "2024-11-01T09:00:00Z"
       }
     ],
     "languages": [
@@ -2262,7 +2304,8 @@
       "Zulu"
     ],
     "profileComplete": 86,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000043"
   },
   {
     "candidateId": "c044",
@@ -2307,7 +2350,7 @@
       {
         "docId": "doc-c044-1",
         "type": "CV",
-        "uploadedAt": "2024-11-05"
+        "uploadedAt": "2024-11-05T09:00:00Z"
       }
     ],
     "languages": [
@@ -2315,7 +2358,8 @@
       "Afrikaans"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000044"
   },
   {
     "candidateId": "c045",
@@ -2360,7 +2404,7 @@
       {
         "docId": "doc-c045-1",
         "type": "CV",
-        "uploadedAt": "2024-10-23"
+        "uploadedAt": "2024-10-23T09:00:00Z"
       }
     ],
     "languages": [
@@ -2369,7 +2413,8 @@
       "Sotho"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000045"
   },
   {
     "candidateId": "c046",
@@ -2415,7 +2460,7 @@
       {
         "docId": "doc-c046-1",
         "type": "CV",
-        "uploadedAt": "2024-10-31"
+        "uploadedAt": "2024-10-31T09:00:00Z"
       }
     ],
     "languages": [
@@ -2423,7 +2468,8 @@
       "Afrikaans"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000046"
   },
   {
     "candidateId": "c047",
@@ -2468,7 +2514,7 @@
       {
         "docId": "doc-c047-1",
         "type": "CV",
-        "uploadedAt": "2024-11-04"
+        "uploadedAt": "2024-11-04T09:00:00Z"
       }
     ],
     "languages": [
@@ -2476,7 +2522,8 @@
       "Sotho"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000047"
   },
   {
     "candidateId": "c048",
@@ -2521,7 +2568,7 @@
       {
         "docId": "doc-c048-1",
         "type": "CV",
-        "uploadedAt": "2024-10-07"
+        "uploadedAt": "2024-10-07T09:00:00Z"
       }
     ],
     "languages": [
@@ -2529,7 +2576,8 @@
       "Afrikaans"
     ],
     "profileComplete": 89,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000048"
   },
   {
     "candidateId": "c049",
@@ -2574,7 +2622,7 @@
       {
         "docId": "doc-c049-1",
         "type": "CV",
-        "uploadedAt": "2024-10-15"
+        "uploadedAt": "2024-10-15T09:00:00Z"
       }
     ],
     "languages": [
@@ -2582,7 +2630,8 @@
       "Zulu"
     ],
     "profileComplete": 81,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000049"
   },
   {
     "candidateId": "c050",
@@ -2627,7 +2676,7 @@
       {
         "docId": "doc-c050-1",
         "type": "CV",
-        "uploadedAt": "2024-11-08"
+        "uploadedAt": "2024-11-08T09:00:00Z"
       }
     ],
     "languages": [
@@ -2635,7 +2684,8 @@
       "Afrikaans"
     ],
     "profileComplete": 96,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000050"
   },
   {
     "candidateId": "c051",
@@ -2673,7 +2723,7 @@
       {
         "docId": "doc-c051-1",
         "type": "CV",
-        "uploadedAt": "2024-10-20"
+        "uploadedAt": "2024-10-20T09:00:00Z"
       }
     ],
     "languages": [
@@ -2681,7 +2731,8 @@
       "Zulu"
     ],
     "profileComplete": 78,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000051"
   },
   {
     "candidateId": "c052",
@@ -2726,7 +2777,7 @@
       {
         "docId": "doc-c052-1",
         "type": "CV",
-        "uploadedAt": "2024-09-18"
+        "uploadedAt": "2024-09-18T09:00:00Z"
       }
     ],
     "languages": [
@@ -2734,7 +2785,8 @@
       "Afrikaans"
     ],
     "profileComplete": 94,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000052"
   },
   {
     "candidateId": "c053",
@@ -2779,7 +2831,7 @@
       {
         "docId": "doc-c053-1",
         "type": "CV",
-        "uploadedAt": "2024-11-02"
+        "uploadedAt": "2024-11-02T09:00:00Z"
       }
     ],
     "languages": [
@@ -2788,7 +2840,8 @@
       "Xhosa"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000053"
   },
   {
     "candidateId": "c054",
@@ -2833,7 +2886,7 @@
       {
         "docId": "doc-c054-1",
         "type": "CV",
-        "uploadedAt": "2024-10-13"
+        "uploadedAt": "2024-10-13T09:00:00Z"
       }
     ],
     "languages": [
@@ -2841,7 +2894,8 @@
       "Afrikaans"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000054"
   },
   {
     "candidateId": "c055",
@@ -2886,7 +2940,7 @@
       {
         "docId": "doc-c055-1",
         "type": "CV",
-        "uploadedAt": "2024-10-28"
+        "uploadedAt": "2024-10-28T09:00:00Z"
       }
     ],
     "languages": [
@@ -2895,7 +2949,8 @@
       "Sotho"
     ],
     "profileComplete": 74,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000055"
   },
   {
     "candidateId": "c056",
@@ -2940,7 +2995,7 @@
       {
         "docId": "doc-c056-1",
         "type": "CV",
-        "uploadedAt": "2024-11-07"
+        "uploadedAt": "2024-11-07T09:00:00Z"
       }
     ],
     "languages": [
@@ -2948,7 +3003,8 @@
       "Hindi"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000056"
   },
   {
     "candidateId": "c057",
@@ -2992,7 +3048,7 @@
       {
         "docId": "doc-c057-1",
         "type": "CV",
-        "uploadedAt": "2024-10-09"
+        "uploadedAt": "2024-10-09T09:00:00Z"
       }
     ],
     "languages": [
@@ -3001,7 +3057,8 @@
       "Sotho"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000057"
   },
   {
     "candidateId": "c058",
@@ -3046,7 +3103,7 @@
       {
         "docId": "doc-c058-1",
         "type": "CV",
-        "uploadedAt": "2024-11-06"
+        "uploadedAt": "2024-11-06T09:00:00Z"
       }
     ],
     "languages": [
@@ -3054,7 +3111,8 @@
       "Afrikaans"
     ],
     "profileComplete": 77,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000058"
   },
   {
     "candidateId": "c059",
@@ -3099,7 +3157,7 @@
       {
         "docId": "doc-c059-1",
         "type": "CV",
-        "uploadedAt": "2024-10-22"
+        "uploadedAt": "2024-10-22T09:00:00Z"
       }
     ],
     "languages": [
@@ -3107,7 +3165,8 @@
       "Zulu"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000059"
   },
   {
     "candidateId": "c060",
@@ -3152,7 +3211,7 @@
       {
         "docId": "doc-c060-1",
         "type": "CV",
-        "uploadedAt": "2024-11-08"
+        "uploadedAt": "2024-11-08T09:00:00Z"
       }
     ],
     "languages": [
@@ -3160,7 +3219,8 @@
       "Afrikaans"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000060"
   },
   {
     "candidateId": "c061",
@@ -3201,7 +3261,8 @@
       "Sotho"
     ],
     "profileComplete": 68,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000061"
   },
   {
     "candidateId": "c062",
@@ -3239,7 +3300,7 @@
       {
         "docId": "doc-c062-1",
         "type": "CV",
-        "uploadedAt": "2024-10-16"
+        "uploadedAt": "2024-10-16T09:00:00Z"
       }
     ],
     "languages": [
@@ -3248,7 +3309,8 @@
       "Tswana"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000062"
   },
   {
     "candidateId": "c063",
@@ -3293,7 +3355,7 @@
       {
         "docId": "doc-c063-1",
         "type": "CV",
-        "uploadedAt": "2024-11-03"
+        "uploadedAt": "2024-11-03T09:00:00Z"
       }
     ],
     "languages": [
@@ -3301,7 +3363,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000063"
   },
   {
     "candidateId": "c064",
@@ -3342,7 +3405,8 @@
       "Zulu"
     ],
     "profileComplete": 69,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000064"
   },
   {
     "candidateId": "c065",
@@ -3387,7 +3451,7 @@
       {
         "docId": "doc-c065-1",
         "type": "CV",
-        "uploadedAt": "2024-10-30"
+        "uploadedAt": "2024-10-30T09:00:00Z"
       }
     ],
     "languages": [
@@ -3395,7 +3459,8 @@
       "Afrikaans"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000065"
   },
   {
     "candidateId": "c066",
@@ -3440,7 +3505,7 @@
       {
         "docId": "doc-c066-1",
         "type": "CV",
-        "uploadedAt": "2024-10-04"
+        "uploadedAt": "2024-10-04T09:00:00Z"
       }
     ],
     "languages": [
@@ -3448,7 +3513,8 @@
       "Zulu"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000066"
   },
   {
     "candidateId": "c067",
@@ -3493,7 +3559,7 @@
       {
         "docId": "doc-c067-1",
         "type": "CV",
-        "uploadedAt": "2024-11-09"
+        "uploadedAt": "2024-11-09T09:00:00Z"
       }
     ],
     "languages": [
@@ -3501,7 +3567,8 @@
       "Afrikaans"
     ],
     "profileComplete": 96,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000067"
   },
   {
     "candidateId": "c068",
@@ -3548,7 +3615,8 @@
       "Xhosa"
     ],
     "profileComplete": 67,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000068"
   },
   {
     "candidateId": "c069",
@@ -3592,7 +3660,7 @@
       {
         "docId": "doc-c069-1",
         "type": "CV",
-        "uploadedAt": "2024-09-22"
+        "uploadedAt": "2024-09-22T09:00:00Z"
       }
     ],
     "languages": [
@@ -3600,7 +3668,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000069"
   },
   {
     "candidateId": "c070",
@@ -3645,7 +3714,7 @@
       {
         "docId": "doc-c070-1",
         "type": "CV",
-        "uploadedAt": "2024-10-24"
+        "uploadedAt": "2024-10-24T09:00:00Z"
       }
     ],
     "languages": [
@@ -3654,7 +3723,8 @@
       "Xhosa"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000070"
   },
   {
     "candidateId": "c071",
@@ -3693,7 +3763,7 @@
       {
         "docId": "doc-c071-1",
         "type": "CV",
-        "uploadedAt": "2024-11-05"
+        "uploadedAt": "2024-11-05T09:00:00Z"
       }
     ],
     "languages": [
@@ -3701,7 +3771,8 @@
       "Afrikaans"
     ],
     "profileComplete": 81,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000071"
   },
   {
     "candidateId": "c072",
@@ -3746,7 +3817,7 @@
       {
         "docId": "doc-c072-1",
         "type": "CV",
-        "uploadedAt": "2024-10-27"
+        "uploadedAt": "2024-10-27T09:00:00Z"
       }
     ],
     "languages": [
@@ -3754,7 +3825,8 @@
       "Zulu"
     ],
     "profileComplete": 75,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000072"
   },
   {
     "candidateId": "c073",
@@ -3799,7 +3871,7 @@
       {
         "docId": "doc-c073-1",
         "type": "CV",
-        "uploadedAt": "2024-11-01"
+        "uploadedAt": "2024-11-01T09:00:00Z"
       }
     ],
     "languages": [
@@ -3807,7 +3879,8 @@
       "Afrikaans"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000073"
   },
   {
     "candidateId": "c074",
@@ -3852,7 +3925,7 @@
       {
         "docId": "doc-c074-1",
         "type": "CV",
-        "uploadedAt": "2024-10-14"
+        "uploadedAt": "2024-10-14T09:00:00Z"
       }
     ],
     "languages": [
@@ -3861,7 +3934,8 @@
       "Ndebele"
     ],
     "profileComplete": 90,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000074"
   },
   {
     "candidateId": "c075",
@@ -3901,7 +3975,8 @@
       "Sotho"
     ],
     "profileComplete": 55,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000075"
   },
   {
     "candidateId": "c076",
@@ -3940,7 +4015,7 @@
       {
         "docId": "doc-c076-1",
         "type": "CV",
-        "uploadedAt": "2024-10-31"
+        "uploadedAt": "2024-10-31T09:00:00Z"
       }
     ],
     "languages": [
@@ -3949,7 +4024,8 @@
       "Tswana"
     ],
     "profileComplete": 76,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000076"
   },
   {
     "candidateId": "c077",
@@ -3987,7 +4063,7 @@
       {
         "docId": "doc-c077-1",
         "type": "CV",
-        "uploadedAt": "2024-11-04"
+        "uploadedAt": "2024-11-04T09:00:00Z"
       }
     ],
     "languages": [
@@ -3995,7 +4071,8 @@
       "Zulu"
     ],
     "profileComplete": 72,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000077"
   },
   {
     "candidateId": "c078",
@@ -4036,7 +4113,8 @@
       "Afrikaans"
     ],
     "profileComplete": 60,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000078"
   },
   {
     "candidateId": "c079",
@@ -4081,7 +4159,7 @@
       {
         "docId": "doc-c079-1",
         "type": "CV",
-        "uploadedAt": "2024-10-06"
+        "uploadedAt": "2024-10-06T09:00:00Z"
       }
     ],
     "languages": [
@@ -4089,7 +4167,8 @@
       "Zulu"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000079"
   },
   {
     "candidateId": "c080",
@@ -4129,7 +4208,8 @@
       "Afrikaans"
     ],
     "profileComplete": 52,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000080"
   },
   {
     "candidateId": "c081",
@@ -4174,7 +4254,7 @@
       {
         "docId": "doc-c081-1",
         "type": "CV",
-        "uploadedAt": "2024-11-07"
+        "uploadedAt": "2024-11-07T09:00:00Z"
       }
     ],
     "languages": [
@@ -4182,7 +4262,8 @@
       "Afrikaans"
     ],
     "profileComplete": 86,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000081"
   },
   {
     "candidateId": "c082",
@@ -4221,7 +4302,7 @@
       {
         "docId": "doc-c082-1",
         "type": "CV",
-        "uploadedAt": "2024-11-06"
+        "uploadedAt": "2024-11-06T09:00:00Z"
       }
     ],
     "languages": [
@@ -4230,7 +4311,8 @@
       "Xhosa"
     ],
     "profileComplete": 98,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000082"
   },
   {
     "candidateId": "c083",
@@ -4275,7 +4357,7 @@
       {
         "docId": "doc-c083-1",
         "type": "CV",
-        "uploadedAt": "2024-10-25"
+        "uploadedAt": "2024-10-25T09:00:00Z"
       }
     ],
     "languages": [
@@ -4283,7 +4365,8 @@
       "Afrikaans"
     ],
     "profileComplete": 82,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000083"
   },
   {
     "candidateId": "c084",
@@ -4328,7 +4411,7 @@
       {
         "docId": "doc-c084-1",
         "type": "CV",
-        "uploadedAt": "2024-10-18"
+        "uploadedAt": "2024-10-18T09:00:00Z"
       }
     ],
     "languages": [
@@ -4336,7 +4419,8 @@
       "Zulu"
     ],
     "profileComplete": 88,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000084"
   },
   {
     "candidateId": "c085",
@@ -4381,7 +4465,7 @@
       {
         "docId": "doc-c085-1",
         "type": "CV",
-        "uploadedAt": "2024-10-10"
+        "uploadedAt": "2024-10-10T09:00:00Z"
       }
     ],
     "languages": [
@@ -4389,7 +4473,8 @@
       "Afrikaans"
     ],
     "profileComplete": 83,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000085"
   },
   {
     "candidateId": "c086",
@@ -4434,7 +4519,7 @@
       {
         "docId": "doc-c086-1",
         "type": "CV",
-        "uploadedAt": "2024-11-03"
+        "uploadedAt": "2024-11-03T09:00:00Z"
       }
     ],
     "languages": [
@@ -4443,7 +4528,8 @@
       "Zulu"
     ],
     "profileComplete": 91,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000086"
   },
   {
     "candidateId": "c087",
@@ -4482,7 +4568,7 @@
       {
         "docId": "doc-c087-1",
         "type": "CV",
-        "uploadedAt": "2024-11-01"
+        "uploadedAt": "2024-11-01T09:00:00Z"
       }
     ],
     "languages": [
@@ -4491,7 +4577,8 @@
       "Portuguese"
     ],
     "profileComplete": 79,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000087"
   },
   {
     "candidateId": "c088",
@@ -4539,7 +4626,8 @@
       "Tswana"
     ],
     "profileComplete": 73,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000088"
   },
   {
     "candidateId": "c089",
@@ -4584,7 +4672,7 @@
       {
         "docId": "doc-c089-1",
         "type": "CV",
-        "uploadedAt": "2024-10-29"
+        "uploadedAt": "2024-10-29T09:00:00Z"
       }
     ],
     "languages": [
@@ -4592,7 +4680,8 @@
       "Afrikaans"
     ],
     "profileComplete": 85,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000089"
   },
   {
     "candidateId": "c090",
@@ -4637,7 +4726,7 @@
       {
         "docId": "doc-c090-1",
         "type": "CV",
-        "uploadedAt": "2024-11-08"
+        "uploadedAt": "2024-11-08T09:00:00Z"
       }
     ],
     "languages": [
@@ -4646,7 +4735,8 @@
       "Sotho"
     ],
     "profileComplete": 95,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000090"
   },
   {
     "candidateId": "c091",
@@ -4691,7 +4781,7 @@
       {
         "docId": "doc-c091-1",
         "type": "CV",
-        "uploadedAt": "2024-10-21"
+        "uploadedAt": "2024-10-21T09:00:00Z"
       }
     ],
     "languages": [
@@ -4700,7 +4790,8 @@
       "Xhosa"
     ],
     "profileComplete": 84,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000091"
   },
   {
     "candidateId": "c092",
@@ -4739,7 +4830,7 @@
       {
         "docId": "doc-c092-1",
         "type": "CV",
-        "uploadedAt": "2024-10-13"
+        "uploadedAt": "2024-10-13T09:00:00Z"
       }
     ],
     "languages": [
@@ -4748,7 +4839,8 @@
       "Mandarin (basic)"
     ],
     "profileComplete": 78,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000092"
   },
   {
     "candidateId": "c093",
@@ -4793,7 +4885,7 @@
       {
         "docId": "doc-c093-1",
         "type": "CV",
-        "uploadedAt": "2024-11-02"
+        "uploadedAt": "2024-11-02T09:00:00Z"
       }
     ],
     "languages": [
@@ -4801,7 +4893,8 @@
       "Zulu"
     ],
     "profileComplete": 89,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000093"
   },
   {
     "candidateId": "c094",
@@ -4846,7 +4939,7 @@
       {
         "docId": "doc-c094-1",
         "type": "CV",
-        "uploadedAt": "2024-10-26"
+        "uploadedAt": "2024-10-26T09:00:00Z"
       }
     ],
     "languages": [
@@ -4854,7 +4947,8 @@
       "Afrikaans"
     ],
     "profileComplete": 87,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000094"
   },
   {
     "candidateId": "c095",
@@ -4899,7 +4993,7 @@
       {
         "docId": "doc-c095-1",
         "type": "CV",
-        "uploadedAt": "2024-11-04"
+        "uploadedAt": "2024-11-04T09:00:00Z"
       }
     ],
     "languages": [
@@ -4907,7 +5001,8 @@
       "Zulu"
     ],
     "profileComplete": 80,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000095"
   },
   {
     "candidateId": "c096",
@@ -4952,7 +5047,7 @@
       {
         "docId": "doc-c096-1",
         "type": "CV",
-        "uploadedAt": "2024-10-17"
+        "uploadedAt": "2024-10-17T09:00:00Z"
       }
     ],
     "languages": [
@@ -4961,7 +5056,8 @@
       "Afrikaans"
     ],
     "profileComplete": 93,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000096"
   },
   {
     "candidateId": "c097",
@@ -5000,7 +5096,7 @@
       {
         "docId": "doc-c097-1",
         "type": "CV",
-        "uploadedAt": "2024-11-07"
+        "uploadedAt": "2024-11-07T09:00:00Z"
       }
     ],
     "languages": [
@@ -5009,7 +5105,8 @@
       "Afrikaans"
     ],
     "profileComplete": 71,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000097"
   },
   {
     "candidateId": "c098",
@@ -5054,7 +5151,7 @@
       {
         "docId": "doc-c098-1",
         "type": "CV",
-        "uploadedAt": "2024-09-30"
+        "uploadedAt": "2024-09-30T09:00:00Z"
       }
     ],
     "languages": [
@@ -5063,7 +5160,8 @@
       "Hindi"
     ],
     "profileComplete": 95,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000098"
   },
   {
     "candidateId": "c099",
@@ -5108,7 +5206,7 @@
       {
         "docId": "doc-c099-1",
         "type": "CV",
-        "uploadedAt": "2024-11-09"
+        "uploadedAt": "2024-11-09T09:00:00Z"
       }
     ],
     "languages": [
@@ -5116,7 +5214,8 @@
       "Hebrew"
     ],
     "profileComplete": 99,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000099"
   },
   {
     "candidateId": "c100",
@@ -5156,7 +5255,8 @@
       "Zulu"
     ],
     "profileComplete": 45,
-    "applications": []
+    "applications": [],
+    "candidateUuid": "d0000-0000-4000-8000-000000000100"
   },
   {
     "candidateId": "candidate-1101",
@@ -5166,7 +5266,8 @@
     "phone": "95376681",
     "role": "candidate",
     "registeredAt": "2026-07-24T15:57:17.951Z",
-    "profileComplete": 15
+    "profileComplete": 15,
+    "candidateUuid": "d0000-0000-4000-8000-000000000101"
   },
   {
     "candidateId": "candidate-1102",
@@ -5176,6 +5277,7 @@
     "password": "Password123",
     "role": "candidate",
     "registeredAt": "2026-07-24T16:07:54.349Z",
-    "profileComplete": 15
+    "profileComplete": 15,
+    "candidateUuid": "d0000-0000-4000-8000-000000000102"
   }
 ]

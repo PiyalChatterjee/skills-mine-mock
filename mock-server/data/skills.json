@@ -1,52 +1,302 @@
 [
-  { "skillId": "SKL001", "name": "React", "category": "Frontend" },
-  { "skillId": "SKL002", "name": "Angular", "category": "Frontend" },
-  { "skillId": "SKL003", "name": "Vue.js", "category": "Frontend" },
-  { "skillId": "SKL004", "name": "Node.js", "category": "Backend" },
-  { "skillId": "SKL005", "name": "TypeScript", "category": "Languages" },
-  { "skillId": "SKL006", "name": "JavaScript", "category": "Languages" },
-  { "skillId": "SKL007", "name": "Python", "category": "Languages" },
-  { "skillId": "SKL008", "name": "Java", "category": "Languages" },
-  { "skillId": "SKL009", "name": "C#", "category": "Languages" },
-  { "skillId": "SKL010", "name": "Go", "category": "Languages" },
-  { "skillId": "SKL011", "name": "AWS", "category": "Cloud" },
-  { "skillId": "SKL012", "name": "Azure", "category": "Cloud" },
-  { "skillId": "SKL013", "name": "GCP", "category": "Cloud" },
-  { "skillId": "SKL014", "name": "Docker", "category": "DevOps" },
-  { "skillId": "SKL015", "name": "Kubernetes", "category": "DevOps" },
-  { "skillId": "SKL016", "name": "CI/CD", "category": "DevOps" },
-  { "skillId": "SKL017", "name": "PostgreSQL", "category": "Database" },
-  { "skillId": "SKL018", "name": "MySQL", "category": "Database" },
-  { "skillId": "SKL019", "name": "MongoDB", "category": "Database" },
-  { "skillId": "SKL020", "name": "Redis", "category": "Database" },
-  { "skillId": "SKL021", "name": "GraphQL", "category": "API" },
-  { "skillId": "SKL022", "name": "REST API", "category": "API" },
-  { "skillId": "SKL023", "name": "Apache Spark", "category": "Data" },
-  { "skillId": "SKL024", "name": "dbt", "category": "Data" },
-  { "skillId": "SKL025", "name": "Snowflake", "category": "Data" },
-  { "skillId": "SKL026", "name": "Kafka", "category": "Data" },
-  { "skillId": "SKL027", "name": "Airflow", "category": "Data" },
-  { "skillId": "SKL028", "name": "Tableau", "category": "Analytics" },
-  { "skillId": "SKL029", "name": "Power BI", "category": "Analytics" },
-  { "skillId": "SKL030", "name": "Machine Learning", "category": "AI/ML" },
-  { "skillId": "SKL031", "name": "TensorFlow", "category": "AI/ML" },
-  { "skillId": "SKL032", "name": "PyTorch", "category": "AI/ML" },
-  { "skillId": "SKL033", "name": "Product Management", "category": "Management" },
-  { "skillId": "SKL034", "name": "Agile", "category": "Methodology" },
-  { "skillId": "SKL035", "name": "Scrum", "category": "Methodology" },
-  { "skillId": "SKL036", "name": "UX Design", "category": "Design" },
-  { "skillId": "SKL037", "name": "Figma", "category": "Design" },
-  { "skillId": "SKL038", "name": "Redux", "category": "Frontend" },
-  { "skillId": "SKL039", "name": "Jest", "category": "Testing" },
-  { "skillId": "SKL040", "name": "Cypress", "category": "Testing" },
-  { "skillId": "SKL041", "name": "SQL", "category": "Database" },
-  { "skillId": "SKL042", "name": "SAP", "category": "ERP" },
-  { "skillId": "SKL043", "name": "Salesforce", "category": "CRM" },
-  { "skillId": "SKL044", "name": "Terraform", "category": "DevOps" },
-  { "skillId": "SKL045", "name": "Spring Boot", "category": "Backend" },
-  { "skillId": "SKL046", "name": ".NET", "category": "Backend" },
-  { "skillId": "SKL047", "name": "Cybersecurity", "category": "Security" },
-  { "skillId": "SKL048", "name": "JIRA", "category": "Tools" },
-  { "skillId": "SKL049", "name": "Confluence", "category": "Tools" },
-  { "skillId": "SKL050", "name": "Git", "category": "Tools" }
+  {
+    "skillId": "SKL001",
+    "name": "React",
+    "category": "Frontend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000001"
+  },
+  {
+    "skillId": "SKL002",
+    "name": "Angular",
+    "category": "Frontend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000002"
+  },
+  {
+    "skillId": "SKL003",
+    "name": "Vue.js",
+    "category": "Frontend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000003"
+  },
+  {
+    "skillId": "SKL004",
+    "name": "Node.js",
+    "category": "Backend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000004"
+  },
+  {
+    "skillId": "SKL005",
+    "name": "TypeScript",
+    "category": "Languages",
+    "aiSkillId": "a0000-0000-4000-8000-000000000005"
+  },
+  {
+    "skillId": "SKL006",
+    "name": "JavaScript",
+    "category": "Languages",
+    "aiSkillId": "a0000-0000-4000-8000-000000000006"
+  },
+  {
+    "skillId": "SKL007",
+    "name": "Python",
+    "category": "Languages",
+    "aiSkillId": "a0000-0000-4000-8000-000000000007"
+  },
+  {
+    "skillId": "SKL008",
+    "name": "Java",
+    "category": "Languages",
+    "aiSkillId": "a0000-0000-4000-8000-000000000008"
+  },
+  {
+    "skillId": "SKL009",
+    "name": "C#",
+    "category": "Languages",
+    "aiSkillId": "a0000-0000-4000-8000-000000000009"
+  },
+  {
+    "skillId": "SKL010",
+    "name": "Go",
+    "category": "Languages",
+    "aiSkillId": "a0000-0000-4000-8000-000000000010"
+  },
+  {
+    "skillId": "SKL011",
+    "name": "AWS",
+    "category": "Cloud",
+    "aiSkillId": "a0000-0000-4000-8000-000000000011"
+  },
+  {
+    "skillId": "SKL012",
+    "name": "Azure",
+    "category": "Cloud",
+    "aiSkillId": "a0000-0000-4000-8000-000000000012"
+  },
+  {
+    "skillId": "SKL013",
+    "name": "GCP",
+    "category": "Cloud",
+    "aiSkillId": "a0000-0000-4000-8000-000000000013"
+  },
+  {
+    "skillId": "SKL014",
+    "name": "Docker",
+    "category": "DevOps",
+    "aiSkillId": "a0000-0000-4000-8000-000000000014"
+  },
+  {
+    "skillId": "SKL015",
+    "name": "Kubernetes",
+    "category": "DevOps",
+    "aiSkillId": "a0000-0000-4000-8000-000000000015"
+  },
+  {
+    "skillId": "SKL016",
+    "name": "CI/CD",
+    "category": "DevOps",
+    "aiSkillId": "a0000-0000-4000-8000-000000000016"
+  },
+  {
+    "skillId": "SKL017",
+    "name": "PostgreSQL",
+    "category": "Database",
+    "aiSkillId": "a0000-0000-4000-8000-000000000017"
+  },
+  {
+    "skillId": "SKL018",
+    "name": "MySQL",
+    "category": "Database",
+    "aiSkillId": "a0000-0000-4000-8000-000000000018"
+  },
+  {
+    "skillId": "SKL019",
+    "name": "MongoDB",
+    "category": "Database",
+    "aiSkillId": "a0000-0000-4000-8000-000000000019"
+  },
+  {
+    "skillId": "SKL020",
+    "name": "Redis",
+    "category": "Database",
+    "aiSkillId": "a0000-0000-4000-8000-000000000020"
+  },
+  {
+    "skillId": "SKL021",
+    "name": "GraphQL",
+    "category": "API",
+    "aiSkillId": "a0000-0000-4000-8000-000000000021"
+  },
+  {
+    "skillId": "SKL022",
+    "name": "REST API",
+    "category": "API",
+    "aiSkillId": "a0000-0000-4000-8000-000000000022"
+  },
+  {
+    "skillId": "SKL023",
+    "name": "Apache Spark",
+    "category": "Data",
+    "aiSkillId": "a0000-0000-4000-8000-000000000023"
+  },
+  {
+    "skillId": "SKL024",
+    "name": "dbt",
+    "category": "Data",
+    "aiSkillId": "a0000-0000-4000-8000-000000000024"
+  },
+  {
+    "skillId": "SKL025",
+    "name": "Snowflake",
+    "category": "Data",
+    "aiSkillId": "a0000-0000-4000-8000-000000000025"
+  },
+  {
+    "skillId": "SKL026",
+    "name": "Kafka",
+    "category": "Data",
+    "aiSkillId": "a0000-0000-4000-8000-000000000026"
+  },
+  {
+    "skillId": "SKL027",
+    "name": "Airflow",
+    "category": "Data",
+    "aiSkillId": "a0000-0000-4000-8000-000000000027"
+  },
+  {
+    "skillId": "SKL028",
+    "name": "Tableau",
+    "category": "Analytics",
+    "aiSkillId": "a0000-0000-4000-8000-000000000028"
+  },
+  {
+    "skillId": "SKL029",
+    "name": "Power BI",
+    "category": "Analytics",
+    "aiSkillId": "a0000-0000-4000-8000-000000000029"
+  },
+  {
+    "skillId": "SKL030",
+    "name": "Machine Learning",
+    "category": "AI/ML",
+    "aiSkillId": "a0000-0000-4000-8000-000000000030"
+  },
+  {
+    "skillId": "SKL031",
+    "name": "TensorFlow",
+    "category": "AI/ML",
+    "aiSkillId": "a0000-0000-4000-8000-000000000031"
+  },
+  {
+    "skillId": "SKL032",
+    "name": "PyTorch",
+    "category": "AI/ML",
+    "aiSkillId": "a0000-0000-4000-8000-000000000032"
+  },
+  {
+    "skillId": "SKL033",
+    "name": "Product Management",
+    "category": "Management",
+    "aiSkillId": "a0000-0000-4000-8000-000000000033"
+  },
+  {
+    "skillId": "SKL034",
+    "name": "Agile",
+    "category": "Methodology",
+    "aiSkillId": "a0000-0000-4000-8000-000000000034"
+  },
+  {
+    "skillId": "SKL035",
+    "name": "Scrum",
+    "category": "Methodology",
+    "aiSkillId": "a0000-0000-4000-8000-000000000035"
+  },
+  {
+    "skillId": "SKL036",
+    "name": "UX Design",
+    "category": "Design",
+    "aiSkillId": "a0000-0000-4000-8000-000000000036"
+  },
+  {
+    "skillId": "SKL037",
+    "name": "Figma",
+    "category": "Design",
+    "aiSkillId": "a0000-0000-4000-8000-000000000037"
+  },
+  {
+    "skillId": "SKL038",
+    "name": "Redux",
+    "category": "Frontend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000038"
+  },
+  {
+    "skillId": "SKL039",
+    "name": "Jest",
+    "category": "Testing",
+    "aiSkillId": "a0000-0000-4000-8000-000000000039"
+  },
+  {
+    "skillId": "SKL040",
+    "name": "Cypress",
+    "category": "Testing",
+    "aiSkillId": "a0000-0000-4000-8000-000000000040"
+  },
+  {
+    "skillId": "SKL041",
+    "name": "SQL",
+    "category": "Database",
+    "aiSkillId": "a0000-0000-4000-8000-000000000041"
+  },
+  {
+    "skillId": "SKL042",
+    "name": "SAP",
+    "category": "ERP",
+    "aiSkillId": "a0000-0000-4000-8000-000000000042"
+  },
+  {
+    "skillId": "SKL043",
+    "name": "Salesforce",
+    "category": "CRM",
+    "aiSkillId": "a0000-0000-4000-8000-000000000043"
+  },
+  {
+    "skillId": "SKL044",
+    "name": "Terraform",
+    "category": "DevOps",
+    "aiSkillId": "a0000-0000-4000-8000-000000000044"
+  },
+  {
+    "skillId": "SKL045",
+    "name": "Spring Boot",
+    "category": "Backend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000045"
+  },
+  {
+    "skillId": "SKL046",
+    "name": ".NET",
+    "category": "Backend",
+    "aiSkillId": "a0000-0000-4000-8000-000000000046"
+  },
+  {
+    "skillId": "SKL047",
+    "name": "Cybersecurity",
+    "category": "Security",
+    "aiSkillId": "a0000-0000-4000-8000-000000000047"
+  },
+  {
+    "skillId": "SKL048",
+    "name": "JIRA",
+    "category": "Tools",
+    "aiSkillId": "a0000-0000-4000-8000-000000000048"
+  },
+  {
+    "skillId": "SKL049",
+    "name": "Confluence",
+    "category": "Tools",
+    "aiSkillId": "a0000-0000-4000-8000-000000000049"
+  },
+  {
+    "skillId": "SKL050",
+    "name": "Git",
+    "category": "Tools",
+    "aiSkillId": "a0000-0000-4000-8000-000000000050"
+  }
 ]

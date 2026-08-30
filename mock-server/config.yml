@@ -30,6 +30,7 @@ auth:
     - /jobs
     - /opportunities
     - /skills/search
+    - /skills/generate  # AI service — VISITOR subject_type may omit the JWT
   tokenHeader: "Authorization"
   tokenPrefix: "Bearer "
 

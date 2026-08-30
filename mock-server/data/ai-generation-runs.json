@@ -1,0 +1,65 @@
+[
+  {
+    "aiGenerationRunId": "10000000-0000-4000-8000-000000000001",
+    "useCaseCode": "CANDIDATE_SKILL_GENERATION",
+    "subjectType": "CANDIDATE",
+    "subjectId": "c0000000-0000-4000-8000-000000000001",
+    "candidateId": "CAND100001",
+    "inputSource": "PROFILE",
+    "inputHash": "5f2b6a8e9c1d4a3b7e0f9c2d1a8b6e4f3c9d2a1b7e6f5c4d3a2b1e0f9c8d7a6b",
+    "suggestedSkills": [
+      { "skillId": "a0000000-0000-4000-8000-000000000001", "skillName": "React" },
+      { "skillId": "a0000000-0000-4000-8000-000000000004", "skillName": "Node.js" },
+      { "skillId": "a0000000-0000-4000-8000-000000000005", "skillName": "TypeScript" },
+      { "skillId": "a0000000-0000-4000-8000-000000000011", "skillName": "AWS" }
+    ],
+    "generatedAt": "2026-08-10T08:15:00Z"
+  },
+  {
+    "aiGenerationRunId": "10000000-0000-4000-8000-000000000002",
+    "useCaseCode": "CANDIDATE_SKILL_GENERATION",
+    "subjectType": "CANDIDATE",
+    "subjectId": "c0000000-0000-4000-8000-000000000003",
+    "candidateId": "CAND100003",
+    "inputSource": "PROFILE",
+    "inputHash": "8c1d4a3b7e0f9c2d1a8b6e4f3c9d2a1b7e6f5c4d3a2b1e0f9c8d7a6b5f2b6a8e",
+    "suggestedSkills": [
+      { "skillId": "a0000000-0000-4000-8000-000000000007", "skillName": "Python" },
+      { "skillId": "a0000000-0000-4000-8000-000000000023", "skillName": "Apache Spark" },
+      { "skillId": "a0000000-0000-4000-8000-000000000024", "skillName": "dbt" },
+      { "skillId": "a0000000-0000-4000-8000-000000000025", "skillName": "Snowflake" }
+    ],
+    "generatedAt": "2026-08-18T13:40:00Z"
+  },
+  {
+    "aiGenerationRunId": "10000000-0000-4000-8000-000000000003",
+    "useCaseCode": "VISITOR_SKILL_GENERATION",
+    "subjectType": "VISITOR",
+    "subjectId": "f0000000-0000-4000-8000-000000000001",
+    "visitorCreated": true,
+    "inputSource": "PROFILE",
+    "inputHash": "1a8b6e4f3c9d2a1b7e6f5c4d3a2b1e0f9c8d7a6b5f2b6a8e9c1d4a3b7e0f9c2d",
+    "suggestedSkills": [
+      { "skillId": "a0000000-0000-4000-8000-000000000045", "skillName": "Spring Boot" },
+      { "skillId": "a0000000-0000-4000-8000-000000000026", "skillName": "Kafka" },
+      { "skillId": "a0000000-0000-4000-8000-000000000008", "skillName": "Java" }
+    ],
+    "generatedAt": "2026-07-20T09:20:00Z"
+  },
+  {
+    "aiGenerationRunId": "10000000-0000-4000-8000-000000000004",
+    "useCaseCode": "JOB_PROFILE_SKILL_GENERATION",
+    "subjectType": "JOB",
+    "subjectId": "b0000000-0000-4000-8000-000000000001",
+    "jobProfileId": "b0000000-0000-4000-8000-000000000001",
+    "inputSource": "PROFILE",
+    "inputHash": "2d1a8b6e4f3c9d2a1b7e6f5c4d3a2b1e0f9c8d7a6b5f2b6a8e9c1d4a3b7e0f9c",
+    "suggestedSkills": [
+      { "skillId": "a0000000-0000-4000-8000-000000000001", "skillName": "React" },
+      { "skillId": "a0000000-0000-4000-8000-000000000005", "skillName": "TypeScript" },
+      { "skillId": "a0000000-0000-4000-8000-000000000038", "skillName": "Redux" },
+      { "skillId": "a0000000-0000-4000-8000-000000000021", "skillName": "GraphQL" }
+    ],
+    "generatedAt": "2026-08-05T10:05:00Z"
+  }
+]

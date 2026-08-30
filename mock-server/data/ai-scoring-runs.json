@@ -1,0 +1,62 @@
+[
+  {
+    "scoringRunId": "20000000-0000-4000-8000-000000000001",
+    "candidateId": "CAND100001",
+    "candidateUuid": "c0000000-0000-4000-8000-000000000001",
+    "jobProfileId": "b0000000-0000-4000-8000-000000000001",
+    "jobId": "j001",
+    "matchScore": 92,
+    "scoreBreakdown": {
+      "skillOverlap": 95,
+      "roleTitleAlignment": 90,
+      "experienceLevel": 92,
+      "education": 85,
+      "workEmploymentType": 100,
+      "location": 90
+    },
+    "matchedSkills": ["React", "TypeScript", "GraphQL"],
+    "missingSkills": ["Jest"],
+    "status": "SCORED",
+    "scoredAt": "2024-11-10T09:00:00Z"
+  },
+  {
+    "scoringRunId": "20000000-0000-4000-8000-000000000002",
+    "candidateId": "CAND100001",
+    "candidateUuid": "c0000000-0000-4000-8000-000000000001",
+    "jobProfileId": "b0000000-0000-4000-8000-000000000004",
+    "jobId": "j004",
+    "matchScore": 87,
+    "scoreBreakdown": {
+      "skillOverlap": 88,
+      "roleTitleAlignment": 82,
+      "experienceLevel": 90,
+      "education": 85,
+      "workEmploymentType": 100,
+      "location": 80
+    },
+    "matchedSkills": ["AWS", "Node.js"],
+    "missingSkills": ["Kubernetes", "Terraform"],
+    "status": "SCORED",
+    "scoredAt": "2024-10-25T10:00:00Z"
+  },
+  {
+    "scoringRunId": "20000000-0000-4000-8000-000000000003",
+    "candidateId": "CAND100001",
+    "candidateUuid": "c0000000-0000-4000-8000-000000000001",
+    "jobProfileId": "b0000000-0000-4000-8000-000000000006",
+    "jobId": "j006",
+    "matchScore": 84,
+    "scoreBreakdown": {
+      "skillOverlap": 86,
+      "roleTitleAlignment": 80,
+      "experienceLevel": 85,
+      "education": 80,
+      "workEmploymentType": 90,
+      "location": 85
+    },
+    "matchedSkills": ["React", "TypeScript"],
+    "missingSkills": ["Redux"],
+    "status": "SCORED",
+    "scoredAt": "2024-11-12T11:00:00Z"
+  }
+]

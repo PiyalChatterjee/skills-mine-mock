@@ -71,6 +71,8 @@ The `/api/` prefix is stripped automatically for non-versioned routes. Versioned
 
 ## 2. Base Configuration
 
+### URL and Route Prefixes
+
 | Setting | Value |
 |---|---|
 | **Port** | `4000` |
@@ -80,6 +82,17 @@ The `/api/` prefix is stripped automatically for non-versioned routes. Versioned
 | **CORS headers** | `Authorization, Content-Type` |
 | **CORS methods** | `GET, POST, PUT, PATCH, DELETE, OPTIONS` |
 | **Token transport** | `Authorization: Bearer <token>` |
+
+The runner supports these route groups:
+
+| Route group | Example | Behavior |
+|---|---|---|
+| Unversioned | `/jobs`, `/auth/login`, `/candidates/dashboard` | Primary v2/mock routes |
+| Bare `/api` compatibility alias | `/api/jobs`, `/api/auth/login` | Rewritten to the equivalent unversioned route before routing |
+| Explicit v1 | `/api/v1/auth/login`, `/api/v1/crm/clients` | Not rewritten; handled by versioned route modules |
+| Explicit MANCO | `/api/manco/recruiters/:id/performance` | Not rewritten; handled by its dedicated route module |
+
+Use the exact versioned path where a client contract declares one. `/api` prefix compatibility applies only to otherwise unversioned routes.
 
 ---
 

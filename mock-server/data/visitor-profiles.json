@@ -1,0 +1,18 @@
+[
+  {
+    "visitorId": "f0000000-0000-4000-8000-000000000001",
+    "email": "ayanda.maseko@example.com",
+    "firstName": "Ayanda",
+    "lastName": "Maseko",
+    "phoneNumber": "+27821234567",
+    "createdAt": "2026-07-20T09:15:00Z"
+  },
+  {
+    "visitorId": "f0000000-0000-4000-8000-000000000002",
+    "email": "sipho.dlamini@example.com",
+    "firstName": "Sipho",
+    "lastName": "Dlamini",
+    "phoneNumber": "+27831234567",
+    "createdAt": "2026-08-01T11:40:00Z"
+  }
+]

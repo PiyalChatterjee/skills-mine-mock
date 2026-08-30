@@ -1,0 +1,198 @@
+[
+  {
+    "clientId": "cl001",
+    "clientName": "Standard Bank",
+    "contactName": "HR Team",
+    "contactEmail": "hr@standardbank.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl002",
+    "clientName": "FNB",
+    "contactName": "HR Team",
+    "contactEmail": "hr@fnb.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl004",
+    "clientName": "TymeBank",
+    "contactName": "HR Team",
+    "contactEmail": "hr@tymebank.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl003",
+    "clientName": "IBM",
+    "contactName": "HR Team",
+    "contactEmail": "hr@ibm.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl101",
+    "clientName": "Helm",
+    "contactName": "HR Team",
+    "contactEmail": "hr@helm.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl007",
+    "clientName": "Discovery",
+    "contactName": "HR Team",
+    "contactEmail": "hr@discovery.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl102",
+    "clientName": "Absa",
+    "contactName": "HR Team",
+    "contactEmail": "hr@absa.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl103",
+    "clientName": "Ogilvy",
+    "contactName": "HR Team",
+    "contactEmail": "hr@ogilvy.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl104",
+    "clientName": "Naspers",
+    "contactName": "HR Team",
+    "contactEmail": "hr@naspers.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl105",
+    "clientName": "PwC",
+    "contactName": "HR Team",
+    "contactEmail": "hr@pwc.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl106",
+    "clientName": "Nedbank",
+    "contactName": "HR Team",
+    "contactEmail": "hr@nedbank.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl011",
+    "clientName": "Capitec",
+    "contactName": "HR Team",
+    "contactEmail": "hr@capitec.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl107",
+    "clientName": "Investec",
+    "contactName": "HR Team",
+    "contactEmail": "hr@investec.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl108",
+    "clientName": "Accenture",
+    "contactName": "HR Team",
+    "contactEmail": "hr@accenture.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl109",
+    "clientName": "Anglo American",
+    "contactName": "HR Team",
+    "contactEmail": "hr@angloamerican.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl110",
+    "clientName": "Vodacom",
+    "contactName": "HR Team",
+    "contactEmail": "hr@vodacom.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl111",
+    "clientName": "Shoprite",
+    "contactName": "HR Team",
+    "contactEmail": "hr@shoprite.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl112",
+    "clientName": "Multichoice",
+    "contactName": "HR Team",
+    "contactEmail": "hr@multichoice.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl113",
+    "clientName": "Yoco",
+    "contactName": "HR Team",
+    "contactEmail": "hr@yoco.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl114",
+    "clientName": "Nuvei",
+    "contactName": "HR Team",
+    "contactEmail": "hr@nuvei.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl115",
+    "clientName": "Webber Wentzel",
+    "contactName": "HR Team",
+    "contactEmail": "hr@webberwentzel.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl116",
+    "clientName": "Rand Merchant Bank",
+    "contactName": "HR Team",
+    "contactEmail": "hr@randmerchantbank.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl117",
+    "clientName": "Takealot",
+    "contactName": "HR Team",
+    "contactEmail": "hr@takealot.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl118",
+    "clientName": "KPMG",
+    "contactName": "HR Team",
+    "contactEmail": "hr@kpmg.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl119",
+    "clientName": "PG Glass",
+    "contactName": "HR Team",
+    "contactEmail": "hr@pgglass.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl120",
+    "clientName": "Deloitte",
+    "contactName": "HR Team",
+    "contactEmail": "hr@deloitte.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl121",
+    "clientName": "Woolworths",
+    "contactName": "HR Team",
+    "contactEmail": "hr@woolworths.co.za",
+    "contactPhoneNumber": "+27110000000"
+  },
+  {
+    "clientId": "cl122",
+    "clientName": "Eskom",
+    "contactName": "HR Team",
+    "contactEmail": "hr@eskom.co.za",
+    "contactPhoneNumber": "+27110000000"
+  }
+]
