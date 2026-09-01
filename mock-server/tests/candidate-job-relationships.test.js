@@ -71,6 +71,16 @@ test("seeded saved jobs resolve to canonical job profiles", async () => {
   assert.ok(body.data.jobs.every((job) => job.title && job.company && job.industry));
 });
 
+test("candidate profile targeted industries match the industries endpoint seed", () => {
+  const industryNames = new Set(DB.industries.map(({ industryName }) => industryName));
+  const targetedIndustries = DB.candidateProfiles.flatMap(
+    (profile) => profile.desiredJob?.industries ?? [],
+  );
+
+  assert.ok(targetedIndustries.length > 0);
+  assert.ok(targetedIndustries.every((industryName) => industryNames.has(industryName)));
+});
+
 test("saving and removing a job uses jobProfileId", async () => {
   const jobProfileId = DB.jobs[1].jobProfileId;
   const saved = await request("/candidates/saved-jobs", {

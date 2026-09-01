@@ -272,13 +272,38 @@ function migrateProfileApplications(profiles, applications) {
   }));
 }
 
+function migrateCandidateProfileIndustries(profiles, industries) {
+  const canonicalIndustryNames = new Map(
+    industries.map(({ industryName }) => [industryName.toLowerCase(), industryName]),
+  );
+  const aliases = new Map([
+    ["financial services", "Banking"],
+  ]);
+
+  return profiles.map((profile) => ({
+    ...profile,
+    desiredJob: {
+      ...profile.desiredJob,
+      industries: (profile.desiredJob?.industries ?? []).map((industryName) => {
+        const normalizedName = industryName.toLowerCase();
+        return aliases.get(normalizedName)
+          ?? canonicalIndustryNames.get(normalizedName)
+          ?? industryName;
+      }),
+    },
+  }));
+}
+
 const industries = createIndustries();
 const companies = createCompanies();
 const jobs = createJobs(industries, companies);
 const candidates = createCandidates(jobs, companies);
 const applications = migrateApplications(readDataset("applications"), jobs, companies);
 const candidateProfiles = migrateProfileApplications(
-  migrateCandidateSavedJobs(readDataset("candidate-profiles"), jobs),
+  migrateCandidateProfileIndustries(
+    migrateCandidateSavedJobs(readDataset("candidate-profiles"), jobs),
+    industries,
+  ),
   applications,
 );
 

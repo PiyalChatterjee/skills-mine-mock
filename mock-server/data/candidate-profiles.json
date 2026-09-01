@@ -31,7 +31,7 @@
       "availableFrom": "2025-02-01",
       "industries": [
         "Technology",
-        "Financial Services"
+        "Banking"
       ],
       "locations": [
         "Johannesburg",
@@ -279,7 +279,7 @@
       "currency": "ZAR",
       "availableFrom": "2025-01-15",
       "industries": [
-        "FinTech",
+        "Fintech",
         "E-Commerce"
       ],
       "locations": [
@@ -366,7 +366,7 @@
       "currency": "ZAR",
       "availableFrom": "2025-03-01",
       "industries": [
-        "Financial Services",
+        "Banking",
         "Technology"
       ],
       "locations": [

@@ -79,6 +79,31 @@ function savedJobProfileId(entry) {
   return entry?.jobProfileId ?? entry?.jobId ?? '';
 }
 
+function normalizeIndustryNames(DB, industryNames = []) {
+  const canonicalIndustryNames = new Map(
+    DB.industries.map(({ industryName }) => [industryName.toLowerCase(), industryName]),
+  );
+  const aliases = new Map([
+    ['financial services', 'Banking'],
+  ]);
+
+  return industryNames.map((industryName) => {
+    const normalizedName = industryName.toLowerCase();
+    return aliases.get(normalizedName)
+      ?? canonicalIndustryNames.get(normalizedName)
+      ?? industryName;
+  });
+}
+
+function toProfileDesiredJob(DB, desiredJob) {
+  if (!desiredJob) return null;
+
+  return {
+    ...desiredJob,
+    industries: normalizeIndustryNames(DB, desiredJob.industries ?? []),
+  };
+}
+
 export function candidateApplicationsRouter({ DB, saveDataset }) {
   const router = Router();
 
@@ -877,7 +902,7 @@ export function candidateProfileRouter({ DB }) {
         accountStatus:    user?.accountStatus ?? 'ACTIVE',
         profileCompleted: user?.profileCompleted ?? 85,
         personalDetails:  profile.personalDetails,
-        desiredJob:       profile.desiredJob ?? null,
+        desiredJob:       toProfileDesiredJob(DB, profile.desiredJob),
         education,
         experience:       profile.experience ?? [],
         skills:           profile.skills ?? [],
