@@ -7,7 +7,9 @@
     "start": "node mock-server/camouflage-runner.js",
     "mock": "node mock-server/camouflage-runner.js",
     "mock:start": "node mock-server/camouflage-runner.js",
-    "mock:dev": "node --watch mock-server/camouflage-runner.js"
+    "mock:dev": "node --watch mock-server/camouflage-runner.js",
+    "seed:mandates": "node mock-server/data/generate-mandate-seeds.js",
+    "test": "node --test mock-server/tests/*.test.js"
   },
   "dependencies": {
     "express": "^4.22.2",

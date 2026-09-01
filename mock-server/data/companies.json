@@ -1,198 +1,226 @@
 [
   {
-    "clientId": "cl001",
+    "clientId": "00000002-0000-4000-8000-000000000001",
     "clientName": "Standard Bank",
-    "contactName": "HR Team",
-    "contactEmail": "hr@standardbank.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Ayanda Naidoo",
+    "contactEmail": "ayanda.naidoo@standardbank.co.za",
+    "contactPhoneNumber": "+27821000000"
   },
   {
-    "clientId": "cl002",
+    "clientId": "00000002-0000-4000-8000-000000000002",
     "clientName": "FNB",
-    "contactName": "HR Team",
-    "contactEmail": "hr@fnb.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Thabo Mokoena",
+    "contactEmail": "thabo.mokoena@fnb.co.za",
+    "contactPhoneNumber": "+27821000001"
   },
   {
-    "clientId": "cl004",
+    "clientId": "00000002-0000-4000-8000-000000000003",
     "clientName": "TymeBank",
-    "contactName": "HR Team",
-    "contactEmail": "hr@tymebank.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Lerato Smith",
+    "contactEmail": "lerato.smith@tymebank.co.za",
+    "contactPhoneNumber": "+27821000002"
   },
   {
-    "clientId": "cl003",
+    "clientId": "00000002-0000-4000-8000-000000000004",
     "clientName": "IBM",
-    "contactName": "HR Team",
-    "contactEmail": "hr@ibm.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Sipho Patel",
+    "contactEmail": "sipho.patel@ibm.co.za",
+    "contactPhoneNumber": "+27821000003"
   },
   {
-    "clientId": "cl101",
-    "clientName": "Helm",
-    "contactName": "HR Team",
-    "contactEmail": "hr@helm.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl007",
+    "clientId": "00000002-0000-4000-8000-000000000005",
     "clientName": "Discovery",
-    "contactName": "HR Team",
-    "contactEmail": "hr@discovery.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Naledi Cele",
+    "contactEmail": "naledi.cele@discovery.co.za",
+    "contactPhoneNumber": "+27821000004"
   },
   {
-    "clientId": "cl102",
+    "clientId": "00000002-0000-4000-8000-000000000006",
     "clientName": "Absa",
-    "contactName": "HR Team",
-    "contactEmail": "hr@absa.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Michael Botha",
+    "contactEmail": "michael.botha@absa.co.za",
+    "contactPhoneNumber": "+27821000005"
   },
   {
-    "clientId": "cl103",
+    "clientId": "00000002-0000-4000-8000-000000000007",
     "clientName": "Ogilvy",
-    "contactName": "HR Team",
-    "contactEmail": "hr@ogilvy.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Ayesha Khumalo",
+    "contactEmail": "ayesha.khumalo@ogilvy.co.za",
+    "contactPhoneNumber": "+27821000006"
   },
   {
-    "clientId": "cl104",
+    "clientId": "00000002-0000-4000-8000-000000000008",
     "clientName": "Naspers",
-    "contactName": "HR Team",
-    "contactEmail": "hr@naspers.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Bongani Pillay",
+    "contactEmail": "bongani.pillay@naspers.co.za",
+    "contactPhoneNumber": "+27821000007"
   },
   {
-    "clientId": "cl105",
+    "clientId": "00000002-0000-4000-8000-000000000009",
     "clientName": "PwC",
-    "contactName": "HR Team",
-    "contactEmail": "hr@pwc.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Nomsa Jacobs",
+    "contactEmail": "nomsa.jacobs@pwc.co.za",
+    "contactPhoneNumber": "+27821000008"
   },
   {
-    "clientId": "cl106",
+    "clientId": "00000002-0000-4000-8000-00000000000a",
     "clientName": "Nedbank",
-    "contactName": "HR Team",
-    "contactEmail": "hr@nedbank.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Kagiso Mahlangu",
+    "contactEmail": "kagiso.mahlangu@nedbank.co.za",
+    "contactPhoneNumber": "+27821000009"
   },
   {
-    "clientId": "cl011",
+    "clientId": "00000002-0000-4000-8000-00000000000b",
     "clientName": "Capitec",
-    "contactName": "HR Team",
-    "contactEmail": "hr@capitec.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Zanele Williams",
+    "contactEmail": "zanele.williams@capitec.co.za",
+    "contactPhoneNumber": "+27821000010"
   },
   {
-    "clientId": "cl107",
+    "clientId": "00000002-0000-4000-8000-00000000000c",
     "clientName": "Investec",
-    "contactName": "HR Team",
-    "contactEmail": "hr@investec.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Daniel Maseko",
+    "contactEmail": "daniel.maseko@investec.co.za",
+    "contactPhoneNumber": "+27821000011"
   },
   {
-    "clientId": "cl108",
+    "clientId": "00000002-0000-4000-8000-00000000000d",
     "clientName": "Accenture",
-    "contactName": "HR Team",
-    "contactEmail": "hr@accenture.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Priya Nkosi",
+    "contactEmail": "priya.nkosi@accenture.co.za",
+    "contactPhoneNumber": "+27821000012"
   },
   {
-    "clientId": "cl109",
+    "clientId": "00000002-0000-4000-8000-00000000000e",
     "clientName": "Anglo American",
-    "contactName": "HR Team",
-    "contactEmail": "hr@angloamerican.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Refilwe Dlamini",
+    "contactEmail": "refilwe.dlamini@angloamerican.co.za",
+    "contactPhoneNumber": "+27821000013"
   },
   {
-    "clientId": "cl110",
+    "clientId": "00000002-0000-4000-8000-00000000000f",
     "clientName": "Vodacom",
-    "contactName": "HR Team",
-    "contactEmail": "hr@vodacom.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Ayanda Naidoo",
+    "contactEmail": "ayanda.naidoo@vodacom.co.za",
+    "contactPhoneNumber": "+27821000014"
   },
   {
-    "clientId": "cl111",
+    "clientId": "00000002-0000-4000-8000-000000000010",
     "clientName": "Shoprite",
-    "contactName": "HR Team",
-    "contactEmail": "hr@shoprite.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Thabo Mokoena",
+    "contactEmail": "thabo.mokoena@shoprite.co.za",
+    "contactPhoneNumber": "+27821000015"
   },
   {
-    "clientId": "cl112",
-    "clientName": "Multichoice",
-    "contactName": "HR Team",
-    "contactEmail": "hr@multichoice.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl113",
-    "clientName": "Yoco",
-    "contactName": "HR Team",
-    "contactEmail": "hr@yoco.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl114",
-    "clientName": "Nuvei",
-    "contactName": "HR Team",
-    "contactEmail": "hr@nuvei.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl115",
-    "clientName": "Webber Wentzel",
-    "contactName": "HR Team",
-    "contactEmail": "hr@webberwentzel.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl116",
-    "clientName": "Rand Merchant Bank",
-    "contactName": "HR Team",
-    "contactEmail": "hr@randmerchantbank.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl117",
+    "clientId": "00000002-0000-4000-8000-000000000011",
     "clientName": "Takealot",
-    "contactName": "HR Team",
-    "contactEmail": "hr@takealot.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Lerato Smith",
+    "contactEmail": "lerato.smith@takealot.co.za",
+    "contactPhoneNumber": "+27821000016"
   },
   {
-    "clientId": "cl118",
-    "clientName": "KPMG",
-    "contactName": "HR Team",
-    "contactEmail": "hr@kpmg.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl119",
-    "clientName": "PG Glass",
-    "contactName": "HR Team",
-    "contactEmail": "hr@pgglass.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl120",
-    "clientName": "Deloitte",
-    "contactName": "HR Team",
-    "contactEmail": "hr@deloitte.co.za",
-    "contactPhoneNumber": "+27110000000"
-  },
-  {
-    "clientId": "cl121",
+    "clientId": "00000002-0000-4000-8000-000000000012",
     "clientName": "Woolworths",
-    "contactName": "HR Team",
-    "contactEmail": "hr@woolworths.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "contactName": "Sipho Patel",
+    "contactEmail": "sipho.patel@woolworths.co.za",
+    "contactPhoneNumber": "+27821000017"
   },
   {
-    "clientId": "cl122",
-    "clientName": "Eskom",
-    "contactName": "HR Team",
-    "contactEmail": "hr@eskom.co.za",
-    "contactPhoneNumber": "+27110000000"
+    "clientId": "00000002-0000-4000-8000-000000000013",
+    "clientName": "Sasol",
+    "contactName": "Naledi Cele",
+    "contactEmail": "naledi.cele@sasol.co.za",
+    "contactPhoneNumber": "+27821000018"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000014",
+    "clientName": "MTN",
+    "contactName": "Michael Botha",
+    "contactEmail": "michael.botha@mtn.co.za",
+    "contactPhoneNumber": "+27821000019"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000015",
+    "clientName": "Sanlam",
+    "contactName": "Ayesha Khumalo",
+    "contactEmail": "ayesha.khumalo@sanlam.co.za",
+    "contactPhoneNumber": "+27821000020"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000016",
+    "clientName": "Old Mutual",
+    "contactName": "Bongani Pillay",
+    "contactEmail": "bongani.pillay@oldmutual.co.za",
+    "contactPhoneNumber": "+27821000021"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000017",
+    "clientName": "Bidvest",
+    "contactName": "Nomsa Jacobs",
+    "contactEmail": "nomsa.jacobs@bidvest.co.za",
+    "contactPhoneNumber": "+27821000022"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000018",
+    "clientName": "Transnet",
+    "contactName": "Kagiso Mahlangu",
+    "contactEmail": "kagiso.mahlangu@transnet.co.za",
+    "contactPhoneNumber": "+27821000023"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000019",
+    "clientName": "Telkom",
+    "contactName": "Zanele Williams",
+    "contactEmail": "zanele.williams@telkom.co.za",
+    "contactPhoneNumber": "+27821000024"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-00000000001a",
+    "clientName": "Mediclinic",
+    "contactName": "Daniel Maseko",
+    "contactEmail": "daniel.maseko@mediclinic.co.za",
+    "contactPhoneNumber": "+27821000025"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-00000000001b",
+    "clientName": "Netcare",
+    "contactName": "Priya Nkosi",
+    "contactEmail": "priya.nkosi@netcare.co.za",
+    "contactPhoneNumber": "+27821000026"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-00000000001c",
+    "clientName": "Massmart",
+    "contactName": "Refilwe Dlamini",
+    "contactEmail": "refilwe.dlamini@massmart.co.za",
+    "contactPhoneNumber": "+27821000027"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-00000000001d",
+    "clientName": "Dimension Data",
+    "contactName": "Ayanda Naidoo",
+    "contactEmail": "ayanda.naidoo@dimensiondata.co.za",
+    "contactPhoneNumber": "+27821000028"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-00000000001e",
+    "clientName": "Deloitte",
+    "contactName": "Thabo Mokoena",
+    "contactEmail": "thabo.mokoena@deloitte.co.za",
+    "contactPhoneNumber": "+27821000029"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-00000000001f",
+    "clientName": "KPMG",
+    "contactName": "Lerato Smith",
+    "contactEmail": "lerato.smith@kpmg.co.za",
+    "contactPhoneNumber": "+27821000030"
+  },
+  {
+    "clientId": "00000002-0000-4000-8000-000000000020",
+    "clientName": "BuildRight",
+    "contactName": "Sipho Patel",
+    "contactEmail": "sipho.patel@buildright.co.za",
+    "contactPhoneNumber": "+27821000031"
   }
 ]

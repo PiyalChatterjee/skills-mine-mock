@@ -107,49 +107,148 @@
     ],
     "applications": [
       {
-        "applicationId": "APP-MS-001",
-        "jobId": "j001",
+        "applicationId": "00000008-0000-4000-8000-000000000001",
+        "userId": "USR100001",
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "jobId": "00000003-0000-4000-8000-00000000000e",
         "mandateId": "MND001",
         "recruiterId": "r001",
-        "jobTitle": "Senior React Developer",
-        "company": "Standard Bank",
+        "recruiterName": "Sarah Johnson",
+        "jobTitle": "Sales Executive",
+        "company": "Anglo American",
         "currentStage": "Interview",
         "appliedDate": "2024-10-16",
         "updatedAt": "2024-11-10T09:00:00Z",
-        "matchScore": 92
+        "matchScore": 92,
+        "coverLetter": "With 8 years of React and TypeScript experience, and a background working directly with Standard Bank's technology team at Accenture, I am uniquely positioned to contribute from day one.",
+        "isGuest": false,
+        "sourceChannel": "direct",
+        "stageHistory": [
+          {
+            "stage": "Inbound",
+            "enteredAt": "2024-10-16T08:00:00Z",
+            "exitedAt": "2024-10-17T14:00:00Z"
+          },
+          {
+            "stage": "Screening",
+            "enteredAt": "2024-10-17T14:00:00Z",
+            "exitedAt": "2024-10-24T10:00:00Z"
+          },
+          {
+            "stage": "Interview",
+            "enteredAt": "2024-10-24T10:00:00Z",
+            "exitedAt": null
+          }
+        ],
+        "jobProfileId": "00000003-0000-4000-8000-00000000000e",
+        "applicationStatus": "ACTIVE"
       },
       {
-        "applicationId": "APP-MS-002",
-        "jobId": "j004",
+        "applicationId": "00000008-0000-4000-8000-000000000002",
+        "userId": "USR100001",
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "jobId": "00000003-0000-4000-8000-000000000014",
         "mandateId": "MND004",
         "recruiterId": "r002",
-        "jobTitle": "Cloud Solutions Architect",
-        "company": "IBM",
+        "recruiterName": "Bongani Cele",
+        "jobTitle": "Data Engineer",
+        "company": "MTN",
         "currentStage": "Screening",
         "appliedDate": "2024-10-23",
         "updatedAt": "2024-10-25T10:00:00Z",
-        "matchScore": 87
+        "matchScore": 87,
+        "coverLetter": "My extensive AWS and Node.js architecture experience gained at Accenture makes me a strong candidate for this cloud-focused role.",
+        "isGuest": false,
+        "sourceChannel": "linkedin",
+        "stageHistory": [
+          {
+            "stage": "Inbound",
+            "enteredAt": "2024-10-23T08:00:00Z",
+            "exitedAt": "2024-10-25T10:00:00Z"
+          },
+          {
+            "stage": "Screening",
+            "enteredAt": "2024-10-25T10:00:00Z",
+            "exitedAt": null
+          }
+        ],
+        "jobProfileId": "00000003-0000-4000-8000-000000000014",
+        "applicationStatus": "ACTIVE"
       },
       {
-        "applicationId": "APP-MS-003",
-        "jobId": "j006",
+        "applicationId": "00000008-0000-4000-8000-000000000003",
+        "userId": "USR100001",
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "jobId": "00000003-0000-4000-8000-00000000001a",
         "mandateId": "MND006",
         "recruiterId": "r002",
-        "jobTitle": "Front-End Developer",
-        "company": "Discovery",
+        "recruiterName": "Bongani Cele",
+        "jobTitle": "DevOps Engineer",
+        "company": "Mediclinic",
         "currentStage": "Shortlisted",
         "appliedDate": "2024-10-29",
         "updatedAt": "2024-11-12T11:00:00Z",
-        "matchScore": 84
+        "matchScore": 84,
+        "coverLetter": "My React and TypeScript expertise aligns strongly with Discovery's web portal requirements and I am excited by the scale of the platform.",
+        "isGuest": false,
+        "sourceChannel": "direct",
+        "stageHistory": [
+          {
+            "stage": "Inbound",
+            "enteredAt": "2024-10-29T08:00:00Z",
+            "exitedAt": "2024-10-30T09:00:00Z"
+          },
+          {
+            "stage": "Screening",
+            "enteredAt": "2024-10-30T09:00:00Z",
+            "exitedAt": "2024-11-05T14:00:00Z"
+          },
+          {
+            "stage": "Shortlisted",
+            "enteredAt": "2024-11-05T14:00:00Z",
+            "exitedAt": null
+          }
+        ],
+        "jobProfileId": "00000003-0000-4000-8000-00000000001a",
+        "applicationStatus": "ACTIVE"
+      },
+      {
+        "applicationId": "00000008-0000-4000-8000-000000000067",
+        "userId": "USR100001",
+        "candidateId": "CAND100001",
+        "candidateName": "Michael Smith",
+        "jobId": "00000003-0000-4000-8000-000000000008",
+        "jobProfileId": "00000003-0000-4000-8000-000000000008",
+        "jobTitle": "DevOps Engineer",
+        "company": "Naspers",
+        "currentStage": "Inbound",
+        "applicationStatus": "SUBMITTED",
+        "appliedDate": "2026-09-01",
+        "appliedAt": "2026-09-01T12:00:04.673Z",
+        "updatedAt": "2026-09-01T12:00:04.673Z",
+        "matchScore": 79,
+        "sourceChannel": "job-details",
+        "cvId": null,
+        "isGuest": false,
+        "stageHistory": [
+          {
+            "stage": "Inbound",
+            "enteredAt": "2026-09-01T12:00:04.673Z",
+            "exitedAt": null
+          }
+        ]
       }
     ],
     "savedJobs": [
       {
-        "jobId": "j001",
+        "jobProfileId": "00000003-0000-4000-8000-000000000002",
         "savedAt": "2025-01-05T08:00:00Z"
       },
       {
-        "jobId": "j004",
+        "jobProfileId": "00000003-0000-4000-8000-000000000008",
         "savedAt": "2025-01-10T09:30:00Z"
       }
     ],
@@ -235,11 +334,12 @@
     ],
     "savedJobs": [
       {
-        "jobId": "j003",
+        "jobProfileId": "00000003-0000-4000-8000-00000000000e",
         "savedAt": "2025-01-08T10:00:00Z"
       }
     ],
-    "candidateUuid": "c0000-0000-4000-8000-000000000002"
+    "candidateUuid": "c0000-0000-4000-8000-000000000002",
+    "applications": []
   },
   {
     "userId": "USR100007",
@@ -322,6 +422,7 @@
       }
     ],
     "savedJobs": [],
-    "candidateUuid": "c0000-0000-4000-8000-000000000003"
+    "candidateUuid": "c0000-0000-4000-8000-000000000003",
+    "applications": []
   }
 ]

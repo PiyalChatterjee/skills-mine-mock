@@ -1,27 +1,127 @@
 [
-  { "industryId": "IND001", "name": "Technology" },
-  { "industryId": "IND002", "name": "Banking" },
-  { "industryId": "IND003", "name": "Fintech" },
-  { "industryId": "IND004", "name": "Insurance" },
-  { "industryId": "IND005", "name": "Healthcare" },
-  { "industryId": "IND006", "name": "Pharmaceuticals" },
-  { "industryId": "IND007", "name": "Education" },
-  { "industryId": "IND008", "name": "Retail" },
-  { "industryId": "IND009", "name": "E-Commerce" },
-  { "industryId": "IND010", "name": "Manufacturing" },
-  { "industryId": "IND011", "name": "Logistics & Supply Chain" },
-  { "industryId": "IND012", "name": "Telecommunications" },
-  { "industryId": "IND013", "name": "Media & Entertainment" },
-  { "industryId": "IND014", "name": "Energy & Utilities" },
-  { "industryId": "IND015", "name": "Construction & Real Estate" },
-  { "industryId": "IND016", "name": "Government & Public Sector" },
-  { "industryId": "IND017", "name": "Non-Profit" },
-  { "industryId": "IND018", "name": "Consulting" },
-  { "industryId": "IND019", "name": "Legal" },
-  { "industryId": "IND020", "name": "Automotive" },
-  { "industryId": "IND021", "name": "Aerospace & Defence" },
-  { "industryId": "IND022", "name": "Agriculture" },
-  { "industryId": "IND023", "name": "Mining & Resources" },
-  { "industryId": "IND024", "name": "Food & Beverage" },
-  { "industryId": "IND025", "name": "Hospitality & Tourism" }
+  {
+    "industryId": "00000001-0000-4000-8000-000000000001",
+    "industryName": "Technology",
+    "normalizedKey": "technology"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000002",
+    "industryName": "Banking",
+    "normalizedKey": "banking"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000003",
+    "industryName": "Fintech",
+    "normalizedKey": "fintech"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000004",
+    "industryName": "Insurance",
+    "normalizedKey": "insurance"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000005",
+    "industryName": "Healthcare",
+    "normalizedKey": "healthcare"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000006",
+    "industryName": "Pharmaceuticals",
+    "normalizedKey": "pharmaceuticals"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000007",
+    "industryName": "Education",
+    "normalizedKey": "education"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000008",
+    "industryName": "Retail",
+    "normalizedKey": "retail"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000009",
+    "industryName": "E-Commerce",
+    "normalizedKey": "e_commerce"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-00000000000a",
+    "industryName": "Manufacturing",
+    "normalizedKey": "manufacturing"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-00000000000b",
+    "industryName": "Logistics & Supply Chain",
+    "normalizedKey": "logistics_supply_chain"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-00000000000c",
+    "industryName": "Telecommunications",
+    "normalizedKey": "telecommunications"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-00000000000d",
+    "industryName": "Media & Entertainment",
+    "normalizedKey": "media_entertainment"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-00000000000e",
+    "industryName": "Energy & Utilities",
+    "normalizedKey": "energy_utilities"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-00000000000f",
+    "industryName": "Construction & Real Estate",
+    "normalizedKey": "construction_real_estate"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000010",
+    "industryName": "Government & Public Sector",
+    "normalizedKey": "government_public_sector"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000011",
+    "industryName": "Non-Profit",
+    "normalizedKey": "non_profit"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000012",
+    "industryName": "Consulting",
+    "normalizedKey": "consulting"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000013",
+    "industryName": "Legal",
+    "normalizedKey": "legal"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000014",
+    "industryName": "Automotive",
+    "normalizedKey": "automotive"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000015",
+    "industryName": "Aerospace & Defence",
+    "normalizedKey": "aerospace_defence"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000016",
+    "industryName": "Agriculture",
+    "normalizedKey": "agriculture"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000017",
+    "industryName": "Mining & Resources",
+    "normalizedKey": "mining_resources"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000018",
+    "industryName": "Food & Beverage",
+    "normalizedKey": "food_beverage"
+  },
+  {
+    "industryId": "00000001-0000-4000-8000-000000000019",
+    "industryName": "Hospitality & Tourism",
+    "normalizedKey": "hospitality_tourism"
+  }
 ]

@@ -10,9 +10,22 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 82,
-    "roles": ["JOB_SEEKER"],
-    "savedJobs": ["j001", "j006", "j008"],
-    "recommendedJobs": ["j001", "j004", "j007", "j010", "j015", "j022"],
+    "roles": [
+      "JOB_SEEKER"
+    ],
+    "savedJobs": [
+      "00000003-0000-4000-8000-000000000002",
+      "00000003-0000-4000-8000-000000000008",
+      "00000003-0000-4000-8000-000000000008"
+    ],
+    "recommendedJobs": [
+      "j001",
+      "j004",
+      "j007",
+      "j010",
+      "j015",
+      "j022"
+    ],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-01-15T08:00:00Z"
@@ -28,9 +41,21 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 65,
-    "roles": ["JOB_SEEKER"],
-    "savedJobs": ["j003", "j012"],
-    "recommendedJobs": ["j003", "j009", "j012", "j018", "j025", "j031"],
+    "roles": [
+      "JOB_SEEKER"
+    ],
+    "savedJobs": [
+      "00000003-0000-4000-8000-000000000014",
+      "00000003-0000-4000-8000-00000000001a"
+    ],
+    "recommendedJobs": [
+      "j003",
+      "j009",
+      "j012",
+      "j018",
+      "j025",
+      "j031"
+    ],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-02-20T08:00:00Z"
@@ -46,7 +71,9 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
-    "roles": ["RECRUITER"],
+    "roles": [
+      "RECRUITER"
+    ],
     "recruiterId": "r001",
     "staffNumber": "SM-REC-001",
     "departmentCode": "TALENT",
@@ -68,7 +95,9 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
-    "roles": ["RECRUITER"],
+    "roles": [
+      "RECRUITER"
+    ],
     "recruiterId": "r002",
     "staffNumber": "SM-REC-002",
     "departmentCode": "TALENT",
@@ -90,7 +119,9 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
-    "roles": ["MANCO"],
+    "roles": [
+      "MANCO"
+    ],
     "staffNumber": "SM-MAN-001",
     "departmentCode": "MANAGEMENT",
     "savedJobs": [],
@@ -110,7 +141,9 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
-    "roles": ["ADMIN"],
+    "roles": [
+      "ADMIN"
+    ],
     "staffNumber": "SM-ADM-001",
     "departmentCode": "IT",
     "savedJobs": [],
@@ -130,9 +163,20 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 55,
-    "roles": ["JOB_SEEKER"],
-    "savedJobs": ["j002"],
-    "recommendedJobs": ["j002", "j005", "j011", "j017", "j023", "j035"],
+    "roles": [
+      "JOB_SEEKER"
+    ],
+    "savedJobs": [
+      "00000003-0000-4000-8000-000000000002"
+    ],
+    "recommendedJobs": [
+      "j002",
+      "j005",
+      "j011",
+      "j017",
+      "j023",
+      "j035"
+    ],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-03-10T08:00:00Z"
@@ -148,9 +192,18 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 70,
-    "roles": ["JOB_SEEKER"],
+    "roles": [
+      "JOB_SEEKER"
+    ],
     "savedJobs": [],
-    "recommendedJobs": ["j006", "j013", "j019", "j027", "j033", "j039"],
+    "recommendedJobs": [
+      "j006",
+      "j013",
+      "j019",
+      "j027",
+      "j033",
+      "j039"
+    ],
     "acceptTerms": true,
     "acceptPrivacyPolicy": true,
     "createdAt": "2024-04-05T08:00:00Z"
@@ -166,7 +219,9 @@
     "provider": "LOCAL",
     "accountStatus": "ACTIVE",
     "profileCompleted": 100,
-    "roles": ["EXCO"],
+    "roles": [
+      "EXCO"
+    ],
     "staffNumber": "SM-EXC-001",
     "departmentCode": "EXECUTIVE",
     "savedJobs": [],

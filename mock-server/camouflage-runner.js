@@ -23,19 +23,15 @@
  *                             GET  /candidates/recommended-positions
  *                             GET|POST|DELETE /candidates/saved-jobs[/{jobId}]
  *                             GET  /candidates/ai-actions/
- *                             GET  /candidates                   (list)
  *                             GET  /candidate/:userId/dashboard  (legacy)
  *                             GET|POST|PUT /candidate/buildmycv  (legacy)
  *                             GET  /candidate/:resumeId/preview  (legacy)
  *                             GET  /candidate/:resumeId/download (legacy)
  *                             GET  /candidate/:candidateId/recommended-jobs (legacy)
  *                             POST /applications/:applicationId/cv/upload
- *   routes/jobs.js            GET  /jobs (public)
- *                             GET  /jobs/:jobId
- *                             POST /jobs/:jobId/save
- *                             POST /jobs/:jobId/apply
- *                             POST /jobs (recruiter)
- *                             GET  /opportunities
+ *   routes/mandateService.js  GET  /dashboard/summary | /jobs | /jobs/:jobProfileId
+ *                             POST /jobs | PUT/DELETE /jobs/:jobProfileId
+ *                             GET  /industries | /companies | /candidates
  *   routes/recruiter.js       GET  /recruiter/dashboard
  *                             GET  /recruiter/mandates
  *                             PUT  /recruiter/applications/:applicationId/stage
@@ -85,7 +81,6 @@ import {
   candidateDashboardRouter,
   cvBuilderRouter,
   applicationCvRouter,
-  candidateListRouter,
   candidateLandingRouter,
   candidateSelfDashboardRouter,
   candidateProfileRouter,
@@ -93,11 +88,8 @@ import {
   candidateRecommendedPositionsRouter,
   candidateSavedJobsRouter,
   candidateAiActionsRouter,
+  candidateApplicationsRouter,
 }                                                              from './routes/candidates.js';
-import {
-  jobsRouter,
-  opportunitiesRouter,
-}                                                              from './routes/jobs.js';
 import {
   recruiterRouter,
   mandatesRouter,
@@ -110,7 +102,6 @@ import { skillsRouter }                                        from './routes/sk
 import { mancoRouter, mancoRecruiterPerformanceRouter }        from './routes/manco.js';
 import { crmRouter }                                           from './routes/crm.js';
 import { jobPostsRouter }                                      from './routes/jobPosts.js';
-import { industriesRouter }                                    from './routes/industries.js';
 import { documentsRouter }                                      from './routes/documents.js';
 import {
   aiSkillsGenerateRouter,
@@ -134,7 +125,7 @@ const __dirname  = dirname(__filename);
 // ─────────────────────────────────────────────────────────
 const config = yamlLoad(readFileSync(join(__dirname, 'config.yml'), 'utf-8'));
 
-const PORT      = config.server.port ?? 4000;
+const PORT      = Number(process.env.PORT ?? config.server.port ?? 4000);
 const MOCKS_DIR = join(__dirname, config.server.mocksDir.replace('./mock-server/', ''));
 const DELAY_MIN = config.delay.min   ?? 300;
 const DELAY_MAX = config.delay.max   ?? 900;
@@ -151,8 +142,6 @@ const PUBLIC_PATHS = [
   '/api/v1/auth/staff-invitations/validate',
   '/api/v1/auth/forgot-password',
   '/api/v1/auth/reset-password',
-  '/jobs',
-  '/opportunities',
   '/skills/search',
   '/skills/generate',
   '/candidates/landing',
@@ -185,6 +174,7 @@ const DB = {
   aiScoringRuns:     loadDataset('ai-scoring-runs'),
   candidateAiActions: loadDataset('candidate-ai-actions'),
   companies:         loadDataset('companies'),
+  dashboardSummary:  loadDataset('dashboard-summary'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -356,7 +346,8 @@ app.use((req, _res, next) => {
 // Delay + error injection + auth guard
 app.use(async (req, res, next) => {
   const path     = req.path;
-  const isPublic = PUBLIC_PATHS.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'));
+  const isPublicJobRead = req.method === 'GET' && (path === '/jobs' || path.startsWith('/jobs/'));
+  const isPublic = isPublicJobRead || PUBLIC_PATHS.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'));
 
   await new Promise(r => setTimeout(r, Math.floor(Math.random() * (DELAY_MAX - DELAY_MIN + 1)) + DELAY_MIN));
 
@@ -426,10 +417,11 @@ app.use('/candidates', candidateCvBuildRouter(routeCtx));           // GET|POST|
 app.use('/candidates', candidateRecommendedPositionsRouter(routeCtx)); // GET /candidates/recommended-positions
 app.use('/candidates', candidateSavedJobsRouter(routeCtx));         // GET|POST /candidates/saved-jobs
 app.use('/candidates', candidateAiActionsRouter(routeCtx));         // GET  /candidates/ai-actions/
+app.use('/candidates', candidateApplicationsRouter(routeCtx));      // POST /candidates/applications
 app.use('/candidates', aiRecommendedJobsRouter(routeCtx));          // GET  /candidates/:candidateId/recommended-jobs        [AI service]
 app.use('/candidates', aiCandidateMatchScoreRouter(routeCtx));      // GET  /candidates/:candidateId/match-score/:jobProfileId [AI service]
 app.use('/candidates', aiCandidateActionsRouter(routeCtx));         // GET|POST /candidates/:candidateId/ai-actions           [AI service]
-app.use('/candidates', candidateListRouter(routeCtx));              // GET  /candidates  (list, must be last)
+app.use('/candidates', mandateServiceCandidatesRouter(routeCtx));   // GET  /candidates  (Mandate Service v2)
 
 // ─────────────────────────────────────────────────────────
 //  Candidate (legacy paths: /candidate/*)
@@ -441,12 +433,11 @@ app.use('/candidate', cvBuilderRouter(routeCtx));
 app.use('/applications', applicationCvRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
-//  Jobs + Opportunities
+//  Jobs  (Mandate Service v2)
 // ─────────────────────────────────────────────────────────
 app.use('/jobs',         aiJobSkillsGenerateRouter(routeCtx));      // POST /jobs/skills/generate                   [AI service]
 app.use('/jobs',         aiMatchScoringRouter(routeCtx));           // POST /jobs/:jobProfileId/match-scores        [AI service]
-app.use('/jobs',         jobsRouter(routeCtx));
-app.use('/opportunities', opportunitiesRouter(routeCtx));
+app.use('/',             mandateServiceJobsRouter(routeCtx));       // /dashboard/summary + /jobs CRUD
 
 // ─────────────────────────────────────────────────────────
 //  Skills
@@ -457,7 +448,8 @@ app.use('/skills', skillsRouter(routeCtx));
 // ─────────────────────────────────────────────────────────
 //  Industries
 // ─────────────────────────────────────────────────────────
-app.use('/industries', industriesRouter(routeCtx));
+app.use('/industries', mandateServiceIndustriesRouter(routeCtx));
+app.use('/companies',  mandateServiceCompaniesRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Recruiter
@@ -504,16 +496,6 @@ app.use('/api/job-posts', jobPostsRouter(routeCtx));
 //  Documents  (document_api_v0.yaml — dummy S3-backed storage)
 // ─────────────────────────────────────────────────────────
 app.use('/documents', documentsRouter(routeCtx));
-
-// ─────────────────────────────────────────────────────────
-//  Mandate (Job) Service  (Mandate_Service_v2.yaml)
-//  Namespaced under /api/v1/job-service to avoid colliding with the
-//  candidate-facing /jobs and /candidates contracts.
-// ─────────────────────────────────────────────────────────
-app.use('/api/v1/job-service', mandateServiceJobsRouter(routeCtx));
-app.use('/api/v1/job-service/industries', mandateServiceIndustriesRouter(routeCtx));
-app.use('/api/v1/job-service/companies', mandateServiceCompaniesRouter(routeCtx));
-app.use('/api/v1/job-service/candidates', mandateServiceCandidatesRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Catch-all → .mock file fallback
@@ -592,9 +574,10 @@ app.listen(PORT, () => {
   L('║    GET   /candidates/recommended-positions                               ║');
   L('║    GET   /candidates/saved-jobs                                          ║');
   L('║    POST  /candidates/saved-jobs                                          ║');
-  L('║    DELETE /candidates/saved-jobs/:jobId                                  ║');
+  L('║    DELETE /candidates/saved-jobs/:jobProfileId                           ║');
+  L('║    POST  /candidates/applications                                        ║');
   L('║    GET   /candidates/ai-actions/                                         ║');
-  L('║    GET   /candidates  (?search=&location=&skill=&page=&limit=)           ║');
+  L('║    GET   /candidates  (?search=&jobProfileId=&status=&page=&size=)       ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  CANDIDATE  (legacy /candidate/*)                                        ║');
   L('║    GET   /candidate/:userId/dashboard                                    ║');
@@ -606,14 +589,15 @@ app.listen(PORT, () => {
   L('║    GET   /candidate/:candidateId/recommended-jobs                        ║');
   L('║    POST  /applications/:applicationId/cv/upload                          ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
-  L('║  JOBS                                                                    ║');
-  L('║    GET   /jobs  (public)                                                 ║');
-  L('║    GET   /jobs/:jobId                                                    ║');
-  L('║    POST  /jobs/:jobId/save                                               ║');
-  L('║    DELETE /jobs/:jobId/save                                              ║');
-  L('║    POST  /jobs/:jobId/apply                                              ║');
-  L('║    POST  /jobs  (recruiter)                                              ║');
-  L('║    GET   /opportunities  (public)                                        ║');
+  L('║  MANDATE SERVICE v2  (BearerAuth)                                        ║');
+  L('║    GET   /dashboard/summary                                              ║');
+  L('║    GET   /jobs  (?search=&industryId=&status=&page=&size=)  (public)     ║');
+  L('║    POST  /jobs                                                           ║');
+  L('║    GET   /jobs/:jobProfileId                                  (public)   ║');
+  L('║    PUT    /jobs/:jobProfileId                                             ║');
+  L('║    DELETE /jobs/:jobProfileId                                             ║');
+  L('║    GET   /industries  (?search=)                                         ║');
+  L('║    GET   /companies  (?search=&page=&size=)                              ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  SKILLS                                                                  ║');
   L('║    GET   /skills/search?keyword=&limit=                                  ║');
@@ -665,7 +649,8 @@ app.listen(PORT, () => {
   L('');
   L('  Data (loaded from mock-server/data/)');
   L(`    ${DB.users.length} users · ${DB.candidateProfiles.length} candidate profiles · ${DB.resumes.length} resumes`);
-  L(`    ${DB.jobs.filter(j => j.status === 'Open').length} open jobs · ${DB.mandates.length} mandates`);
+  L(`    ${DB.jobs.length} job profiles · ${DB.companies.length} companies · ${DB.industries.length} industries`);
+  L(`    ${DB.candidates.length} candidate rows · ${DB.mandates.length} legacy mandates`);
   L(`    ${DB.recruiters.length} recruiters · ${DB.clients.length} CRM clients · ${DB.applications.length} applications`);
   L(`    ${DB.skills.length} skills`);
   L('');

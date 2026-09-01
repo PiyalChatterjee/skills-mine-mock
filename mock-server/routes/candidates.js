@@ -11,6 +11,7 @@
  */
 
 import { Router } from 'express';
+import crypto from 'node:crypto';
 
 // Pipeline stages shown on each application card (contract-specified order)
 const APPLICATION_PIPELINE = [
@@ -44,6 +45,128 @@ const STAGE_MESSAGES = {
   Placed:      'You have been successfully placed.',
   Closed:      'This application has been closed.',
 };
+
+function toCandidateJob(DB, job, extra = {}) {
+  const company = DB.companies.find(({ clientId }) => clientId === job.clientId);
+  const industry = DB.industries.find(({ industryId }) => industryId === job.industryId);
+  return {
+    jobId: job.jobProfileId,
+    jobProfileId: job.jobProfileId,
+    title: job.positionTitle,
+    company: company?.clientName ?? '',
+    location: job.locationText ?? '',
+    industry: industry?.industryName ?? '',
+    employmentType: job.employmentType ?? '',
+    workType: job.workType ?? '',
+    salaryMin: job.salaryMin ?? null,
+    salaryMax: job.salaryMax ?? null,
+    salaryRange: job.salaryMin != null && job.salaryMax != null
+      ? `R${Number(job.salaryMin).toLocaleString()} - R${Number(job.salaryMax).toLocaleString()}`
+      : '',
+    description: job.jobDescription ?? '',
+    requirements: job.requirements ?? [],
+    responsibilities: job.responsibilities ?? [],
+    skills: (job.skills ?? []).map((skill) => skill.originalText).filter(Boolean),
+    status: job.status,
+    applicationCount: job.applicantCount ?? 0,
+    postedDate: job.publishedAt ?? '',
+    ...extra,
+  };
+}
+
+function savedJobProfileId(entry) {
+  if (typeof entry === 'string') return entry;
+  return entry?.jobProfileId ?? entry?.jobId ?? '';
+}
+
+export function candidateApplicationsRouter({ DB, saveDataset }) {
+  const router = Router();
+
+  // The candidate Swagger defines application reads but omits the write
+  // operation required by the job-detail workflow.
+  router.post('/applications', (req, res) => {
+    const userId = req.currentUser?.userId;
+    const profile = DB.candidateProfiles.find((candidate) => candidate.userId === userId);
+    if (!profile) {
+      return res.status(403).json({
+        success: false, statusCode: 403,
+        message: 'A candidate profile is required to apply for a job.',
+      });
+    }
+
+    const jobProfileId = req.body?.jobProfileId;
+    if (!jobProfileId) {
+      return res.status(400).json({
+        success: false, statusCode: 400, message: 'jobProfileId is required.',
+      });
+    }
+
+    const job = DB.jobs.find((candidateJob) => candidateJob.jobProfileId === jobProfileId);
+    if (!job) {
+      return res.status(404).json({
+        success: false, statusCode: 404, message: `Job ${jobProfileId} not found.`,
+      });
+    }
+    if (job.status !== 'POSTED') {
+      return res.status(422).json({
+        success: false, statusCode: 422, message: 'This job is not accepting applications.',
+      });
+    }
+
+    const existing = DB.applications.find((application) =>
+      application.userId === userId &&
+      (application.jobProfileId === jobProfileId || application.jobId === jobProfileId)
+    );
+    if (existing) {
+      return res.status(409).json({
+        success: false, statusCode: 409,
+        message: 'You have already applied for this job.',
+        data: { applicationId: existing.applicationId },
+      });
+    }
+
+    const company = DB.companies.find(({ clientId }) => clientId === job.clientId);
+    const now = new Date().toISOString();
+    const application = {
+      applicationId: crypto.randomUUID(),
+      userId,
+      candidateId: profile.candidateId,
+      candidateName: [profile.personalDetails?.firstName, profile.personalDetails?.lastName].filter(Boolean).join(' '),
+      jobId: jobProfileId,
+      jobProfileId,
+      jobTitle: job.positionTitle,
+      company: company?.clientName ?? '',
+      currentStage: 'Inbound',
+      applicationStatus: 'SUBMITTED',
+      appliedDate: now.slice(0, 10),
+      appliedAt: now,
+      updatedAt: now,
+      matchScore: 65 + Math.floor(Math.random() * 30),
+      sourceChannel: req.body?.sourceChannel ?? 'direct',
+      cvId: req.body?.cvId ?? null,
+      isGuest: false,
+      stageHistory: [{ stage: 'Inbound', enteredAt: now, exitedAt: null }],
+    };
+
+    DB.applications.push(application);
+    if (!Array.isArray(profile.applications)) profile.applications = [];
+    profile.applications.push(application);
+    job.applicantCount = (job.applicantCount ?? 0) + 1;
+    saveDataset?.('applications', DB.applications);
+    saveDataset?.('candidate-profiles', DB.candidateProfiles);
+    saveDataset?.('jobs', DB.jobs);
+
+    return res.status(201).json({
+      applicationId: application.applicationId,
+      jobProfileId,
+      matchScore: application.matchScore,
+      status: 'submitted',
+      nextStep: 'view_dashboard',
+    });
+  });
+
+  return router;
+}
 
 // ─── Candidate dashboard ────────────────────────────────────────────────────
 export function candidateDashboardRouter({ DB }) {
@@ -605,20 +728,10 @@ export function candidateLandingRouter({ DB }) {
       });
     }
 
-    const openJobs = DB.jobs.filter(j => j.status === 'Open');
+    const openJobs = DB.jobs.filter(j => j.status === 'POSTED');
 
     // Feature up to 6 open jobs on the landing page
-    const featuredJobs = openJobs.slice(0, 6).map(j => ({
-      jobId:          j.jobId,
-      title:          j.title,
-      company:        j.company,
-      location:       j.location,
-      workType:       j.workType,
-      employmentType: j.employmentType,
-      salaryRange:    j.salaryRange,
-      skills:         (j.skills ?? []).slice(0, 4),
-      postedDate:     j.postedDate,
-    }));
+    const featuredJobs = openJobs.slice(0, 6).map(j => toCandidateJob(DB, j));
 
     return res.status(200).json({
       success:    true,
@@ -993,12 +1106,14 @@ export function candidateRecommendedPositionsRouter({ DB }) {
     const skills      = profile?.skills ?? [];
 
     const jobs = DB.jobs
-      .filter(j => j.status === 'Open')
+      .filter(j => j.status === 'POSTED')
       .slice(0, 6)
       .map(j => {
-        const overlap    = (j.skills ?? []).filter(s => skills.includes(s)).length;
+        const overlap = (j.skills ?? [])
+          .map((skill) => skill.originalText)
+          .filter((skill) => skills.includes(skill)).length;
         const matchScore = Math.min(99, 55 + overlap * 6 + Math.floor(Math.random() * 15));
-        return { ...j, matchScore };
+        return toCandidateJob(DB, j, { matchScore });
       })
       .sort((a, b) => b.matchScore - a.matchScore);
 
@@ -1025,14 +1140,13 @@ export function candidateSavedJobsRouter({ DB }) {
 
     const savedJobIds = profile?.savedJobs ?? [];
     const jobs = savedJobIds.map(entry => {
-      const jobId   = typeof entry === 'string' ? entry : entry.jobId;
+      const jobProfileId = savedJobProfileId(entry);
       const savedAt = typeof entry === 'object' ? entry.savedAt : null;
-      const job     = DB.jobs.find(j => j.jobId === jobId);
+      const job = DB.jobs.find(j => j.jobProfileId === jobProfileId);
       if (!job) return null;
-      return {
-        ...job,
+      return toCandidateJob(DB, job, {
         savedAt: savedAt ?? new Date().toISOString(),
-      };
+      });
     }).filter(Boolean);
 
     return res.status(200).json({
@@ -1043,56 +1157,56 @@ export function candidateSavedJobsRouter({ DB }) {
     });
   });
 
-  // DELETE /candidates/saved-jobs/:jobId
-  router.delete('/saved-jobs/:jobId', (req, res) => {
+  // DELETE /candidates/saved-jobs/:jobProfileId
+  router.delete('/saved-jobs/:jobProfileId', (req, res) => {
     const userId  = req.currentUser?.userId ?? 'USR100001';
-    const { jobId } = req.params;
+    const { jobProfileId } = req.params;
 
     const profile = DB.candidateProfiles.find(p => p.userId === userId);
     if (profile && Array.isArray(profile.savedJobs)) {
       profile.savedJobs = profile.savedJobs.filter(e =>
-        (typeof e === 'string' ? e : e.jobId) !== jobId
+        savedJobProfileId(e) !== jobProfileId
       );
     }
 
     return res.status(200).json({
       success:    true,
       statusCode: 200,
-      message:    `Job ${jobId} removed from saved jobs.`,
+      message:    `Job ${jobProfileId} removed from saved jobs.`,
     });
   });
 
   // POST /candidates/saved-jobs
   router.post('/saved-jobs', (req, res) => {
     const userId  = req.currentUser?.userId ?? 'USR100001';
-    const { jobId } = req.body ?? {};
+    const jobProfileId = req.body?.jobProfileId ?? req.body?.jobId;
 
-    if (!jobId)
+    if (!jobProfileId)
       return res.status(400).json({
-        success: false, statusCode: 400, message: 'jobId is required.',
+        success: false, statusCode: 400, message: 'jobProfileId is required.',
       });
 
-    const job = DB.jobs.find(j => j.jobId === jobId);
+    const job = DB.jobs.find(j => j.jobProfileId === jobProfileId);
     if (!job)
       return res.status(404).json({
-        success: false, statusCode: 404, message: `Job ${jobId} not found.`,
+        success: false, statusCode: 404, message: `Job ${jobProfileId} not found.`,
       });
 
     const profile = DB.candidateProfiles.find(p => p.userId === userId);
     if (profile) {
       if (!Array.isArray(profile.savedJobs)) profile.savedJobs = [];
       const alreadySaved = profile.savedJobs.some(e =>
-        (typeof e === 'string' ? e : e.jobId) === jobId
+        savedJobProfileId(e) === jobProfileId
       );
       if (!alreadySaved) {
-        profile.savedJobs.push({ jobId, savedAt: new Date().toISOString() });
+        profile.savedJobs.push({ jobProfileId, savedAt: new Date().toISOString() });
       }
     }
 
     return res.status(200).json({
       success:    true,
       statusCode: 200,
-      message:    `Job ${jobId} saved successfully.`,
+      message:    `Job ${jobProfileId} saved successfully.`,
     });
   });
 
@@ -1111,9 +1225,9 @@ export function candidateAiActionsRouter({ DB }) {
     const skills      = profile?.skills ?? [];
 
     // Count open jobs with at least one skill overlap
-    const openJobs       = DB.jobs.filter(j => j.status === 'Open');
+    const openJobs       = DB.jobs.filter(j => j.status === 'POSTED');
     const matchingJobs   = openJobs.filter(j =>
-      (j.skills ?? []).some(s => skills.includes(s))
+      (j.skills ?? []).some((skill) => skills.includes(skill.originalText))
     );
     const topMatchScore  = matchingJobs.length > 0 ? 88 : 60;
 
@@ -1143,7 +1257,7 @@ export function candidateAiActionsRouter({ DB }) {
         type:        'SEND_MATCHED_JOBS',
         label:       `View your ${matchingJobs.length} matched position${matchingJobs.length !== 1 ? 's' : ''}`,
         description: 'Recruiters are actively looking for your skills.',
-        payload:     { jobIds: matchingJobs.slice(0, 3).map(j => j.jobId) },
+        payload:     { jobIds: matchingJobs.slice(0, 3).map(j => j.jobProfileId) },
       });
     }
 

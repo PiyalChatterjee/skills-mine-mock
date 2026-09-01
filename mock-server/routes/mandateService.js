@@ -1,7 +1,6 @@
 /**
  * MANDATE (JOB) SERVICE ROUTES  (Mandate_Service_v2.yaml)
- * Mounted at /api/v1/job-service — kept separate from the candidate-facing
- * /jobs and /candidates routers to avoid path collisions with those contracts.
+ * Mounted at the service-relative paths declared by Mandate_Service_v2.yaml.
  *
  * GET    /dashboard/summary                 → recruiter dashboard snapshot counts
  * GET    /jobs                              → paginated job profile list (dashboard)
@@ -18,20 +17,23 @@ import { Router } from "express";
 import crypto from "node:crypto";
 
 function badRequest(res, message) {
-  return res.status(400).json({ code: "VALIDATION_ERROR", message });
+  return apiError(res, 400, "VALIDATION_ERROR", message);
 }
 function notFound(res, message) {
-  return res.status(404).json({ code: "NOT_FOUND", message });
+  return apiError(res, 404, "NOT_FOUND", message);
+}
+function apiError(res, status, code, message) {
+  return res.status(status).json({
+    message,
+    code,
+    requestId: res.req.headers["x-request-id"] ?? null,
+    timestamp: new Date().toISOString(),
+  });
 }
 
 function toIndustryItem(DB, industryId) {
   const industry = DB.industries.find((i) => i.industryId === industryId);
-  if (!industry) return null;
-  return {
-    industryId: industry.industryId,
-    industryName: industry.name,
-    normalizedKey: industry.name.toLowerCase().replace(/[^a-z0-9]+/g, "_"),
-  };
+  return industry ? { ...industry } : null;
 }
 
 function toCompanyItem(DB, clientId) {
@@ -45,34 +47,31 @@ function toJobProfileSummary(DB, job) {
     jobProfileId: job.jobProfileId,
     jobReferenceNumber: job.jobReferenceNumber,
     client: toCompanyItem(DB, job.clientId),
-    positionTitle: job.title,
+    positionTitle: job.positionTitle,
     industry: toIndustryItem(DB, job.industryId),
-    locationText: job.location ?? "",
-    employmentType: job.employmentTypeCode ?? null,
-    jobDescriptionSnippet: (job.description ?? "").slice(0, 300),
+    locationText: job.locationText ?? "",
+    employmentType: job.employmentType ?? null,
+    jobDescriptionSnippet: (job.jobDescription ?? "").slice(0, 300),
     fillByDate: job.fillByDate,
-    status: job.statusCode ?? "DRAFT",
-    publishedAt:
-      job.statusCode && job.statusCode !== "DRAFT" && job.postedDate
-        ? new Date(job.postedDate).toISOString()
-        : null,
-    createdAt: job.postedDate ? new Date(job.postedDate).toISOString() : new Date().toISOString(),
-    updatedAt: job.postedDate ? new Date(job.postedDate).toISOString() : new Date().toISOString(),
+    status: job.status,
+    publishedAt: job.publishedAt,
+    createdAt: job.createdAt,
+    updatedAt: job.updatedAt,
   };
 }
 
 function toJobProfile(DB, job) {
   return {
     ...toJobProfileSummary(DB, job),
-    workType: job.workTypeCode ?? null,
-    employmentType: job.employmentTypeCode ?? null,
+    workType: job.workType ?? null,
+    employmentType: job.employmentType ?? null,
     experienceLevel: job.experienceLevel ?? null,
     priority: job.priority ?? "NORMAL",
     salaryMin: job.salaryMin ?? null,
     salaryMax: job.salaryMax ?? null,
     currencyCode: job.currencyCode ?? "ZAR",
     clientRate: job.clientRate ?? null,
-    jobDescription: job.description ?? null,
+    jobDescription: job.jobDescription ?? null,
     requirements: job.requirements ?? [],
     responsibilities: job.responsibilities ?? [],
     benefitsText: job.benefitsText ?? [],
@@ -82,19 +81,10 @@ function toJobProfile(DB, job) {
   };
 }
 
-function toJobSkillSummary(DB, skillName) {
-  const skill = DB.skills.find((s) => s.name === skillName);
-  return {
-    skillId: skill?.aiSkillId ?? null,
-    originalText: skillName,
-    sourceType: "RECRUITER_ENTERED",
-  };
-}
-
 function toJobProfileDetail(DB, job) {
   const today = new Date();
   const fillBy = job.fillByDate ? new Date(job.fillByDate) : null;
-  const isOpenEnded = !["FILLED", "CLOSED", "CANCELLED"].includes(job.statusCode);
+  const isOpenEnded = !["FILLED", "CLOSED", "CANCELLED"].includes(job.status);
   const daysLeftToFill =
     isOpenEnded && fillBy
       ? Math.round((fillBy.getTime() - today.getTime()) / 86400000)
@@ -102,9 +92,9 @@ function toJobProfileDetail(DB, job) {
 
   return {
     ...toJobProfile(DB, job),
-    skills: (job.skills ?? []).map((name) => toJobSkillSummary(DB, name)),
+    skills: job.skills ?? [],
     viewCount: job.viewCount ?? 0,
-    applicantCount: job.applicationCount ?? 0,
+    applicantCount: job.applicantCount ?? 0,
     daysLeftToFill,
   };
 }
@@ -117,22 +107,56 @@ const DATE_POSTED_WINDOW_DAYS = {
   LAST_30_DAYS: 30,
 };
 
-export function mandateServiceJobsRouter({ DB, saveDataset }) {
+const JOB_TYPES = new Set([
+  "FULL_TIME", "PART_TIME", "CONTRACT", "TEMPORARY", "INTERNSHIP", "FREELANCE",
+]);
+const JOB_STATUSES = new Set(["DRAFT", "POSTED", "PAUSED", "FILLED", "CANCELLED", "CLOSED"]);
+const WORK_TYPES = new Set(["REMOTE", "HYBRID", "ONSITE"]);
+const PRIORITIES = new Set(["LOW", "NORMAL", "HIGH", "CRITICAL"]);
+const SKILL_SOURCE_TYPES = new Set(["AI_GENERATED", "RECRUITER_ENTERED"]);
+const CANDIDATE_STATUSES = new Set(["SUBMITTED", "ACTIVE", "ON_HOLD", "CLOSED", "CANCELLED", "REJECTED", "APPLIED"]);
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function parsePageParams(res, page, size) {
+  const pageNum = Number(page);
+  const pageSize = Number(size);
+  if (!Number.isInteger(pageNum) || pageNum < 0) {
+    badRequest(res, "page must be an integer greater than or equal to 0.");
+    return null;
+  }
+  if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    badRequest(res, "size must be an integer between 1 and 100.");
+    return null;
+  }
+  return { pageNum, pageSize };
+}
+
+function validateJobBody(DB, body, { update = false } = {}) {
+  const missing = ["positionTitle", "fillByDate", ...(update ? ["versionNo"] : ["companyName"])]
+    .filter((field) => body[field] === undefined || body[field] === "");
+  if (missing.length) return `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} required.`;
+  if (body.industryId !== undefined && body.industryId !== null && !DB.industries.some(({ industryId }) => industryId === body.industryId)) return "industryId must reference an existing industry.";
+  if (body.workType !== undefined && body.workType !== null && !WORK_TYPES.has(body.workType)) return `workType must be one of: ${[...WORK_TYPES].join(", ")}.`;
+  if (body.employmentType !== undefined && body.employmentType !== null && !JOB_TYPES.has(body.employmentType)) return `employmentType must be one of: ${[...JOB_TYPES].join(", ")}.`;
+  if (body.priority !== undefined && !PRIORITIES.has(body.priority)) return `priority must be one of: ${[...PRIORITIES].join(", ")}.`;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(body.fillByDate) || Number.isNaN(Date.parse(body.fillByDate))) return "fillByDate must be a valid date in YYYY-MM-DD format.";
+  for (const field of ["requirements", "responsibilities", "benefitsText"]) {
+    if (body[field] !== undefined && (!Array.isArray(body[field]) || body[field].some((value) => typeof value !== "string"))) return `${field} must be an array of strings.`;
+  }
+  if (body.skills !== undefined && (!Array.isArray(body.skills) || body.skills.some((skill) => !skill || typeof skill.originalText !== "string" || !SKILL_SOURCE_TYPES.has(skill.sourceType)))) return "skills must contain originalText and a valid sourceType.";
+  if (body.contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.contactEmail)) return "contactEmail must be a valid email address.";
+  if (body.salaryMin != null && (!Number.isFinite(body.salaryMin) || body.salaryMin < 0)) return "salaryMin must be a non-negative number.";
+  if (body.salaryMax != null && (!Number.isFinite(body.salaryMax) || body.salaryMax < 0)) return "salaryMax must be a non-negative number.";
+  if (body.salaryMin != null && body.salaryMax != null && body.salaryMax < body.salaryMin) return "salaryMax must be greater than or equal to salaryMin.";
+  return null;
+}
+
+export function mandateServiceJobsRouter({ DB }) {
   const router = Router();
 
   // GET /dashboard/summary
   router.get("/dashboard/summary", (req, res) => {
-    const recruiterId = req.currentUser?.recruiterId ?? "r001";
-    const myJobIds = new Set(
-      DB.jobs.filter((j) => j.recruiterId === recruiterId).map((j) => j.jobId),
-    );
-    const myApps = DB.applications.filter((a) => myJobIds.has(a.jobId));
-
-    return res.status(200).json({
-      cvsDue: myApps.filter((a) => a.currentStage === "Screening").length,
-      interviewsToSchedule: myApps.filter((a) => a.currentStage === "Shortlisted").length,
-      offerLettersAcceptanceDeadlines: myApps.filter((a) => a.currentStage === "Offer").length,
-    });
+    return res.status(200).json(DB.dashboardSummary);
   });
 
   // GET /jobs
@@ -141,44 +165,58 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
       search, locationText, datePosted, jobType, clientId, status,
       page = 0, size = 20,
     } = req.query;
-    let industryIds = req.query.industryId;
-    if (industryIds && !Array.isArray(industryIds)) industryIds = [industryIds];
+    const pagination = parsePageParams(res, page, size);
+    if (!pagination) return;
+    if (datePosted && !Object.hasOwn(DATE_POSTED_WINDOW_DAYS, datePosted)) {
+      return badRequest(res, `datePosted must be one of: ${Object.keys(DATE_POSTED_WINDOW_DAYS).join(", ")}.`);
+    }
+    if (jobType && !JOB_TYPES.has(jobType)) {
+      return badRequest(res, `jobType must be one of: ${[...JOB_TYPES].join(", ")}.`);
+    }
+    if (status && !JOB_STATUSES.has(status)) {
+      return badRequest(res, `status must be one of: ${[...JOB_STATUSES].join(", ")}.`);
+    }
+
+    const industryIds = (Array.isArray(req.query.industryId)
+      ? req.query.industryId
+      : req.query.industryId ? [req.query.industryId] : [])
+      .flatMap((value) => value.split(","))
+      .filter(Boolean);
 
     let results = [...DB.jobs];
 
     if (search) {
       const q = search.toLowerCase();
-      results = results.filter((j) => j.title?.toLowerCase().includes(q));
+      results = results.filter((j) => j.positionTitle.toLowerCase().includes(q));
     }
     if (industryIds?.length) {
       results = results.filter((j) => industryIds.includes(j.industryId));
     }
     if (locationText) {
       const q = locationText.toLowerCase();
-      results = results.filter((j) => j.location?.toLowerCase().includes(q));
+      results = results.filter((j) => j.locationText.toLowerCase().includes(q));
     }
     if (datePosted) {
       const windowDays = DATE_POSTED_WINDOW_DAYS[datePosted];
       if (windowDays) {
         const cutoff = Date.now() - windowDays * 86400000;
         results = results.filter(
-          (j) => j.postedDate && new Date(j.postedDate).getTime() >= cutoff,
+          (j) => j.publishedAt && new Date(j.publishedAt).getTime() >= cutoff,
         );
       }
     }
     if (jobType) {
-      results = results.filter((j) => j.employmentTypeCode === jobType);
+      results = results.filter((j) => j.employmentType === jobType);
     }
     if (clientId) {
       results = results.filter((j) => j.clientId === clientId);
     }
     if (status) {
-      results = results.filter((j) => j.statusCode === status);
+      results = results.filter((j) => j.status === status);
     }
 
     const total = results.length;
-    const pageNum = parseInt(page, 10) || 0;
-    const pageSize = Math.min(parseInt(size, 10) || 20, 100);
+    const { pageNum, pageSize } = pagination;
     const pageItems = results.slice(pageNum * pageSize, pageNum * pageSize + pageSize);
 
     return res.status(200).json({
@@ -190,15 +228,18 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
   // POST /jobs
   router.post("/jobs", (req, res) => {
     const body = req.body ?? {};
-    if (!body.companyName || !body.positionTitle || !body.fillByDate)
-      return badRequest(res, "companyName, positionTitle and fillByDate are required.");
+    const validationError = validateJobBody(DB, body);
+    if (validationError) return badRequest(res, validationError);
+    if (body.jobReferenceNumber && DB.jobs.some(({ jobReferenceNumber }) => jobReferenceNumber === body.jobReferenceNumber)) {
+      return apiError(res, 409, "DUPLICATE_JOB_REFERENCE", "jobReferenceNumber must be unique.");
+    }
 
     let company = DB.companies.find(
       (c) => c.clientName.toLowerCase() === body.companyName.toLowerCase(),
     );
     if (!company) {
       company = {
-        clientId: `cl${100 + DB.companies.length}`,
+        clientId: crypto.randomUUID(),
         clientName: body.companyName,
         contactName: body.contactName ?? "",
         contactEmail: body.contactEmail ?? "",
@@ -209,20 +250,16 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
 
     const seq = DB.jobs.length + 1;
     const jobProfileId = crypto.randomUUID();
+    const now = new Date().toISOString();
     const newJob = {
-      jobId: `j${String(seq).padStart(3, "0")}`,
       jobProfileId,
       jobReferenceNumber: body.jobReferenceNumber ?? `JOB-${new Date().getFullYear()}-${String(seq).padStart(4, "0")}`,
-      title: body.positionTitle,
-      company: company.clientName,
       clientId: company.clientId,
-      location: body.locationText ?? "",
-      industry: null,
+      positionTitle: body.positionTitle,
+      locationText: body.locationText ?? "",
       industryId: body.industryId ?? null,
-      employmentType: null,
-      employmentTypeCode: body.employmentType ?? null,
-      workType: null,
-      workTypeCode: body.workType ?? null,
+      employmentType: body.employmentType ?? null,
+      workType: body.workType ?? null,
       salaryMin: body.salaryMin ?? null,
       salaryMax: body.salaryMax ?? null,
       salaryRange: null,
@@ -230,16 +267,17 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
       clientRate: body.clientRate ?? null,
       experienceLevel: body.experienceLevel ?? null,
       priority: body.priority ?? "NORMAL",
-      description: body.jobDescription ?? "",
+      jobDescription: body.jobDescription ?? null,
       requirements: body.requirements ?? [],
       responsibilities: body.responsibilities ?? [],
       benefitsText: body.benefitsText ?? [],
-      skills: (body.skills ?? []).map((s) => s.originalText).filter(Boolean),
+      skills: body.skills ?? [],
       fillByDate: body.fillByDate,
-      postedDate: null,
-      status: "Draft",
-      statusCode: "DRAFT",
-      applicationCount: 0,
+      status: "DRAFT",
+      publishedAt: null,
+      createdAt: now,
+      updatedAt: now,
+      applicantCount: 0,
       viewCount: 0,
       recruiterId: req.currentUser?.recruiterId ?? null,
       createdByUserId: req.currentUser?.userId ?? null,
@@ -253,6 +291,7 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
 
   // GET /jobs/:jobProfileId
   router.get("/jobs/:jobProfileId", (req, res) => {
+    if (!UUID_PATTERN.test(req.params.jobProfileId)) return badRequest(res, "jobProfileId must be a UUID.");
     const job = DB.jobs.find((j) => j.jobProfileId === req.params.jobProfileId);
     if (!job) return notFound(res, `Job profile ${req.params.jobProfileId} not found.`);
     return res.status(200).json(toJobProfileDetail(DB, job));
@@ -260,14 +299,19 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
 
   // PUT /jobs/:jobProfileId
   router.put("/jobs/:jobProfileId", (req, res) => {
+    if (!UUID_PATTERN.test(req.params.jobProfileId)) return badRequest(res, "jobProfileId must be a UUID.");
     const job = DB.jobs.find((j) => j.jobProfileId === req.params.jobProfileId);
     if (!job) return notFound(res, `Job profile ${req.params.jobProfileId} not found.`);
 
     const body = req.body ?? {};
-    if (!body.positionTitle || !body.fillByDate || body.versionNo === undefined)
-      return badRequest(res, "positionTitle, fillByDate and versionNo are required.");
+    const validationError = validateJobBody(DB, body, { update: true });
+    if (validationError) return badRequest(res, validationError);
     if (body.versionNo !== job.versionNo)
-      return res.status(409).json({ code: "VERSION_CONFLICT", message: "versionNo does not match the current job profile version." });
+      return apiError(res, 409, "VERSION_CONFLICT", "versionNo does not match the current job profile version.");
+    const postedAllowedFields = new Set(["positionTitle", "fillByDate", "versionNo", "jobDescription", "salaryMin", "salaryMax"]);
+    if (job.status === "POSTED" && Object.keys(body).some((field) => !postedAllowedFields.has(field))) {
+      return apiError(res, 422, "POSTED_JOB_EDIT_RESTRICTED", "Posted jobs may only update description and salary fields.");
+    }
 
     if (body.companyName) {
       let company = DB.companies.find(
@@ -275,7 +319,7 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
       );
       if (!company) {
         company = {
-          clientId: `cl${100 + DB.companies.length}`,
+          clientId: crypto.randomUUID(),
           clientName: body.companyName,
           contactName: body.contactName ?? "",
           contactEmail: body.contactEmail ?? "",
@@ -283,45 +327,45 @@ export function mandateServiceJobsRouter({ DB, saveDataset }) {
         };
         DB.companies.push(company);
       }
-      job.company = company.clientName;
       job.clientId = company.clientId;
     }
 
     if (body.jobReferenceNumber !== undefined) job.jobReferenceNumber = body.jobReferenceNumber;
-    job.title = body.positionTitle;
+    job.positionTitle = body.positionTitle;
     job.fillByDate = body.fillByDate;
-    if (body.locationText !== undefined) job.location = body.locationText;
-    if (body.workType !== undefined) job.workTypeCode = body.workType;
-    if (body.employmentType !== undefined) job.employmentTypeCode = body.employmentType;
+    if (body.locationText !== undefined) job.locationText = body.locationText;
+    if (body.workType !== undefined) job.workType = body.workType;
+    if (body.employmentType !== undefined) job.employmentType = body.employmentType;
     if (body.experienceLevel !== undefined) job.experienceLevel = body.experienceLevel;
     if (body.priority !== undefined) job.priority = body.priority;
     if (body.salaryMin !== undefined) job.salaryMin = body.salaryMin;
     if (body.salaryMax !== undefined) job.salaryMax = body.salaryMax;
     if (body.currencyCode !== undefined) job.currencyCode = body.currencyCode;
     if (body.clientRate !== undefined) job.clientRate = body.clientRate;
-    if (body.jobDescription !== undefined) job.description = body.jobDescription;
+    if (body.jobDescription !== undefined) job.jobDescription = body.jobDescription;
     if (body.requirements !== undefined) job.requirements = body.requirements;
     if (body.responsibilities !== undefined) job.responsibilities = body.responsibilities;
     if (body.benefitsText !== undefined) job.benefitsText = body.benefitsText;
     if (body.industryId !== undefined) job.industryId = body.industryId;
-    if (body.skills !== undefined) job.skills = body.skills.map((s) => s.originalText).filter(Boolean);
+    if (body.skills !== undefined) job.skills = body.skills;
     job.versionNo = (job.versionNo ?? 1) + 1;
+    job.updatedAt = new Date().toISOString();
 
     return res.status(200).json(toJobProfile(DB, job));
   });
 
   // DELETE /jobs/:jobProfileId
   router.delete("/jobs/:jobProfileId", (req, res) => {
+    if (!UUID_PATTERN.test(req.params.jobProfileId)) return badRequest(res, "jobProfileId must be a UUID.");
     const idx = DB.jobs.findIndex((j) => j.jobProfileId === req.params.jobProfileId);
     if (idx === -1) return notFound(res, `Job profile ${req.params.jobProfileId} not found.`);
 
     const job = DB.jobs[idx];
-    const hasApplications = DB.applications.some((a) => a.jobId === job.jobId);
-    if (!hasApplications && job.statusCode === "DRAFT") {
+    const hasApplications = DB.candidates.some((candidate) => candidate.jobProfileId === job.jobProfileId);
+    if (!hasApplications && job.status === "DRAFT") {
       DB.jobs.splice(idx, 1);
     } else {
-      job.statusCode = "CANCELLED";
-      job.status = "Closed";
+      job.status = "CANCELLED";
       job.closedAt = new Date().toISOString();
     }
 
@@ -340,17 +384,10 @@ export function mandateServiceIndustriesRouter({ DB }) {
     let results = [...DB.industries];
     if (search) {
       const q = search.toLowerCase();
-      results = results.filter((i) => i.name.toLowerCase().includes(q));
+      results = results.filter((i) => i.industryName.toLowerCase().includes(q));
     }
-    results.sort((a, b) => a.name.localeCompare(b.name));
-
-    return res.status(200).json(
-      results.map((i) => ({
-        industryId: i.industryId,
-        industryName: i.name,
-        normalizedKey: i.name.toLowerCase().replace(/[^a-z0-9]+/g, "_"),
-      })),
-    );
+    results.sort((a, b) => a.industryName.localeCompare(b.industryName));
+    return res.status(200).json(results);
   });
 
   return router;
@@ -362,6 +399,8 @@ export function mandateServiceCompaniesRouter({ DB }) {
   // GET /companies
   router.get("/", (req, res) => {
     const { search, page = 0, size = 20 } = req.query;
+    const pagination = parsePageParams(res, page, size);
+    if (!pagination) return;
     let results = [...DB.companies];
     if (search) {
       const q = search.toLowerCase();
@@ -369,8 +408,7 @@ export function mandateServiceCompaniesRouter({ DB }) {
     }
 
     const total = results.length;
-    const pageNum = parseInt(page, 10) || 0;
-    const pageSize = Math.min(parseInt(size, 10) || 20, 100);
+    const { pageNum, pageSize } = pagination;
     const pageItems = results.slice(pageNum * pageSize, pageNum * pageSize + pageSize);
 
     return res.status(200).json({ data: pageItems, total, page: pageNum, size: pageSize });
@@ -385,43 +423,15 @@ export function mandateServiceCandidatesRouter({ DB }) {
   // GET /candidates
   router.get("/", (req, res) => {
     const { companyName, locationText, search, jobProfileId, status, page = 0, size = 20 } = req.query;
-
-    let rows;
-    if (jobProfileId) {
-      const job = DB.jobs.find((j) => j.jobProfileId === jobProfileId);
-      const apps = job ? DB.applications.filter((a) => a.jobId === job.jobId) : [];
-      rows = apps.map((a) => {
-        const profile = DB.candidateProfiles.find((p) => p.candidateId === a.candidateId);
-        const [firstName, ...rest] = (a.candidateName ?? "").split(" ");
-        return {
-          applicationId: a.applicationId,
-          candidateId: profile?.candidateUuid ?? a.candidateId,
-          firstName: firstName ?? "",
-          lastName: rest.join(" "),
-          fullName: a.candidateName ?? "",
-          title: a.jobTitle ?? "",
-          companyName: a.company ?? job?.company ?? "",
-          locationText: profile?.personalDetails?.location ?? "",
-          matchPercentage: a.matchScore ?? null,
-          status: a.currentStage === "Inbound" ? "APPLIED" : a.currentStage?.toUpperCase() ?? null,
-          jobProfileId: job?.jobProfileId ?? null,
-        };
-      });
-    } else {
-      rows = DB.candidates.map((c) => ({
-        applicationId: null,
-        candidateId: c.candidateUuid ?? c.candidateId,
-        firstName: (c.fullName ?? "").split(" ")[0] ?? "",
-        lastName: (c.fullName ?? "").split(" ").slice(1).join(" "),
-        fullName: c.fullName ?? "",
-        title: c.currentTitle ?? "",
-        companyName: c.currentCompany ?? "",
-        locationText: c.location ?? "",
-        matchPercentage: null,
-        status: null,
-        jobProfileId: null,
-      }));
+    const pagination = parsePageParams(res, page, size);
+    if (!pagination) return;
+    if (status && !CANDIDATE_STATUSES.has(status)) {
+      return badRequest(res, `status must be one of: ${[...CANDIDATE_STATUSES].join(", ")}.`);
     }
+    if (jobProfileId && !UUID_PATTERN.test(jobProfileId)) return badRequest(res, "jobProfileId must be a UUID.");
+
+    let rows = DB.candidates.map(({ clientId, ...candidate }) => candidate);
+    if (jobProfileId) rows = rows.filter((candidate) => candidate.jobProfileId === jobProfileId);
 
     if (companyName) {
       const q = companyName.toLowerCase();
@@ -442,8 +452,7 @@ export function mandateServiceCandidatesRouter({ DB }) {
     }
 
     const total = rows.length;
-    const pageNum = parseInt(page, 10) || 0;
-    const pageSize = Math.min(parseInt(size, 10) || 20, 100);
+    const { pageNum, pageSize } = pagination;
     const pageItems = rows.slice(pageNum * pageSize, pageNum * pageSize + pageSize);
 
     return res.status(200).json({ data: pageItems, total, page: pageNum, size: pageSize });
