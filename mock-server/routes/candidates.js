@@ -993,6 +993,7 @@ export function candidateCvBuildRouter({ DB }) {
     }
 
     const seeded = {
+      resumeId:        resume?.resumeId ?? '',
       source:           'BuildCV',
       extractionStatus: 'NOT_STARTED',
       createdAt:        resume?.updatedAt ?? now,
@@ -1085,6 +1086,7 @@ export function candidateCvBuildRouter({ DB }) {
       lastModified: new Date().toISOString(),
     };
     const updated = applyUpdate(existing, req.body ?? {});
+    updated.resumeId = existing.resumeId || `RES-BUILD-${userId}`;
     if (!isNew) updated.extractionStatus = 'COMPLETED';
     store.set(userId, updated);
 
