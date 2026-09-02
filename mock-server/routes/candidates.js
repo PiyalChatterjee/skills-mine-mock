@@ -104,6 +104,278 @@ function toProfileDesiredJob(DB, desiredJob) {
   };
 }
 
+function findCandidateById(DB, candidateId) {
+  return DB.candidateProfiles.find((profile) =>
+    profile.candidateId === candidateId || profile.candidateUuid === candidateId,
+  );
+}
+
+function requireCandidateAccess(req, res, profile) {
+  if (!profile) {
+    res.status(404).json({ message: 'Candidate not found', code: 'CANDIDATE_NOT_FOUND' });
+    return false;
+  }
+  if (req.currentUser?.userId && req.currentUser.userId !== profile.userId) {
+    res.status(403).json({ message: 'You do not have permission to access this resource', code: 'FORBIDDEN' });
+    return false;
+  }
+  return true;
+}
+
+function toV2PersonalDetails(profile) {
+  const details = profile.personalDetails ?? {};
+  return {
+    first_name: details.firstName ?? '',
+    last_name: details.lastName ?? '',
+    email: details.email ?? '',
+    phone_number: details.mobileNumber ?? null,
+    residential_location: details.location ?? null,
+    nationality: details.nationality ?? null,
+    race: details.race ?? null,
+    gender: details.gender ?? null,
+    disability_status: details.disabilityStatus ?? null,
+    current_company: details.currentCompany ?? null,
+    current_position: details.currentPosition ?? null,
+    notice_period: details.noticePeriod ?? null,
+  };
+}
+
+function toV2DesiredJob(desiredJob) {
+  if (!desiredJob) return null;
+  const employmentType = desiredJob.employmentType ?? desiredJob.jobType ?? '';
+  return {
+    role_title: desiredJob.jobTitle ?? null,
+    targeted_industry: desiredJob.industry ?? desiredJob.industries?.[0] ?? null,
+    work_type: String(desiredJob.workType ?? '').toUpperCase() || null,
+    employment_type: employmentType === 'Permanent' ? 'FULL_TIME' : String(employmentType).toUpperCase().replaceAll(' ', '_'),
+    availability_code: desiredJob.availableFrom ?? null,
+  };
+}
+
+function toV2Education(education) {
+  if (!education) return [];
+  if (Array.isArray(education)) return education;
+  return [
+    ...(education.tertiaryEducation ?? []).map((entry) => ({
+      institution_name: entry.institution ?? '',
+      qualification: entry.qualification ?? '',
+      level_code: 'TERTIARY',
+      year_completed: entry.yearCompleted ?? null,
+    })),
+    ...(education.secondaryEducation ?? []).map((entry) => ({
+      institution_name: entry.schoolName ?? '',
+      qualification: entry.qualification ?? '',
+      level_code: 'SECONDARY',
+      year_completed: entry.yearCompleted ?? null,
+    })),
+  ];
+}
+
+function toV2CareerHistory(profile) {
+  return (profile.experience ?? []).map((entry) => ({
+    company_name: entry.company ?? '',
+    position_held: entry.jobTitle ?? '',
+    start_date: entry.startDate ?? null,
+    end_date: entry.endDate ?? null,
+    is_current: entry.current ?? entry.endDate == null,
+    responsibilities: Array.isArray(entry.responsibilities)
+      ? entry.responsibilities
+      : entry.responsibilities ? [entry.responsibilities] : [],
+    projects: entry.projects ?? [],
+  }));
+}
+
+function toV2SavedJob(DB, profile, entry) {
+  const jobProfileId = savedJobProfileId(entry);
+  const job = DB.jobs.find((candidateJob) => candidateJob.jobProfileId === jobProfileId);
+  if (!job) return null;
+  const company = DB.companies.find(({ clientId }) => clientId === job.clientId);
+  const industry = DB.industries.find(({ industryId }) => industryId === job.industryId);
+  const application = (profile.applications ?? []).find((candidateApplication) =>
+    candidateApplication.jobProfileId === jobProfileId || candidateApplication.jobId === jobProfileId,
+  );
+  return {
+    saved_job_id: `${profile.candidateId}-${jobProfileId}`,
+    job_profile_id: jobProfileId,
+    job_title: job.positionTitle,
+    job_description: (job.jobDescription ?? '').slice(0, 200),
+    location: job.locationText ?? '',
+    status: job.status,
+    industry: industry?.industryName ?? null,
+    current_stage_code: application?.currentStage?.toUpperCase() ?? null,
+    saved_at: typeof entry === 'object' && entry.savedAt ? entry.savedAt : null,
+    company: company?.clientName ?? '',
+    employment_type: job.employmentType ?? null,
+  };
+}
+
+export function candidateServiceV2Router({ DB, saveDataset }) {
+  const router = Router();
+
+  router.get('/landing', (req, res) => {
+    const profile = req.currentUser
+      ? DB.candidateProfiles.find(({ userId }) => userId === req.currentUser.userId)
+      : null;
+    if (!profile) return res.status(401).json({ message: 'Authentication required. Please provide a valid JWT token.', code: 'UNAUTHORIZED' });
+    const applications = DB.applications.filter((application) =>
+      application.userId === profile.userId || application.candidateId === profile.candidateId,
+    );
+    return res.status(200).json({
+      candidate_id: profile.candidateId,
+      statistics: {
+        total_applications: applications.length,
+        successful_applications: applications.filter(({ currentStage }) => ['Offer', 'Placed'].includes(currentStage)).length,
+        in_progress_applications: applications.filter(({ currentStage }) => ['Inbound', 'Screening', 'Assessment', 'Interview', 'Shortlisted'].includes(currentStage)).length,
+      },
+    });
+  });
+
+  router.get('/dashboard', (req, res) => {
+    const profile = req.currentUser
+      ? DB.candidateProfiles.find(({ userId }) => userId === req.currentUser.userId)
+      : null;
+    if (!profile) return res.status(401).json({ message: 'Authentication required. Please provide a valid JWT token.', code: 'UNAUTHORIZED' });
+    const applications = DB.applications.filter((application) =>
+      application.userId === profile.userId || application.candidateId === profile.candidateId,
+    );
+    const page = Math.max(1, Number(req.query.page ?? 1));
+    const size = Math.min(50, Math.max(1, Number(req.query.size ?? 10)));
+    const pageItems = applications.slice((page - 1) * size, page * size).map((application) => ({
+      application_id: application.applicationId,
+      job_profile_id_ref: application.jobProfileId ?? application.jobId,
+      job_title: application.jobTitle ?? '',
+      current_stage_code: String(application.currentStage ?? '').toUpperCase(),
+      stage_progress: (application.stageHistory ?? []).map((stage) => ({
+        stage_history_id: `${application.applicationId}-${stage.stage}`,
+        from_stage_code: stage.stage,
+        to_stage_code: stage.stage,
+      })),
+    }));
+    return res.status(200).json({
+      candidate_id: profile.candidateId,
+      applications: pageItems,
+      pagination: {
+        current_page: page,
+        page_size: size,
+        total_items: applications.length,
+        total_pages: Math.max(1, Math.ceil(applications.length / size)),
+      },
+    });
+  });
+
+  function getProfile(req, res) {
+    const profile = findCandidateById(DB, req.params.candidateId);
+    return requireCandidateAccess(req, res, profile) ? profile : null;
+  }
+
+  router.get('/cv-build/:candidateId', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    return res.status(200).json({
+      candidate_id: profile.candidateId,
+      personal_details: toV2PersonalDetails(profile),
+      career_history: toV2CareerHistory(profile),
+      skills: profile.skills ?? [],
+      education: toV2Education(profile.education),
+      languages: profile.languages ?? [],
+    });
+  });
+
+  router.post('/cv-build/:candidateId', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    const body = req.body ?? {};
+    if (!body.personal_details) return res.status(400).json({ message: 'personal_details is required', code: 'VALIDATION_ERROR' });
+    const details = body.personal_details;
+    profile.personalDetails = {
+      ...profile.personalDetails,
+      firstName: details.first_name ?? profile.personalDetails?.firstName ?? '',
+      lastName: details.last_name ?? profile.personalDetails?.lastName ?? '',
+      mobileNumber: details.phone_number ?? profile.personalDetails?.mobileNumber ?? '',
+      location: details.residential_location ?? profile.personalDetails?.location ?? '',
+      nationality: details.nationality ?? profile.personalDetails?.nationality ?? '',
+      race: details.race ?? profile.personalDetails?.race ?? '',
+      gender: details.gender ?? profile.personalDetails?.gender ?? '',
+      disabilityStatus: details.disability_status ?? profile.personalDetails?.disabilityStatus ?? '',
+      currentCompany: details.current_company ?? profile.personalDetails?.currentCompany ?? '',
+      currentPosition: details.current_position ?? profile.personalDetails?.currentPosition ?? '',
+      noticePeriod: details.notice_period ?? profile.personalDetails?.noticePeriod ?? '',
+    };
+    if (body.skills !== undefined) profile.skills = body.skills.map((skill) => typeof skill === 'string' ? skill : skill.skill_name).filter(Boolean);
+    if (body.languages !== undefined) profile.languages = body.languages;
+    saveDataset?.('candidate-profiles', DB.candidateProfiles);
+    return res.status(201).json({ candidate_id: profile.candidateId, personal_details: toV2PersonalDetails(profile), career_history: toV2CareerHistory(profile), skills: profile.skills ?? [], education: toV2Education(profile.education), languages: profile.languages ?? [] });
+  });
+
+  router.get('/profile/:candidateId', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    const user = DB.users?.find(({ userId }) => userId === profile.userId);
+    return res.status(200).json({
+      candidate_id: profile.candidateId,
+      user_id: profile.userId,
+      personal_details: toV2PersonalDetails(profile),
+      desired_job: toV2DesiredJob(profile.desiredJob),
+      created_at: user?.createdAt ?? null,
+      updated_at: profile.updatedAt ?? user?.createdAt ?? null,
+    });
+  });
+
+  router.put('/profile/:candidateId', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    const body = req.body ?? {};
+    if (!body.personal_details || !body.job_details) return res.status(400).json({ message: 'personal_details and job_details are required', code: 'VALIDATION_ERROR' });
+    const details = body.personal_details;
+    const job = body.job_details;
+    profile.personalDetails = { ...profile.personalDetails, firstName: details.first_name ?? profile.personalDetails?.firstName, lastName: details.last_name ?? profile.personalDetails?.lastName, email: details.alternate_email ?? profile.personalDetails?.email, mobileNumber: details.phone_number ?? profile.personalDetails?.mobileNumber, location: details.residential_location ?? profile.personalDetails?.location };
+    profile.desiredJob = { ...profile.desiredJob, jobTitle: job.role_title_id ?? profile.desiredJob?.jobTitle, workType: job.preferred_location ?? profile.desiredJob?.workType, employmentType: job.employment_type ?? profile.desiredJob?.employmentType, availableFrom: job.availability ?? profile.desiredJob?.availableFrom };
+    saveDataset?.('candidate-profiles', DB.candidateProfiles);
+    return res.status(200).json({ candidate_id: profile.candidateId, profile_status: 'ACTIVE', message: 'Profile updated successfully', updated_at: new Date().toISOString() });
+  });
+
+  router.get('/:candidateId/saved-jobs', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    const page = Math.max(1, Number(req.query.page ?? 1));
+    const size = Math.min(50, Math.max(1, Number(req.query.size ?? 10)));
+    const all = (profile.savedJobs ?? []).map((entry) => toV2SavedJob(DB, profile, entry)).filter(Boolean);
+    return res.status(200).json({ candidate_id: profile.candidateId, saved_jobs: all.slice((page - 1) * size, page * size), pagination: { current_page: page, page_size: size, total_items: all.length, total_pages: Math.max(1, Math.ceil(all.length / size)) } });
+  });
+
+  router.get('/:candidateId/recommended-positions', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    const page = Math.max(1, Number(req.query.page ?? 1));
+    const size = Math.min(50, Math.max(1, Number(req.query.size ?? 10)));
+    const saved = new Set((profile.savedJobs ?? []).map(savedJobProfileId));
+    const jobs = DB.jobs.filter((job) => job.status === 'POSTED').map((job) => ({ job_profile_id: job.jobProfileId, job_title: job.positionTitle, job_description: job.jobDescription ?? '', location: job.locationText ?? '', status: job.status, industry: DB.industries.find(({ industryId }) => industryId === job.industryId)?.industryName ?? null, current_stage_code: null, is_saved: saved.has(job.jobProfileId) }));
+    return res.status(200).json({ candidate_id: profile.candidateId, recommended_positions: jobs.slice((page - 1) * size, page * size), pagination: { current_page: page, page_size: size, total_items: jobs.length, total_pages: Math.max(1, Math.ceil(jobs.length / size)) } });
+  });
+
+  router.post('/:candidateId/saved-jobs/:jobProfileId', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    const job = DB.jobs.find(({ jobProfileId }) => jobProfileId === req.params.jobProfileId);
+    if (!job) return res.status(404).json({ message: 'Job profile not found', code: 'JOB_NOT_FOUND' });
+    if (!Array.isArray(profile.savedJobs)) profile.savedJobs = [];
+    if (!profile.savedJobs.some((entry) => savedJobProfileId(entry) === job.jobProfileId)) profile.savedJobs.push({ jobProfileId: job.jobProfileId, savedAt: new Date().toISOString() });
+    saveDataset?.('candidate-profiles', DB.candidateProfiles);
+    const entry = profile.savedJobs.find((candidate) => savedJobProfileId(candidate) === job.jobProfileId);
+    return res.status(201).json({ saved_job_id: `${profile.candidateId}-${job.jobProfileId}`, candidate_id: profile.candidateId, job_profile_id: job.jobProfileId, saved_at: entry.savedAt, message: 'Job saved successfully' });
+  });
+
+  router.delete('/:candidateId/saved-jobs/:jobProfileId', (req, res) => {
+    const profile = getProfile(req, res);
+    if (!profile) return;
+    profile.savedJobs = (profile.savedJobs ?? []).filter((entry) => savedJobProfileId(entry) !== req.params.jobProfileId);
+    saveDataset?.('candidate-profiles', DB.candidateProfiles);
+    return res.status(200).json({ candidate_id: profile.candidateId, job_profile_id: req.params.jobProfileId, message: 'Job removed from saved list successfully' });
+  });
+
+  return router;
+}
+
 export function candidateApplicationsRouter({ DB, saveDataset }) {
   const router = Router();
 

@@ -10,6 +10,7 @@ import {
   candidateLandingRouter,
   candidateRecommendedPositionsRouter,
   candidateSavedJobsRouter,
+  candidateServiceV2Router,
   candidateSelfDashboardRouter,
 } from "../routes/candidates.js";
 
@@ -36,6 +37,7 @@ app.use("/candidates", candidateRecommendedPositionsRouter({ DB }));
 app.use("/candidates", candidateSavedJobsRouter({ DB }));
 app.use("/candidates", candidateAiActionsRouter({ DB }));
 app.use("/candidates", candidateApplicationsRouter({ DB }));
+app.use("/v1/candidates", candidateServiceV2Router({ DB }));
 
 let server;
 let baseUrl;
@@ -153,4 +155,29 @@ test("every seeded application references an existing canonical job profile", ()
   assert.ok(DB.applications.length >= 100);
   assert.ok(DB.applications.every((application) =>
     application.jobId === application.jobProfileId && jobIds.has(application.jobProfileId)));
+});
+
+test("candidate service v2 exposes candidate-scoped CV, profile, saved and recommendation contracts", async () => {
+  const candidateId = DB.candidateProfiles[0].candidateId;
+  const cv = await request(`/v1/candidates/cv-build/${candidateId}`);
+  assert.equal(cv.response.status, 200);
+  assert.equal(cv.body.candidate_id, candidateId);
+  assert.ok(cv.body.personal_details.first_name);
+  assert.ok(Array.isArray(cv.body.education));
+
+  const profile = await request(`/v1/candidates/profile/${candidateId}`);
+  assert.equal(profile.response.status, 200);
+  assert.equal(profile.body.candidate_id, candidateId);
+  assert.equal(profile.body.desired_job.employment_type, "FULL_TIME");
+
+  const dashboard = await request(`/v1/candidates/dashboard`);
+  assert.equal(dashboard.response.status, 200);
+  assert.equal(dashboard.body.candidate_id, candidateId);
+  assert.ok(Array.isArray(dashboard.body.applications));
+  assert.ok(dashboard.body.pagination.current_page >= 1);
+
+  const recommendations = await request(`/v1/candidates/${candidateId}/recommended-positions`);
+  assert.equal(recommendations.response.status, 200);
+  assert.ok(Array.isArray(recommendations.body.recommended_positions));
+  assert.ok(recommendations.body.pagination.total_items >= 1);
 });

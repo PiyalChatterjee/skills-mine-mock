@@ -8,7 +8,7 @@ info:
     resume preview/download, recommended positions, saved jobs, AI actions,
     CV upload, candidate list, candidate search, and the recruiter
     candidate-profile view.
-  version: "2.2.0"
+  version: "2.3.0"
   contact:
     name: SkillsMine Mock Server
     url: http://localhost:4000
@@ -314,7 +314,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /candidates/saved-jobs/{jobId}:
+  /candidates/saved-jobs/{jobProfileId}:
     delete:
       tags: [Saved Jobs]
       summary: Remove a saved / bookmarked job
@@ -323,13 +323,13 @@ paths:
         Idempotent — removing a job that was never saved returns 200 without error.
       operationId: unsaveJob
       parameters:
-        - name: jobId
+        - name: jobProfileId
           in: path
           required: true
           schema:
             type: string
-            example: j001
-          description: ID of the job to remove from saved jobs
+            format: uuid
+          description: UUID of the job profile to remove from saved jobs
       responses:
         '200':
           description: Job removed from saved jobs
@@ -360,6 +360,84 @@ paths:
                         $ref: '#/components/schemas/AiActionsResult'
         '401':
           $ref: '#/components/responses/Unauthorized'
+
+  # ── Candidate AI service ───────────────────────────────────────────────────
+  /candidates/{candidateId}/recommended-jobs:
+    get:
+      tags: [Recommended Positions]
+      summary: Get paginated AI job recommendations for a candidate
+      operationId: getCandidateRecommendedJobs
+      parameters:
+        - $ref: '#/components/parameters/CandidateId'
+        - { name: page, in: query, schema: { type: integer, minimum: 0, default: 0 } }
+        - { name: size, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 10 } }
+        - { name: min_match_score, in: query, schema: { type: number, minimum: 0, maximum: 100, default: 40 } }
+        - { name: include_applied, in: query, schema: { type: boolean, default: false } }
+      responses:
+        '200':
+          description: Candidate recommendations
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RecommendedJobsServiceResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /candidates/{candidateId}/match-score/{jobProfileId}:
+    get:
+      tags: [Recommended Positions]
+      summary: Get the latest candidate-job match score
+      operationId: getCandidateMatchScore
+      parameters:
+        - $ref: '#/components/parameters/CandidateId'
+        - name: jobProfileId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Match score result
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MatchScoreResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /candidates/{candidateId}/ai-actions:
+    get:
+      tags: [AI Actions]
+      operationId: getCandidateRecruiterAiActions
+      parameters:
+        - $ref: '#/components/parameters/CandidateId'
+      responses:
+        '200':
+          description: Recruiter AI actions
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateAiActionsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [AI Actions]
+      operationId: generateCandidateRecruiterAiActions
+      parameters:
+        - $ref: '#/components/parameters/CandidateId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_profile_id: { type: string, format: uuid, nullable: true }
+      responses:
+        '200':
+          description: Generated recruiter AI actions
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateAiActionsResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
 
   # ── CV Upload ──────────────────────────────────────────────────────────────
   /applications/{applicationId}/cv/upload:
@@ -401,51 +479,167 @@ paths:
   /candidates:
     get:
       tags: [Candidate List]
-      summary: List all candidates (paginated and filterable)
+      summary: List candidate application rows (paginated and filterable)
       operationId: listCandidates
       parameters:
+        - name: companyName
+          in: query
+          schema: { type: string }
+        - name: locationText
+          in: query
+          schema: { type: string }
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: jobProfileId
+          in: query
+          schema: { type: string, format: uuid }
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [SUBMITTED, ACTIVE, ON_HOLD, CLOSED, CANCELLED, REJECTED, APPLIED]
         - name: page
           in: query
           schema:
             type: integer
-            default: 1
-          description: Page number (1-based)
-        - name: limit
+            minimum: 0
+            default: 0
+          description: Zero-based page number
+        - name: size
           in: query
           schema:
             type: integer
-          description: Number of results per page (omit for all results)
-        - name: search
-          in: query
-          schema:
-            type: string
-          description: Filter by full name or email (case-insensitive substring)
-        - name: location
-          in: query
-          schema:
-            type: string
-          description: Filter by location (case-insensitive substring)
-        - name: skill
-          in: query
-          schema:
-            type: string
-          description: Filter by skill name (case-insensitive substring)
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of results per page
       responses:
         '200':
           description: Candidates retrieved successfully
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/SuccessEnvelope'
-                  - type: object
-                    properties:
-                      data:
-                        $ref: '#/components/schemas/CandidateListResult'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: '#/components/schemas/CandidatePage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /candidates/applications:
+    post:
+      tags: [Candidate Profile]
+      summary: Submit a candidate job application
+      operationId: createCandidateApplication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: Application created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CreateApplicationResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/UnprocessableEntity' }
 
   # ── Recruiter Candidate Search ─────────────────────────────────────────────
+  /recruiter/dashboard:
+    get:
+      tags: [Candidate Dashboard]
+      summary: Get recruiter dashboard
+      operationId: getRecruiterDashboard
+      responses:
+        '200':
+          description: Recruiter dashboard retrieved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RecruiterDashboardResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /recruiter/mandates:
+    get:
+      tags: [Candidate Profile]
+      summary: List mandates for the authenticated recruiter
+      operationId: listRecruiterMandates
+      parameters:
+        - { name: status, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, default: 10 } }
+      responses:
+        '200':
+          description: Recruiter mandates retrieved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RecruiterMandatesResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /recruiter/applications/{applicationId}/stage:
+    put:
+      tags: [Candidate Dashboard]
+      summary: Move an application to a new pipeline stage
+      operationId: updateApplicationStage
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [stage]
+              properties:
+                stage: { type: string }
+                notes: { type: string }
+      responses:
+        '200':
+          description: Candidate stage updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StageUpdateResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /mandates/{mandateId}:
+    get:
+      tags: [Candidate Profile]
+      summary: Get recruiter mandate detail
+      operationId: getMandateDetail
+      parameters:
+        - name: mandateId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Mandate detail retrieved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MandateDetailResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /applications/{applicationId}/stage-transition:
+    get:
+      tags: [Candidate Dashboard]
+      summary: Get application stage transition history
+      operationId: getApplicationStageTransition
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Stage transition history retrieved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StageTransitionResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
   /recruiter/candidates/search:
     get:
       tags: [Candidate Search]
@@ -511,6 +705,30 @@ paths:
           $ref: '#/components/responses/NotFound'
         '401':
           $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/recruiters/me/tour-status:
+    get:
+      tags: [Candidate Dashboard]
+      summary: Get recruiter onboarding tour status
+      operationId: getRecruiterTourStatus
+      responses:
+        '200':
+          description: Tour status retrieved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TourStatusResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    patch:
+      tags: [Candidate Dashboard]
+      summary: Mark recruiter onboarding tour as seen
+      operationId: markRecruiterTourSeen
+      responses:
+        '200':
+          description: Tour marked as seen
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TourStatusResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
 
   # ── Legacy paths (deprecated) ──────────────────────────────────────────────
   /candidate/{userId}/dashboard:
@@ -691,6 +909,175 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 
+  # ── Candidate Service v2 routes (served under /v1) ─────────────────────────
+  /v1/candidates/landing:
+    get:
+      tags: [Candidate Landing]
+      operationId: getCandidateLandingV2
+      responses:
+        '200':
+          description: Authenticated candidate application summary
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateLandingResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /v1/candidates/dashboard:
+    get:
+      tags: [Candidate Dashboard]
+      operationId: getCandidateDashboardV2
+      parameters:
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: size, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 10 } }
+      responses:
+        '200':
+          description: Candidate applications dashboard
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateDashboardResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /v1/candidates/cv-build/{candidateId}:
+    get:
+      tags: [CV Build]
+      operationId: getCvDetailsOfCandidate
+      parameters: [ { $ref: '#/components/parameters/CandidateId' } ]
+      responses:
+        '200':
+          description: Candidate CV details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateCvResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [CV Build]
+      operationId: createCandidateProfile
+      parameters: [ { $ref: '#/components/parameters/CandidateId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateCandidateProfileV2' }
+      responses:
+        '201':
+          description: Candidate CV profile created or updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateCvResponseV2' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/candidates/profile/{candidateId}:
+    get:
+      tags: [Candidate Profile]
+      operationId: getCandidateProfileV2
+      parameters: [ { $ref: '#/components/parameters/CandidateId' } ]
+      responses:
+        '200':
+          description: Candidate profile
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CandidateProfileResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    put:
+      tags: [Candidate Profile]
+      operationId: createSimpleCandidateProfile
+      parameters: [ { $ref: '#/components/parameters/CandidateId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SimpleCandidateProfileInputV2' }
+      responses:
+        '200':
+          description: Candidate profile updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SimpleCandidateProfileResponseV2' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /v1/candidates/{candidateId}/saved-jobs:
+    get:
+      tags: [Saved Jobs]
+      operationId: getCandidateSavedJobsV2
+      parameters:
+        - { $ref: '#/components/parameters/CandidateId' }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: size, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 10 } }
+      responses:
+        '200':
+          description: Candidate saved jobs
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SavedJobsResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /v1/candidates/{candidateId}/saved-jobs/{jobProfileId}:
+    post:
+      tags: [Saved Jobs]
+      operationId: saveJobV2
+      parameters:
+        - { $ref: '#/components/parameters/CandidateId' }
+        - name: jobProfileId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '201':
+          description: Job saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SaveJobResponseV2' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [Saved Jobs]
+      operationId: unsaveJobV2
+      parameters:
+        - { $ref: '#/components/parameters/CandidateId' }
+        - name: jobProfileId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Job removed from saved jobs
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/UnsaveJobResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /v1/candidates/{candidateId}/recommended-positions:
+    get:
+      tags: [Recommended Positions]
+      operationId: getRecommendedPositionsV2
+      parameters:
+        - { $ref: '#/components/parameters/CandidateId' }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: size, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 10 } }
+      responses:
+        '200':
+          description: Recommended positions
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RecommendedPositionsResponseV2' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
 # ─────────────────────────────────────────────────────────────────────────────
 components:
 
@@ -740,6 +1127,34 @@ components:
 
   # ── Reusable responses ─────────────────────────────────────────────────────
   responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+    Forbidden:
+      description: Candidate profile or permission requirement failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+    Conflict:
+      description: Duplicate application or conflicting resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
+    UnprocessableEntity:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+
     Unauthorized:
       description: Missing or invalid Bearer token
       content:
@@ -985,7 +1400,8 @@ components:
           example: Senior Software Engineer
         jobType:
           type: string
-          example: Permanent
+          enum: [FULL_TIME, PART_TIME, CONTRACT, TEMPORARY, INTERNSHIP, FREELANCE]
+          example: FULL_TIME
         workType:
           type: string
           example: Hybrid
@@ -1054,7 +1470,8 @@ components:
           example: Hybrid
         employmentType:
           type: string
-          example: Permanent
+          enum: [FULL_TIME, PART_TIME, CONTRACT, TEMPORARY, INTERNSHIP, FREELANCE]
+          example: FULL_TIME
         salaryRange:
           type: string
           example: R70 000 – R95 000
@@ -1421,7 +1838,8 @@ components:
           example: Financial Services
         employmentType:
           type: string
-          example: Permanent
+          enum: [FULL_TIME, PART_TIME, CONTRACT, TEMPORARY, INTERNSHIP, FREELANCE]
+          example: FULL_TIME
         workType:
           type: string
           example: Hybrid
@@ -1498,7 +1916,12 @@ components:
       properties:
         jobId:
           type: string
+          format: uuid
           example: j001
+        jobProfileId:
+          type: string
+          format: uuid
+          example: 00000003-0000-4000-8000-000000000001
         title:
           type: string
           example: Senior React Developer
@@ -1513,7 +1936,8 @@ components:
           example: Financial Services
         employmentType:
           type: string
-          example: Permanent
+          enum: [FULL_TIME, PART_TIME, CONTRACT, TEMPORARY, INTERNSHIP, FREELANCE]
+          example: FULL_TIME
         workType:
           type: string
           example: Hybrid
@@ -1620,6 +2044,79 @@ components:
           items:
             $ref: '#/components/schemas/AiAction'
 
+    RecommendedJobsServiceResponse:
+      type: object
+      required: [candidate_id, recommended_jobs, pagination]
+      properties:
+        candidate_id: { type: string }
+        recommended_jobs:
+          type: array
+          items:
+            type: object
+            properties:
+              job_profile_id: { type: string, format: uuid }
+              job_reference_number: { type: string }
+              position_title: { type: string }
+              company_name: { type: string }
+              location_text: { type: string, nullable: true }
+              work_type: { type: string, nullable: true }
+              employment_type: { type: string, nullable: true }
+              salary_min: { type: number, nullable: true }
+              salary_max: { type: number, nullable: true }
+              currency_code: { type: string }
+              industry_names: { type: array, items: { type: string } }
+              skills_required: { type: array, items: { type: string } }
+              job_description_snippet: { type: string }
+              match_score: { type: number, minimum: 0, maximum: 100 }
+              match_reasons: { type: array, items: { type: string } }
+              is_bookmarked: { type: boolean }
+              published_at: { type: string, format: date-time, nullable: true }
+        pagination:
+          type: object
+          required: [page, size, total_elements, total_pages]
+          properties:
+            page: { type: integer }
+            size: { type: integer }
+            total_elements: { type: integer }
+            total_pages: { type: integer }
+
+    MatchScoreResponse:
+      type: object
+      required: [candidate_id, job_profile_id, status, match_score, matched_skills, missing_skills]
+      properties:
+        candidate_id: { type: string }
+        job_profile_id: { type: string, format: uuid }
+        scoring_run_id: { type: string, nullable: true }
+        status: { type: string, enum: [NOT_SCORED, SCORED] }
+        match_score: { type: number, minimum: 0, maximum: 100, nullable: true }
+        score_breakdown: { type: object, nullable: true, additionalProperties: { type: number } }
+        matched_skills: { type: array, items: { type: string } }
+        missing_skills: { type: array, items: { type: string } }
+        scored_at: { type: string, format: date-time, nullable: true }
+
+    CandidateAiActionsResponse:
+      type: object
+      required: [candidate_id, actions, generated_at, saved_at]
+      properties:
+        candidate_id: { type: string }
+        actions:
+          type: array
+          items:
+            type: object
+            required: [action_type, priority, title, description, cta_label, cta_action]
+            properties:
+              action_type: { type: string }
+              priority: { type: string, enum: [HIGH, MEDIUM, LOW] }
+              title: { type: string }
+              description: { type: string }
+              job_profile_id: { type: string, format: uuid, nullable: true }
+              job_title: { type: string, nullable: true }
+              company_name: { type: string, nullable: true }
+              cta_label: { type: string }
+              cta_action: { type: string }
+        generated_at: { type: string, format: date-time, nullable: true }
+        saved_at: { type: string, format: date-time, nullable: true }
+
     # ── CV Upload ─────────────────────────────────────────────────────────────
     CvUploadValidation:
       type: object
@@ -1710,6 +2207,91 @@ components:
           example: "2025-01-15T10:00:00Z"
 
     # ── Candidate list (GET /candidates) ──────────────────────────────────────
+    CandidateRow:
+      type: object
+      properties:
+        applicationId:
+          type: string
+          format: uuid
+          nullable: true
+        candidateId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        fullName:
+          type: string
+        title:
+          type: string
+        companyName:
+          type: string
+        locationText:
+          type: string
+        matchPercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+          nullable: true
+        status:
+          type: string
+          enum: [SUBMITTED, ACTIVE, ON_HOLD, CLOSED, CANCELLED, REJECTED, APPLIED]
+          nullable: true
+        jobProfileId:
+          type: string
+          format: uuid
+          nullable: true
+
+    CandidatePage:
+      type: object
+      required: [data, total, page, size]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateRow'
+        total:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+
+    CreateApplicationRequest:
+      type: object
+      required: [jobProfileId]
+      properties:
+        jobProfileId:
+          type: string
+          format: uuid
+        sourceChannel:
+          type: string
+        cvId:
+          type: string
+          nullable: true
+
+    CreateApplicationResponse:
+      type: object
+      required: [applicationId, jobProfileId, matchScore, status, nextStep]
+      properties:
+        applicationId:
+          type: string
+          format: uuid
+        jobProfileId:
+          type: string
+          format: uuid
+        matchScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        status:
+          type: string
+          example: submitted
+        nextStep:
+          type: string
+          example: view_dashboard
+
     CandidateDocument:
       type: object
       required: [docId, type, uploadedAt]
@@ -1888,6 +2470,82 @@ components:
         pagination:
           $ref: '#/components/schemas/Pagination'
 
+    RecruiterDashboardResponse:
+      type: object
+      required: [success, statusCode, data]
+      properties:
+        success: { type: boolean }
+        statusCode: { type: integer }
+        message: { type: string }
+        data:
+          type: object
+          required: [weeklyTodo, pipeline]
+          properties:
+            weeklyTodo: { type: array, items: { type: object, additionalProperties: true } }
+            pipeline: { type: array, items: { type: object, additionalProperties: true } }
+
+    RecruiterMandatesResponse:
+      type: object
+      required: [success, statusCode, data]
+      properties:
+        success: { type: boolean }
+        statusCode: { type: integer }
+        message: { type: string }
+        data:
+          type: object
+          required: [mandates, pagination]
+          properties:
+            mandates: { type: array, items: { type: object, additionalProperties: true } }
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+
+    StageUpdateResponse:
+      type: object
+      required: [success, statusCode, data]
+      properties:
+        success: { type: boolean }
+        statusCode: { type: integer }
+        message: { type: string }
+        data:
+          type: object
+          required: [applicationId, previousStage, currentStage, notes, updatedAt]
+          properties:
+            applicationId: { type: string }
+            previousStage: { type: string }
+            currentStage: { type: string }
+            notes: { type: string }
+            updatedAt: { type: string, format: date-time }
+
+    MandateDetailResponse:
+      type: object
+      required: [success, statusCode, data]
+      properties:
+        success: { type: boolean }
+        statusCode: { type: integer }
+        message: { type: string }
+        data: { type: object, additionalProperties: true }
+
+    StageTransitionResponse:
+      type: object
+      required: [success, statusCode, data]
+      properties:
+        success: { type: boolean }
+        statusCode: { type: integer }
+        message: { type: string }
+        data: { type: object, additionalProperties: true }
+
+    TourStatusResponse:
+      type: object
+      required: [success, statusCode, data]
+      properties:
+        success: { type: boolean }
+        statusCode: { type: integer }
+        data:
+          type: object
+          required: [tourSeen]
+          properties:
+            tourSeen: { type: boolean }
+
     # ── Recruiter full candidate profile ──────────────────────────────────────
     RecruiterApplicationEntry:
       type: object
@@ -1966,4 +2624,204 @@ components:
           minimum: 0
           maximum: 100
           example: 82
+
+    CandidateLandingResponseV2:
+      type: object
+      required: [candidate_id, statistics]
+      properties:
+        candidate_id: { type: string }
+        statistics:
+          type: object
+          required: [total_applications, successful_applications, in_progress_applications]
+          properties:
+            total_applications: { type: integer }
+            successful_applications: { type: integer }
+            in_progress_applications: { type: integer }
+
+    CandidateDashboardResponseV2:
+      type: object
+      required: [candidate_id, applications, pagination]
+      properties:
+        candidate_id: { type: string }
+        applications:
+          type: array
+          items:
+            type: object
+            required: [application_id, job_profile_id_ref, job_title, current_stage_code, stage_progress]
+            properties:
+              application_id: { type: string }
+              job_profile_id_ref: { type: string, format: uuid }
+              job_title: { type: string }
+              current_stage_code: { type: string }
+              stage_progress: { type: array, items: { type: object, additionalProperties: true } }
+        pagination:
+          $ref: '#/components/schemas/PaginationV2'
+
+    CandidateCvResponseV2:
+      type: object
+      required: [candidate_id, personal_details, career_history, skills, education, languages]
+      properties:
+        candidate_id: { type: string }
+        personal_details: { $ref: '#/components/schemas/CandidatePersonalDetailsV2' }
+        career_history: { type: array, items: { type: object, additionalProperties: true } }
+        skills: { type: array, items: { type: string } }
+        education: { type: array, items: { type: object, additionalProperties: true } }
+        languages: { type: array, items: { type: string } }
+
+    CandidatePersonalDetailsV2:
+      type: object
+      required: [first_name, last_name, email]
+      properties:
+        first_name: { type: string }
+        last_name: { type: string }
+        email: { type: string, format: email }
+        phone_number: { type: string, nullable: true }
+        residential_location: { type: string, nullable: true }
+        nationality: { type: string, nullable: true }
+        race: { type: string, nullable: true }
+        gender: { type: string, nullable: true }
+        disability_status: { type: string, nullable: true }
+        current_company: { type: string, nullable: true }
+        current_position: { type: string, nullable: true }
+        notice_period: { type: string, nullable: true }
+
+    CandidateProfileResponseV2:
+      type: object
+      required: [candidate_id, user_id, personal_details]
+      properties:
+        candidate_id: { type: string }
+        user_id: { type: string }
+        personal_details: { $ref: '#/components/schemas/CandidatePersonalDetailsV2' }
+        desired_job: { $ref: '#/components/schemas/CandidateDesiredJobV2' }
+        created_at: { type: string, format: date-time, nullable: true }
+        updated_at: { type: string, format: date-time, nullable: true }
+
+    CandidateDesiredJobV2:
+      type: object
+      nullable: true
+      properties:
+        role_title: { type: string, nullable: true }
+        targeted_industry: { type: string, nullable: true }
+        work_type: { type: string, enum: [REMOTE, HYBRID, ONSITE], nullable: true }
+        employment_type: { type: string, enum: [FULL_TIME, PART_TIME, CONTRACT, TEMPORARY, INTERNSHIP, FREELANCE], nullable: true }
+        availability_code: { type: string, nullable: true }
+
+    CreateCandidateProfileV2:
+      type: object
+      required: [personal_details]
+      properties:
+        personal_details: { $ref: '#/components/schemas/CandidatePersonalDetailsInputV2' }
+        career_history: { type: array, items: { type: object, additionalProperties: true } }
+        skills: { type: array, items: { type: object, additionalProperties: true } }
+        education: { type: array, items: { type: object, additionalProperties: true } }
+        languages: { type: array, items: { type: string } }
+
+    CandidatePersonalDetailsInputV2:
+      type: object
+      required: [first_name, last_name]
+      properties:
+        first_name: { type: string, minLength: 1 }
+        last_name: { type: string, minLength: 1 }
+        phone_number: { type: string }
+        residential_location: { type: string }
+        nationality: { type: string }
+        race: { type: string }
+        gender: { type: string }
+        disability_status: { type: string }
+        current_company: { type: string }
+        current_position: { type: string }
+        notice_period: { type: string }
+
+    SimpleCandidateProfileInputV2:
+      type: object
+      required: [personal_details, job_details]
+      properties:
+        personal_details: { $ref: '#/components/schemas/CandidatePersonalDetailsInputV2' }
+        job_details:
+          type: object
+          required: [role_title_id, targeted_industry_id, preferred_location, employment_type, availability]
+          properties:
+            role_title_id: { type: string, format: uuid }
+            targeted_industry_id: { type: string, format: uuid }
+            preferred_location: { type: string, enum: [REMOTE, HYBRID, ONSITE] }
+            employment_type: { type: string, enum: [FULL_TIME, PART_TIME, CONTRACT, TEMPORARY, INTERNSHIP, FREELANCE] }
+            availability: { type: string }
+
+    SimpleCandidateProfileResponseV2:
+      type: object
+      required: [candidate_id, profile_status, message, updated_at]
+      properties:
+        candidate_id: { type: string }
+        profile_status: { type: string }
+        message: { type: string }
+        updated_at: { type: string, format: date-time }
+
+    SavedJobsResponseV2:
+      type: object
+      required: [candidate_id, saved_jobs, pagination]
+      properties:
+        candidate_id: { type: string }
+        saved_jobs: { type: array, items: { $ref: '#/components/schemas/SavedJobV2' } }
+        pagination: { $ref: '#/components/schemas/PaginationV2' }
+
+    SavedJobV2:
+      type: object
+      properties:
+        saved_job_id: { type: string }
+        candidate_id: { type: string }
+        job_profile_id: { type: string, format: uuid }
+        job_title: { type: string }
+        job_description: { type: string }
+        location: { type: string }
+        status: { type: string }
+        industry: { type: string, nullable: true }
+        current_stage_code: { type: string, nullable: true }
+        saved_at: { type: string, format: date-time, nullable: true }
+
+    RecommendedPositionsResponseV2:
+      type: object
+      required: [candidate_id, recommended_positions, pagination]
+      properties:
+        candidate_id: { type: string }
+        recommended_positions: { type: array, items: { $ref: '#/components/schemas/RecommendedPositionV2' } }
+        pagination: { $ref: '#/components/schemas/PaginationV2' }
+
+    RecommendedPositionV2:
+      type: object
+      properties:
+        job_profile_id: { type: string, format: uuid }
+        job_title: { type: string }
+        job_description: { type: string }
+        location: { type: string }
+        status: { type: string }
+        industry: { type: string, nullable: true }
+        current_stage_code: { type: string, nullable: true }
+        is_saved: { type: boolean }
+
+    SaveJobResponseV2:
+      type: object
+      required: [saved_job_id, candidate_id, job_profile_id, saved_at, message]
+      properties:
+        saved_job_id: { type: string }
+        candidate_id: { type: string }
+        job_profile_id: { type: string, format: uuid }
+        saved_at: { type: string, format: date-time }
+        message: { type: string }
+
+    UnsaveJobResponseV2:
+      type: object
+      required: [candidate_id, job_profile_id, message]
+      properties:
+        candidate_id: { type: string }
+        job_profile_id: { type: string, format: uuid }
+        message: { type: string }
+
+    PaginationV2:
+      type: object
+      required: [current_page, page_size, total_items, total_pages]
+      properties:
+        current_page: { type: integer }
+        page_size: { type: integer }
+        total_items: { type: integer }
+        total_pages: { type: integer }
 

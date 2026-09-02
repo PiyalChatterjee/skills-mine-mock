@@ -130,6 +130,7 @@ paths:
     get:
       tags: [Reference Data]
       operationId: listIndustries
+      security: []
       parameters:
         - { name: search, in: query, schema: { type: string } }
       responses:

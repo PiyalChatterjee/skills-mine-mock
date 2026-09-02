@@ -90,6 +90,7 @@ import {
   candidateSavedJobsRouter,
   candidateAiActionsRouter,
   candidateApplicationsRouter,
+  candidateServiceV2Router,
 }                                                              from './routes/candidates.js';
 import {
   recruiterRouter,
@@ -147,6 +148,7 @@ const PUBLIC_PATHS = [
   '/skills/search',
   '/skills/generate',
   '/candidates/landing',
+  '/industries',
 ];
 
 // ─────────────────────────────────────────────────────────
@@ -419,6 +421,7 @@ app.use('/candidates', candidateRecommendedPositionsRouter(routeCtx)); // GET /c
 app.use('/candidates', candidateSavedJobsRouter(routeCtx));         // GET|POST /candidates/saved-jobs
 app.use('/candidates', candidateAiActionsRouter(routeCtx));         // GET  /candidates/ai-actions/
 app.use('/candidates', candidateApplicationsRouter(routeCtx));      // POST /candidates/applications
+app.use('/v1/candidates', candidateServiceV2Router(routeCtx));      // Candidate Service v2 contract
 app.use('/candidates', aiRecommendedJobsRouter(routeCtx));          // GET  /candidates/:candidateId/recommended-jobs        [AI service]
 app.use('/candidates', aiCandidateMatchScoreRouter(routeCtx));      // GET  /candidates/:candidateId/match-score/:jobProfileId [AI service]
 app.use('/candidates', aiCandidateActionsRouter(routeCtx));         // GET|POST /candidates/:candidateId/ai-actions           [AI service]
