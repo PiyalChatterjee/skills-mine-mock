@@ -149,6 +149,7 @@ const PUBLIC_PATHS = [
   '/skills/generate',
   '/candidates/landing',
   '/industries',
+  '/locations',
 ];
 
 // ─────────────────────────────────────────────────────────
