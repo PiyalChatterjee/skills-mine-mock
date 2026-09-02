@@ -29,9 +29,10 @@
  *                             GET  /candidate/:resumeId/download (legacy)
  *                             GET  /candidate/:candidateId/recommended-jobs (legacy)
  *                             POST /applications/:applicationId/cv/upload
- *   routes/mandateService.js  GET  /dashboard/summary | /jobs | /jobs/:jobProfileId
- *                             POST /jobs | PUT/DELETE /jobs/:jobProfileId
- *                             GET  /industries | /companies | /candidates
+ *   routes/mandateService.js  GET  /jobs | /jobs/:jobProfileId | /industries
+ *                             /locations | /companies | /candidates
+ *                             POST /jobs | PATCH /jobs/:jobProfileId[/view]
+ *                             DELETE /jobs/:jobProfileId
  *   routes/recruiter.js       GET  /recruiter/dashboard
  *                             GET  /recruiter/mandates
  *                             PUT  /recruiter/applications/:applicationId/stage
@@ -114,6 +115,7 @@ import {
 import {
   mandateServiceJobsRouter,
   mandateServiceIndustriesRouter,
+  mandateServiceLocationsRouter,
   mandateServiceCompaniesRouter,
   mandateServiceCandidatesRouter,
 }                                                                from './routes/mandateService.js';
@@ -174,7 +176,7 @@ const DB = {
   aiScoringRuns:     loadDataset('ai-scoring-runs'),
   candidateAiActions: loadDataset('candidate-ai-actions'),
   companies:         loadDataset('companies'),
-  dashboardSummary:  loadDataset('dashboard-summary'),
+  locations:          loadDataset('locations'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -346,8 +348,7 @@ app.use((req, _res, next) => {
 // Delay + error injection + auth guard
 app.use(async (req, res, next) => {
   const path     = req.path;
-  const isPublicJobRead = req.method === 'GET' && (path === '/jobs' || path.startsWith('/jobs/'));
-  const isPublic = isPublicJobRead || PUBLIC_PATHS.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'));
+  const isPublic = PUBLIC_PATHS.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'));
 
   await new Promise(r => setTimeout(r, Math.floor(Math.random() * (DELAY_MAX - DELAY_MIN + 1)) + DELAY_MIN));
 
@@ -437,7 +438,7 @@ app.use('/applications', applicationCvRouter(routeCtx));
 // ─────────────────────────────────────────────────────────
 app.use('/jobs',         aiJobSkillsGenerateRouter(routeCtx));      // POST /jobs/skills/generate                   [AI service]
 app.use('/jobs',         aiMatchScoringRouter(routeCtx));           // POST /jobs/:jobProfileId/match-scores        [AI service]
-app.use('/',             mandateServiceJobsRouter(routeCtx));       // /dashboard/summary + /jobs CRUD
+app.use('/',             mandateServiceJobsRouter(routeCtx));       // /jobs CRUD + view count
 
 // ─────────────────────────────────────────────────────────
 //  Skills
@@ -450,6 +451,7 @@ app.use('/skills', skillsRouter(routeCtx));
 // ─────────────────────────────────────────────────────────
 app.use('/industries', mandateServiceIndustriesRouter(routeCtx));
 app.use('/companies',  mandateServiceCompaniesRouter(routeCtx));
+app.use('/locations',  mandateServiceLocationsRouter(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Recruiter
@@ -590,12 +592,13 @@ app.listen(PORT, () => {
   L('║    POST  /applications/:applicationId/cv/upload                          ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  MANDATE SERVICE v2  (BearerAuth)                                        ║');
-  L('║    GET   /dashboard/summary                                              ║');
-  L('║    GET   /jobs  (?search=&industryId=&status=&page=&size=)  (public)     ║');
+  L('║    GET   /jobs  (?search=&industryId=&status=&page=&size=)              ║');
   L('║    POST  /jobs                                                           ║');
-  L('║    GET   /jobs/:jobProfileId                                  (public)   ║');
-  L('║    PUT    /jobs/:jobProfileId                                             ║');
+  L('║    GET   /jobs/:jobProfileId                                             ║');
+  L('║    PATCH  /jobs/:jobProfileId                                             ║');
+  L('║    PATCH  /jobs/:jobProfileId/view                                        ║');
   L('║    DELETE /jobs/:jobProfileId                                             ║');
+  L('║    GET   /locations                                                       ║');
   L('║    GET   /industries  (?search=)                                         ║');
   L('║    GET   /companies  (?search=&page=&size=)                              ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');

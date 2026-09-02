@@ -1,14 +1,15 @@
 /**
- * MANDATE (JOB) SERVICE ROUTES  (Mandate_Service_v2.yaml)
- * Mounted at the service-relative paths declared by Mandate_Service_v2.yaml.
+ * MANDATE (JOB) SERVICE ROUTES  (Mandate_Service_v3.yaml)
+ * Mounted at the service-relative paths declared by Mandate_Service_v3.yaml.
  *
- * GET    /dashboard/summary                 → recruiter dashboard snapshot counts
  * GET    /jobs                              → paginated job profile list (dashboard)
  * POST   /jobs                              → create a new job post (DRAFT)
  * GET    /jobs/:jobProfileId                → full job profile detail
- * PUT    /jobs/:jobProfileId                → update a job post (optimistic lock via versionNo)
+ * PATCH  /jobs/:jobProfileId                → sparse update a job post
+ * PATCH  /jobs/:jobProfileId/view           → increment job view count
  * DELETE /jobs/:jobProfileId                → cancel / delete a job post
  * GET    /industries                        → list active industries
+ * GET    /locations                         → list distinct job locations
  * GET    /companies                         → paginated employer companies
  * GET    /candidates                        → paginated candidate rows
  */
@@ -131,8 +132,20 @@ function parsePageParams(res, page, size) {
   return { pageNum, pageSize };
 }
 
-function validateJobBody(DB, body, { update = false } = {}) {
-  const missing = ["positionTitle", "fillByDate", ...(update ? ["versionNo"] : ["companyName"])]
+function queryArray(value) {
+  return (Array.isArray(value) ? value : value ? [value] : [])
+    .flatMap((entry) => String(entry).split(","))
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+function validateJobBody(DB, body, { update = false, patch = false } = {}) {
+  const requiredFields = patch
+    ? []
+    : update
+      ? ["positionTitle", "fillByDate"]
+      : ["companyName", "contactName", "contactEmail", "contactPhoneNumber", "positionTitle", "fillByDate", "clientRate"];
+  const missing = requiredFields
     .filter((field) => body[field] === undefined || body[field] === "");
   if (missing.length) return `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} required.`;
   if (body.industryId !== undefined && body.industryId !== null && !DB.industries.some(({ industryId }) => industryId === body.industryId)) return "industryId must reference an existing industry.";
@@ -145,43 +158,31 @@ function validateJobBody(DB, body, { update = false } = {}) {
   }
   if (body.skills !== undefined && (!Array.isArray(body.skills) || body.skills.some((skill) => !skill || typeof skill.originalText !== "string" || !SKILL_SOURCE_TYPES.has(skill.sourceType)))) return "skills must contain originalText and a valid sourceType.";
   if (body.contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.contactEmail)) return "contactEmail must be a valid email address.";
+  if (body.clientRate != null && (!Number.isFinite(body.clientRate) || body.clientRate < 0)) return "clientRate must be a non-negative number.";
   if (body.salaryMin != null && (!Number.isFinite(body.salaryMin) || body.salaryMin < 0)) return "salaryMin must be a non-negative number.";
   if (body.salaryMax != null && (!Number.isFinite(body.salaryMax) || body.salaryMax < 0)) return "salaryMax must be a non-negative number.";
   if (body.salaryMin != null && body.salaryMax != null && body.salaryMax < body.salaryMin) return "salaryMax must be greater than or equal to salaryMin.";
   return null;
 }
 
-export function mandateServiceJobsRouter({ DB }) {
+export function mandateServiceJobsRouter({ DB, saveDataset }) {
   const router = Router();
-
-  // GET /dashboard/summary
-  router.get("/dashboard/summary", (req, res) => {
-    return res.status(200).json(DB.dashboardSummary);
-  });
 
   // GET /jobs
   router.get("/jobs", (req, res) => {
-    const {
-      search, locationText, datePosted, jobType, clientId, status,
-      page = 0, size = 20,
-    } = req.query;
+    const { search, datePosted, clientId, status, page = 0, size = 20 } = req.query;
     const pagination = parsePageParams(res, page, size);
     if (!pagination) return;
     if (datePosted && !Object.hasOwn(DATE_POSTED_WINDOW_DAYS, datePosted)) {
       return badRequest(res, `datePosted must be one of: ${Object.keys(DATE_POSTED_WINDOW_DAYS).join(", ")}.`);
     }
-    if (jobType && !JOB_TYPES.has(jobType)) {
-      return badRequest(res, `jobType must be one of: ${[...JOB_TYPES].join(", ")}.`);
-    }
     if (status && !JOB_STATUSES.has(status)) {
       return badRequest(res, `status must be one of: ${[...JOB_STATUSES].join(", ")}.`);
     }
 
-    const industryIds = (Array.isArray(req.query.industryId)
-      ? req.query.industryId
-      : req.query.industryId ? [req.query.industryId] : [])
-      .flatMap((value) => value.split(","))
-      .filter(Boolean);
+    const industryIds = queryArray(req.query.industryId);
+    const locations = queryArray(req.query.locationText).map((value) => value.toLowerCase());
+    const jobTypes = queryArray(req.query.jobType);
 
     let results = [...DB.jobs];
 
@@ -192,9 +193,8 @@ export function mandateServiceJobsRouter({ DB }) {
     if (industryIds?.length) {
       results = results.filter((j) => industryIds.includes(j.industryId));
     }
-    if (locationText) {
-      const q = locationText.toLowerCase();
-      results = results.filter((j) => j.locationText.toLowerCase().includes(q));
+    if (locations.length) {
+      results = results.filter((j) => locations.some((location) => j.locationText.toLowerCase().includes(location)));
     }
     if (datePosted) {
       const windowDays = DATE_POSTED_WINDOW_DAYS[datePosted];
@@ -205,8 +205,10 @@ export function mandateServiceJobsRouter({ DB }) {
         );
       }
     }
-    if (jobType) {
-      results = results.filter((j) => j.employmentType === jobType);
+    if (jobTypes.length) {
+      const invalidJobType = jobTypes.find((jobType) => !JOB_TYPES.has(jobType));
+      if (invalidJobType) return badRequest(res, `jobType must be one of: ${[...JOB_TYPES].join(", ")}.`);
+      results = results.filter((j) => jobTypes.includes(j.employmentType));
     }
     if (clientId) {
       results = results.filter((j) => j.clientId === clientId);
@@ -230,6 +232,7 @@ export function mandateServiceJobsRouter({ DB }) {
     const body = req.body ?? {};
     const validationError = validateJobBody(DB, body);
     if (validationError) return badRequest(res, validationError);
+    if (body.status !== undefined && body.status !== "DRAFT") return badRequest(res, "New jobs must be created with DRAFT status.");
     if (body.jobReferenceNumber && DB.jobs.some(({ jobReferenceNumber }) => jobReferenceNumber === body.jobReferenceNumber)) {
       return apiError(res, 409, "DUPLICATE_JOB_REFERENCE", "jobReferenceNumber must be unique.");
     }
@@ -297,20 +300,18 @@ export function mandateServiceJobsRouter({ DB }) {
     return res.status(200).json(toJobProfileDetail(DB, job));
   });
 
-  // PUT /jobs/:jobProfileId
-  router.put("/jobs/:jobProfileId", (req, res) => {
+  // PATCH /jobs/:jobProfileId
+  router.patch("/jobs/:jobProfileId", (req, res) => {
     if (!UUID_PATTERN.test(req.params.jobProfileId)) return badRequest(res, "jobProfileId must be a UUID.");
     const job = DB.jobs.find((j) => j.jobProfileId === req.params.jobProfileId);
     if (!job) return notFound(res, `Job profile ${req.params.jobProfileId} not found.`);
 
     const body = req.body ?? {};
-    const validationError = validateJobBody(DB, body, { update: true });
+    const validationError = validateJobBody(DB, { ...job, ...body }, { patch: true });
     if (validationError) return badRequest(res, validationError);
-    if (body.versionNo !== job.versionNo)
-      return apiError(res, 409, "VERSION_CONFLICT", "versionNo does not match the current job profile version.");
-    const postedAllowedFields = new Set(["positionTitle", "fillByDate", "versionNo", "jobDescription", "salaryMin", "salaryMax"]);
-    if (job.status === "POSTED" && Object.keys(body).some((field) => !postedAllowedFields.has(field))) {
-      return apiError(res, 422, "POSTED_JOB_EDIT_RESTRICTED", "Posted jobs may only update description and salary fields.");
+    if (body.status !== undefined && !JOB_STATUSES.has(body.status)) return badRequest(res, `status must be one of: ${[...JOB_STATUSES].join(", ")}.`);
+    if (body.jobReferenceNumber !== undefined && body.jobReferenceNumber !== job.jobReferenceNumber && DB.jobs.some(({ jobReferenceNumber }) => jobReferenceNumber === body.jobReferenceNumber)) {
+      return apiError(res, 409, "DUPLICATE_JOB_REFERENCE", "jobReferenceNumber must be unique.");
     }
 
     if (body.companyName) {
@@ -330,28 +331,32 @@ export function mandateServiceJobsRouter({ DB }) {
       job.clientId = company.clientId;
     }
 
-    if (body.jobReferenceNumber !== undefined) job.jobReferenceNumber = body.jobReferenceNumber;
-    job.positionTitle = body.positionTitle;
-    job.fillByDate = body.fillByDate;
-    if (body.locationText !== undefined) job.locationText = body.locationText;
-    if (body.workType !== undefined) job.workType = body.workType;
-    if (body.employmentType !== undefined) job.employmentType = body.employmentType;
-    if (body.experienceLevel !== undefined) job.experienceLevel = body.experienceLevel;
-    if (body.priority !== undefined) job.priority = body.priority;
-    if (body.salaryMin !== undefined) job.salaryMin = body.salaryMin;
-    if (body.salaryMax !== undefined) job.salaryMax = body.salaryMax;
-    if (body.currencyCode !== undefined) job.currencyCode = body.currencyCode;
-    if (body.clientRate !== undefined) job.clientRate = body.clientRate;
-    if (body.jobDescription !== undefined) job.jobDescription = body.jobDescription;
-    if (body.requirements !== undefined) job.requirements = body.requirements;
-    if (body.responsibilities !== undefined) job.responsibilities = body.responsibilities;
-    if (body.benefitsText !== undefined) job.benefitsText = body.benefitsText;
-    if (body.industryId !== undefined) job.industryId = body.industryId;
-    if (body.skills !== undefined) job.skills = body.skills;
+    const company = DB.companies.find(({ clientId }) => clientId === job.clientId);
+    if (company) {
+      for (const field of ["contactName", "contactEmail", "contactPhoneNumber"]) {
+        if (Object.hasOwn(body, field)) company[field] = body[field];
+      }
+      if (Object.hasOwn(body, "clientRate")) company.clientRate = body.clientRate;
+    }
+
+    const editableFields = ["jobReferenceNumber", "positionTitle", "fillByDate", "locationText", "workType", "employmentType", "experienceLevel", "priority", "salaryMin", "salaryMax", "currencyCode", "clientRate", "jobDescription", "requirements", "responsibilities", "benefitsText", "industryId", "skills", "status"];
+    for (const field of editableFields) {
+      if (Object.hasOwn(body, field)) job[field] = body[field];
+    }
     job.versionNo = (job.versionNo ?? 1) + 1;
     job.updatedAt = new Date().toISOString();
 
-    return res.status(200).json(toJobProfile(DB, job));
+    return res.status(200).json({ ...toJobProfile(DB, job), skills: job.skills ?? [] });
+  });
+
+  // PATCH /jobs/:jobProfileId/view
+  router.patch("/jobs/:jobProfileId/view", (req, res) => {
+    if (!UUID_PATTERN.test(req.params.jobProfileId)) return badRequest(res, "jobProfileId must be a UUID.");
+    const job = DB.jobs.find((candidate) => candidate.jobProfileId === req.params.jobProfileId);
+    if (!job) return notFound(res, `Job profile ${req.params.jobProfileId} not found.`);
+    job.viewCount = (job.viewCount ?? 0) + 1;
+    saveDataset?.("jobs", DB.jobs);
+    return res.status(200).json({ viewCount: job.viewCount });
   });
 
   // DELETE /jobs/:jobProfileId
@@ -388,6 +393,23 @@ export function mandateServiceIndustriesRouter({ DB }) {
     }
     results.sort((a, b) => a.industryName.localeCompare(b.industryName));
     return res.status(200).json(results);
+  });
+
+  return router;
+}
+
+export function mandateServiceLocationsRouter({ DB }) {
+  const router = Router();
+
+  router.get("/", (req, res) => {
+    const search = String(req.query.search ?? "").toLowerCase();
+    const locations = [...new Set([
+      ...(DB.locations ?? []),
+      ...DB.jobs.map(({ locationText }) => locationText),
+    ].filter(Boolean))]
+      .filter((location) => !search || location.toLowerCase().includes(search))
+      .sort((left, right) => left.localeCompare(right));
+    return res.status(200).json(locations);
   });
 
   return router;

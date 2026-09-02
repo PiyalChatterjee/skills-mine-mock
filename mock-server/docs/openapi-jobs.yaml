@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: SkillsMine Mandate Service
-  version: 2.0.0
-  description: Mock implementation aligned with Mandate_Service_v2.yaml.
+  version: 3.0.0
+  description: Mock implementation aligned with Mandate_Service_v3.yaml.
 servers:
   - url: http://localhost:4000
     description: Local mock server
@@ -12,21 +12,10 @@ tags:
   - name: Jobs
   - name: Reference Data
 paths:
-  /dashboard/summary:
-    get:
-      tags: [Jobs]
-      operationId: getDashboardSummary
-      responses:
-        '200':
-          description: Recruiter dashboard summary
-          content:
-            application/json:
-              schema: { $ref: '#/components/schemas/DashboardSummary' }
   /jobs:
     get:
       tags: [Jobs]
       operationId: listJobs
-      security: []
       parameters:
         - { name: search, in: query, schema: { type: string } }
         - name: industryId
@@ -36,13 +25,23 @@ paths:
           schema:
             type: array
             items: { type: string, format: uuid }
-        - { name: locationText, in: query, schema: { type: string } }
+        - name: locationText
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items: { type: string }
         - name: datePosted
           in: query
           schema: { type: string, enum: [TODAY, LAST_3_DAYS, LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS] }
         - name: jobType
           in: query
-          schema: { $ref: '#/components/schemas/EmploymentType' }
+          style: form
+          explode: true
+          schema:
+            type: array
+            items: { $ref: '#/components/schemas/EmploymentType' }
         - { name: clientId, in: query, schema: { type: string, format: uuid } }
         - name: status
           in: query
@@ -74,10 +73,7 @@ paths:
         '409': { $ref: '#/components/responses/Conflict' }
   /jobs/{jobProfileId}:
     parameters:
-      - name: jobProfileId
-        in: path
-        required: true
-        schema: { type: string, format: uuid }
+      - { $ref: '#/components/parameters/jobProfileId' }
     get:
       tags: [Jobs]
       operationId: getJob
@@ -89,24 +85,40 @@ paths:
               schema: { $ref: '#/components/schemas/JobProfileDetail' }
         '400': { $ref: '#/components/responses/BadRequest' }
         '404': { $ref: '#/components/responses/NotFound' }
-    put:
+    patch:
       tags: [Jobs]
-      operationId: updateJob
+      operationId: patchJob
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/UpdateJobRequest' }
+            schema: { $ref: '#/components/schemas/PatchJobRequest' }
       responses:
         '200':
           description: Updated job
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/JobProfile' }
+              schema: { $ref: '#/components/schemas/JobProfileWithSkills' }
         '400': { $ref: '#/components/responses/BadRequest' }
         '404': { $ref: '#/components/responses/NotFound' }
-        '409': { $ref: '#/components/responses/Conflict' }
-        '422': { $ref: '#/components/responses/UnprocessableEntity' }
+  /jobs/{jobProfileId}/view:
+    patch:
+      tags: [Jobs]
+      operationId: incrementJobViewCount
+      parameters:
+        - { $ref: '#/components/parameters/jobProfileId' }
+      responses:
+        '200':
+          description: Updated view count
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [viewCount]
+                properties:
+                  viewCount: { type: integer }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
     delete:
       tags: [Jobs]
       operationId: deleteJob
@@ -128,6 +140,20 @@ paths:
               schema:
                 type: array
                 items: { $ref: '#/components/schemas/IndustryItem' }
+  /locations:
+    get:
+      tags: [Reference Data]
+      operationId: listLocations
+      parameters:
+        - { name: search, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: Alphabetically sorted distinct job locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: string }
   /companies:
     get:
       tags: [Reference Data]
@@ -165,6 +191,13 @@ paths:
 components:
   securitySchemes:
     BearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    jobProfileId:
+      name: jobProfileId
+      in: path
+      required: true
+      description: UUID of the job profile
+      schema: { type: string, format: uuid }
   responses:
     BadRequest:
       description: Validation error
@@ -183,12 +216,6 @@ components:
     WorkType: { type: string, enum: [REMOTE, HYBRID, ONSITE], nullable: true }
     JobStatus: { type: string, enum: [DRAFT, POSTED, PAUSED, FILLED, CANCELLED, CLOSED] }
     CandidateStatus: { type: string, enum: [SUBMITTED, ACTIVE, ON_HOLD, CLOSED, CANCELLED, REJECTED, APPLIED], nullable: true }
-    DashboardSummary:
-      type: object
-      properties:
-        cvsDue: { type: integer }
-        interviewsToSchedule: { type: integer }
-        offerLettersAcceptanceDeadlines: { type: integer }
     IndustryItem:
       type: object
       properties:
@@ -204,6 +231,7 @@ components:
         contactName: { type: string }
         contactEmail: { type: string, format: email }
         contactPhoneNumber: { type: string }
+        clientRate: { type: number, format: double, nullable: true }
     Page:
       type: object
       required: [total, page, size]
@@ -250,13 +278,13 @@ components:
             salaryMin: { type: number, nullable: true }
             salaryMax: { type: number, nullable: true }
             currencyCode: { type: string, default: ZAR }
-            clientRate: { type: number, nullable: true }
+            clientRate: { type: number, format: double, nullable: true }
             jobDescription: { type: string, nullable: true }
             requirements: { type: array, items: { type: string } }
             responsibilities: { type: array, items: { type: string } }
             benefitsText: { type: array, items: { type: string } }
             closedAt: { type: string, format: date-time, nullable: true }
-            createdByUserId: { type: string, format: uuid, nullable: true }
+            createdByUserId: { type: string, format: uuid }
             versionNo: { type: integer }
     JobProfileDetail:
       allOf:
@@ -267,6 +295,12 @@ components:
             viewCount: { type: integer }
             applicantCount: { type: integer }
             daysLeftToFill: { type: integer, nullable: true }
+    JobProfileWithSkills:
+      allOf:
+        - { $ref: '#/components/schemas/JobProfile' }
+        - type: object
+          properties:
+            skills: { type: array, items: { $ref: '#/components/schemas/JobSkillSummary' } }
     JobProfilePage:
       allOf:
         - { $ref: '#/components/schemas/Page' }
@@ -295,14 +329,14 @@ components:
             data: { type: array, items: { $ref: '#/components/schemas/CandidateRow' } }
     AddJobSkillRequest:
       type: object
-      required: [originalText, sourceType]
       properties:
-        skillId: { type: string, format: uuid, nullable: true }
+        skillId: { type: string, format: uuid }
         originalText: { type: string }
         sourceType: { type: string, enum: [AI_GENERATED, RECRUITER_ENTERED] }
     JobWriteFields:
       type: object
       properties:
+        status: { $ref: '#/components/schemas/JobStatus' }
         jobReferenceNumber: { type: string }
         companyName: { type: string }
         contactName: { type: string }
@@ -329,14 +363,10 @@ components:
       allOf:
         - { $ref: '#/components/schemas/JobWriteFields' }
         - type: object
-          required: [companyName, positionTitle, fillByDate]
-    UpdateJobRequest:
+          required: [companyName, contactName, contactEmail, contactPhoneNumber, positionTitle, fillByDate, clientRate]
+    PatchJobRequest:
       allOf:
         - { $ref: '#/components/schemas/JobWriteFields' }
-        - type: object
-          required: [positionTitle, fillByDate, versionNo]
-          properties:
-            versionNo: { type: integer }
     ErrorResponse:
       type: object
       properties:
