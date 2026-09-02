@@ -81,13 +81,13 @@ paths:
     get:
       tags: [Jobs]
       operationId: getJob
-      security: []
       responses:
         '200':
           description: Job detail
           content:
             application/json:
               schema: { $ref: '#/components/schemas/JobProfileDetail' }
+        '400': { $ref: '#/components/responses/BadRequest' }
         '404': { $ref: '#/components/responses/NotFound' }
     put:
       tags: [Jobs]
@@ -112,6 +112,7 @@ paths:
       operationId: deleteJob
       responses:
         '204': { description: Job cancelled or deleted }
+        '400': { $ref: '#/components/responses/BadRequest' }
         '404': { $ref: '#/components/responses/NotFound' }
   /industries:
     get:
@@ -196,6 +197,7 @@ components:
         normalizedKey: { type: string }
     CompanyItem:
       type: object
+      required: [clientId, clientName]
       properties:
         clientId: { type: string, format: uuid }
         clientName: { type: string }
@@ -204,6 +206,7 @@ components:
         contactPhoneNumber: { type: string }
     Page:
       type: object
+      required: [total, page, size]
       properties:
         total: { type: integer }
         page: { type: integer }
@@ -225,11 +228,11 @@ components:
       properties:
         jobProfileId: { type: string, format: uuid }
         jobReferenceNumber: { type: string }
-        client: { $ref: '#/components/schemas/CompanyItem' }
+        client: { $ref: '#/components/schemas/CompanyItem', nullable: true }
         positionTitle: { type: string }
         industry: { $ref: '#/components/schemas/IndustryItem', nullable: true }
         locationText: { type: string }
-        employmentType: { $ref: '#/components/schemas/EmploymentType' }
+        employmentType: { $ref: '#/components/schemas/EmploymentType', nullable: true }
         jobDescriptionSnippet: { type: string, nullable: true }
         fillByDate: { type: string, format: date }
         status: { $ref: '#/components/schemas/JobStatus' }
@@ -253,7 +256,7 @@ components:
             responsibilities: { type: array, items: { type: string } }
             benefitsText: { type: array, items: { type: string } }
             closedAt: { type: string, format: date-time, nullable: true }
-            createdByUserId: { type: string, format: uuid }
+            createdByUserId: { type: string, format: uuid, nullable: true }
             versionNo: { type: integer }
     JobProfileDetail:
       allOf:
@@ -292,6 +295,7 @@ components:
             data: { type: array, items: { $ref: '#/components/schemas/CandidateRow' } }
     AddJobSkillRequest:
       type: object
+      required: [originalText, sourceType]
       properties:
         skillId: { type: string, format: uuid, nullable: true }
         originalText: { type: string }
@@ -314,7 +318,7 @@ components:
         salaryMin: { type: number, minimum: 0, nullable: true }
         salaryMax: { type: number, minimum: 0, nullable: true }
         currencyCode: { type: string, default: ZAR }
-        clientRate: { type: number, nullable: true }
+        clientRate: { type: number, minimum: 0, nullable: true }
         jobDescription: { type: string, nullable: true }
         benefitsText: { type: array, items: { type: string } }
         requirements: { type: array, items: { type: string } }
