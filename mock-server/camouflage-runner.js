@@ -1,20 +1,9 @@
 /**
- * SkillsMine – Mock Server Runner  (v2 contract)
+ * SkillsMine – Mock Server Runner
  *
  * All route logic lives in mock-server/routes/:
  *
- *   routes/auth.js            POST /auth/register | /auth/login | /auth/forgot-password
- *                             POST /auth/change-password | /auth/logout
- *
- *   routes/auth-v1.js         POST /api/v1/auth/login
- *                             POST /api/v1/auth/candidates/register
- *                             POST /api/v1/auth/staff/register
- *                             POST /api/v1/auth/staff-invitations/validate
- *                             POST /api/v1/auth/forgot-password
- *                             POST /api/v1/auth/reset-password
- *                             POST /api/v1/auth/logout
- *                             POST /api/v1/admin/staff-invitations
- *                             GET  /api/v1/users/me
+ *   routes/auth-v3.js         Auth Service v3 routes under /api/auth-service/v1
  *   routes/users.js           GET/PUT /users/:userId | POST/DELETE /users/:userId/profile-photo
  *   routes/candidates.js      GET  /candidates/landing           (public)
  *                             GET  /candidates/dashboard
@@ -71,12 +60,12 @@ import { fileURLToPath }                                       from 'node:url';
 import Handlebars                                              from 'handlebars';
 import { load as yamlLoad }                                    from 'js-yaml';
 
-import { authRouter }                                          from './routes/auth.js';
 import {
-  authV1Router,
-  adminV1Router,
-  usersV1Router,
-}                                                              from './routes/auth-v1.js';
+  authV3Router,
+  adminV3Router,
+  staffProfilesV3Router,
+  usersV3Router,
+}                                                              from './routes/auth-v3.js';
 import { usersRouter }                                         from './routes/users.js';
 import {
   candidateDashboardRouter,
@@ -135,16 +124,14 @@ const DELAY_MAX = config.delay.max   ?? 900;
 const ERR_RATE  = config.errorSimulation.enabled ? (config.errorSimulation.rate ?? 0.02) : 0;
 
 const PUBLIC_PATHS = [
-  '/auth/login',
-  '/auth/register',
-  '/auth/forgot-password',
-  '/api/v1/auth/login',
-  '/api/v1/auth/candidates/register',
-  '/api/v1/auth/recruiters/register',
-  '/api/v1/auth/staff/register',
-  '/api/v1/auth/staff-invitations/validate',
-  '/api/v1/auth/forgot-password',
-  '/api/v1/auth/reset-password',
+  '/api/auth-service/v1/auth/login',
+  '/api/auth-service/v1/auth/candidates/register',
+  '/api/auth-service/v1/auth/candidates/register/visitor/conversion',
+  '/api/auth-service/v1/auth/candidates/register-google',
+  '/api/auth-service/v1/auth/staff/register',
+  '/api/auth-service/v1/auth/forgot-password',
+  '/api/auth-service/v1/auth/reset-password',
+  '/api/auth-service/v1/users/validate',
   '/skills/search',
   '/skills/generate',
   '/candidates/landing',
@@ -177,6 +164,7 @@ const DB = {
   industries:        loadDataset('industries'),
   documents:         loadDataset('documents'),
   visitorProfiles:   loadDataset('visitor-profiles'),
+  staffProfiles:     loadDataset('staff-profiles'),
   aiGenerationRuns:  loadDataset('ai-generation-runs'),
   aiScoringRuns:     loadDataset('ai-scoring-runs'),
   candidateAiActions: loadDataset('candidate-ai-actions'),
@@ -184,7 +172,7 @@ const DB = {
   locations:          loadDataset('locations'),
 };
 
-// Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
+// Staff invitations are created by the v3 admin invitation endpoint and kept in memory.
 const staffInvitations = new Map(); // invitationToken → invitation record
 
 function saveDataset(name, data) {
@@ -341,10 +329,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Strip /api/ prefix so routes work with or without it — but keep /api/v1/ for versioned routes
+// Strip /api/ prefix so routes work with or without it, except versioned gateway routes.
 app.use((req, _res, next) => {
-  // Rewrite bare /api/ to / but leave /api/v1/ alone (handled at mount)
-  if (req.path.startsWith('/api/') && !req.path.startsWith('/api/v1/') && !req.path.startsWith('/api/manco/')) {
+  if (req.path.startsWith('/api/') && !req.path.startsWith('/api/v1/') && !req.path.startsWith('/api/auth-service/') && !req.path.startsWith('/api/manco/')) {
     req.url = req.url.replace('/api/', '/');
   }
   next();
@@ -399,16 +386,12 @@ app.use(async (req, res, next) => {
 const routeCtx = { DB, sessions, generateToken, saveDataset, staffInvitations };
 
 // ─────────────────────────────────────────────────────────
-//  Auth  (legacy — /auth/*)
+//  Auth service v3 (OpenAPI — /api/auth-service/v1/*)
 // ─────────────────────────────────────────────────────────
-app.use('/auth', authRouter({ ...routeCtx, USERS }));
-
-// ─────────────────────────────────────────────────────────
-//  Auth v1  (OpenAPI — /api/v1/auth/*)
-// ─────────────────────────────────────────────────────────
-app.use('/api/v1/auth',  authV1Router(routeCtx));
-app.use('/api/v1/admin', adminV1Router(routeCtx));
-app.use('/api/v1/users', usersV1Router(routeCtx));
+app.use('/api/auth-service/v1/auth', authV3Router(routeCtx));
+app.use('/api/auth-service/v1/admin', adminV3Router(routeCtx));
+app.use('/api/auth-service/v1/staff', staffProfilesV3Router(routeCtx));
+app.use('/api/auth-service/v1/users', usersV3Router(routeCtx));
 
 // ─────────────────────────────────────────────────────────
 //  Users / Profiles
@@ -547,26 +530,24 @@ app.listen(PORT, () => {
   const L = s => console.log(s);
   L('');
   L('╔══════════════════════════════════════════════════════════════════════════╗');
-  L('║    SkillsMine Mock Server  ·  v2 Contract  ·  Role-based  (ESM)         ║');
+  L('║    SkillsMine Mock Server  ·  Auth Service v3  ·  Role-based  (ESM)     ║');
   L(`║    http://localhost:${PORT}                                                ║`);
   L('╠══════════════════════════════════════════════════════════════════════════╣');
-  L('║  AUTH (legacy)                                                           ║');
-  L('║    POST  /auth/register                                                  ║');
-  L('║    POST  /auth/login                                                     ║');
-  L('║    POST  /auth/forgot-password                                           ║');
-  L('║    POST  /auth/change-password                                           ║');
-  L('║    POST  /auth/logout                                                    ║');
+  L('║  AUTH SERVICE v3                                                         ║');
+  L('║    POST  /api/auth-service/v1/auth/login                                ║');
+  L('║    POST  /api/auth-service/v1/auth/candidates/register                  ║');
+  L('║    POST  /api/auth-service/v1/auth/candidates/register/visitor/conversion║');
+  L('║    POST  /api/auth-service/v1/auth/candidates/register-google           ║');
+  L('║    POST  /api/auth-service/v1/auth/staff/register                       ║');
+  L('║    POST  /api/auth-service/v1/auth/forgot-password                      ║');
+  L('║    POST  /api/auth-service/v1/auth/reset-password                       ║');
+  L('║    POST  /api/auth-service/v1/auth/logout             → 204              ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
-  L('║  AUTH v1  (auth_service_v0.yaml)                                         ║');
-  L('║    POST  /api/v1/auth/login                                              ║');
-  L('║    POST  /api/v1/auth/candidates/register                                ║');
-  L('║    POST  /api/v1/auth/staff/register                                     ║');
-  L('║    POST  /api/v1/auth/staff-invitations/validate                         ║');
-  L('║    POST  /api/v1/auth/forgot-password                                    ║');
-  L('║    POST  /api/v1/auth/reset-password                                     ║');
-  L('║    POST  /api/v1/auth/logout                          → 204              ║');
-  L('║    POST  /api/v1/admin/staff-invitations              (ADMIN only)        ║');
-  L('║    GET   /api/v1/users/me                                                ║');
+  L('║    GET   /api/auth-service/v1/staff/profiles          (ADMIN only)       ║');
+  L('║    POST  /api/auth-service/v1/staff/profiles          (ADMIN only)       ║');
+  L('║    POST  /api/auth-service/v1/admin/staff-invitations/send (ADMIN only) ║');
+  L('║    POST  /api/auth-service/v1/users/validate                            ║');
+  L('║    GET   /api/auth-service/v1/users/me                                  ║');
   L('╠══════════════════════════════════════════════════════════════════════════╣');
   L('║  USERS / PROFILES                                                        ║');
   L('║    GET   /users/:userId                                                  ║');

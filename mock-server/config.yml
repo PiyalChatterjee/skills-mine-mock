@@ -24,9 +24,14 @@ cors:
 auth:
   enabled: true
   publicPaths:
-    - /auth/login
-    - /auth/register
-    - /auth/forgot-password
+    - /api/auth-service/v1/auth/login
+    - /api/auth-service/v1/auth/candidates/register
+    - /api/auth-service/v1/auth/candidates/register/visitor/conversion
+    - /api/auth-service/v1/auth/candidates/register-google
+    - /api/auth-service/v1/auth/staff/register
+    - /api/auth-service/v1/auth/forgot-password
+    - /api/auth-service/v1/auth/reset-password
+    - /api/auth-service/v1/users/validate
     - /jobs
     - /opportunities
     - /skills/search

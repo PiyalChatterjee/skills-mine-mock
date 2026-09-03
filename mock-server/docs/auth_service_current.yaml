@@ -1,825 +1,334 @@
-openapi: "3.0.3"
-
+openapi: 3.0.3
 info:
-  title: SkillsMine Authentication Service (Current / v2)
-  version: "2.1.0"
+  title: SkillsMine Auth Service API
+  version: "3.0.0-mock"
   description: >
-    Authentication and identity endpoints currently consumed by the
-    skills-mine-frontend application (per src/services/api/endpoints.ts and
-    the default .env configuration). This supersedes auth_service_v0.yaml
-    for day-to-day frontend integration: login, registration, logout,
-    password management and the current-user endpoint here run under
-    /auth/*, matching the "v2 contract" described in API_MIGRATION_REPORT.md.
-    Candidate/staff self-service registration, staff-invitation validation
-    and password reset remain served under /api/v1/auth/* because the
-    frontend has not overridden their endpoint env vars away from that
-    default.
-
+    Mock implementation of the backend Auth Service v3 contract. All routes are
+    exposed through the API gateway prefix /api/auth-service/v1. The retired
+    /auth and /api/v1/auth endpoints are intentionally not mounted.
 servers:
   - url: http://localhost:4000
-    description: Mock server
-
-tags:
-  - name: Auth
-    description: Login, logout, current-user, password management (mounted at /auth)
-  - name: Candidate Registration
-    description: Candidate self-service registration (mounted at /api/v1/auth)
-  - name: Staff Registration
-    description: Staff invitation-based registration (mounted at /api/v1/auth)
-  - name: Staff Invitations
-    description: Invitation token validation (mounted at /api/v1/auth)
-
+    description: SkillsMine mock server
 security:
   - BearerAuth: []
-
+tags:
+  - name: Authentication
+  - name: Candidate Registration
+  - name: Staff Profile Management
+  - name: Staff Invitations
+  - name: Current User
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
   schemas:
-    SuccessEnvelope:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        statusCode:
-          type: integer
-          example: 200
-        message:
-          type: string
-
-    # ── Login ──────────────────────────────────────────────────────────────
-    LoginRequest:
-      type: object
-      required: [username, password]
-      properties:
-        username:
-          type: string
-          description: Registered email address.
-          format: email
-        password:
-          type: string
-          format: password
-        rememberMe:
-          type: boolean
-          default: false
-
-    LoginResponseData:
-      type: object
-      required: [accessToken, refreshToken, expiresIn, roles]
-      properties:
-        accessToken:
-          type: string
-        refreshToken:
-          type: string
-        expiresIn:
-          type: integer
-          example: 3600
-        profileCompleted:
-          type: integer
-          example: 82
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
-
-    LoginResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          required: [data]
-          properties:
-            data:
-              $ref: '#/components/schemas/LoginResponseData'
-
-    V1LoginRequest:
-      type: object
-      required: [email, password]
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-
-    V1TokenResponse:
-      type: object
-      required: [accessToken, idToken, refreshToken, expiresIn, tokenType]
-      properties:
-        accessToken:
-          type: string
-        idToken:
-          type: string
-        refreshToken:
-          type: string
-        expiresIn:
-          type: integer
-          example: 3600
-        tokenType:
-          type: string
-          example: Bearer
-
-    Role:
-      type: string
-      enum: [JOB_SEEKER, RECRUITER, MANCO, EXCO, ADMIN]
-
-    # ── Register (legacy generic form, still routed from /signup) ──────────
-    RegisterRequest:
-      type: object
-      required: [firstName, lastName, email, password]
-      properties:
-        userType:
-          $ref: '#/components/schemas/Role'
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        mobileNumber:
-          type: string
-        password:
-          type: string
-          format: password
-        confirmPassword:
-          type: string
-          format: password
-        acceptTerms:
-          type: boolean
-        acceptPrivacyPolicy:
-          type: boolean
-
-    RegisterResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          required: [data]
-          properties:
-            data:
-              type: object
-              required: [userId, email, accountStatus]
-              properties:
-                userId:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                accountStatus:
-                  type: string
-                  enum: [ACTIVE, PENDING_VERIFICATION, SUSPENDED]
-
-    # ── Forgot / change password ────────────────────────────────────────────
-    ForgotPasswordRequest:
-      type: object
-      required: [email]
-      properties:
-        email:
-          type: string
-          format: email
-
-    ForgotPasswordResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          required: [data]
-          properties:
-            data:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                resetLinkSent:
-                  type: boolean
-                expiresInMinutes:
-                  type: integer
-                  example: 30
-
-    ChangePasswordRequest:
-      type: object
-      required: [currentPassword, newPassword, confirmNewPassword]
-      properties:
-        currentPassword:
-          type: string
-          format: password
-        newPassword:
-          type: string
-          format: password
-        confirmNewPassword:
-          type: string
-          format: password
-
-    ChangePasswordResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          properties:
-            data:
-              type: object
-              nullable: true
-              properties:
-                changedAt:
-                  type: string
-                  format: date-time
-
-    LogoutResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          properties:
-            data:
-              nullable: true
-
-    # ── Current user ─────────────────────────────────────────────────────────
-    StaffProfile:
-      type: object
-      nullable: true
-      properties:
-        staffNumber:
-          type: string
-        departmentCode:
-          type: string
-
-    CurrentUserResponse:
-      type: object
-      required: [userId, email, provider, roles, accountStatus]
-      properties:
-        userId:
-          type: string
-        email:
-          type: string
-          format: email
-        provider:
-          type: string
-          enum: [LOCAL, GOOGLE, MICROSOFT]
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
-        staffProfile:
-          $ref: '#/components/schemas/StaffProfile'
-        accountStatus:
-          type: string
-          enum: [ACTIVE, PENDING_VERIFICATION, SUSPENDED, INACTIVE]
-
-    # ── Candidate registration ──────────────────────────────────────────────
-    CandidateRegisterRequest:
-      type: object
-      required: [firstName, lastName, email, password, confirmPassword]
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        mobileNumber:
-          type: string
-        password:
-          type: string
-          format: password
-        confirmPassword:
-          type: string
-          format: password
-        acceptTerms:
-          type: boolean
-        acceptPrivacyPolicy:
-          type: boolean
-
-    CandidateRegisterResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          required: [data]
-          properties:
-            data:
-              type: object
-              required: [userId, email, accountStatus]
-              properties:
-                userId:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                accountStatus:
-                  type: string
-                  enum: [ACTIVE, PENDING_VERIFICATION, SUSPENDED]
-
-    # ── Staff registration ───────────────────────────────────────────────────
-    StaffRegisterRequest:
-      type: object
-      required: [invitationToken, staffNumber, email, firstName, lastName, departmentCode, password]
-      properties:
-        invitationToken:
-          type: string
-          format: uuid
-        staffNumber:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        mobileNumber:
-          type: string
-        departmentCode:
-          type: string
-        password:
-          type: string
-          format: password
-        confirmPassword:
-          type: string
-          format: password
-        acceptTerms:
-          type: boolean
-        acceptPrivacyPolicy:
-          type: boolean
-
-    StaffRegisterResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-        - type: object
-          required: [data]
-          properties:
-            data:
-              type: object
-              required: [userId, email, accountStatus]
-              properties:
-                userId:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                accountStatus:
-                  type: string
-                  enum: [ACTIVE, PENDING_VERIFICATION, SUSPENDED]
-
-    # ── Staff invitation validation ──────────────────────────────────────────
-    StaffInvitationValidateRequest:
-      type: object
-      required: [invitationToken]
-      properties:
-        invitationToken:
-          type: string
-          format: uuid
-
-    StaffInvitationValidateResponse:
-      type: object
-      required: [valid, staffNumberMasked, invitedEmailMasked, roleCode, expiresAt]
-      properties:
-        valid:
-          type: boolean
-        staffNumberMasked:
-          type: string
-          example: "SM****01"
-        invitedEmailMasked:
-          type: string
-          example: "j***@domain.com"
-        roleCode:
-          type: string
-          enum: [RECRUITER, MANCO, EXCO, ADMIN, '']
-        expiresAt:
-          type: string
-          format: date-time
-
-    StaffInvitationCreateRequest:
-      type: object
-      required: [email, staffNumber, roleCode, departmentCode]
-      properties:
-        email:
-          type: string
-          format: email
-        staffNumber:
-          type: string
-        roleCode:
-          type: string
-          enum: [RECRUITER, MANCO, EXCO, ADMIN]
-        departmentCode:
-          type: string
-
-    StaffInvitationCreateResponse:
-      type: object
-      required: [invitationToken, email, staffNumber, roleCode, expiresAt]
-      properties:
-        invitationToken:
-          type: string
-          format: uuid
-        email:
-          type: string
-          format: email
-        staffNumber:
-          type: string
-        roleCode:
-          type: string
-          enum: [RECRUITER, MANCO, EXCO, ADMIN]
-        expiresAt:
-          type: string
-          format: date-time
-
-    # ── Reset password ───────────────────────────────────────────────────────
-    ResetPasswordRequest:
-      type: object
-      required: [resetToken, newPassword]
-      properties:
-        resetToken:
-          type: string
-        newPassword:
-          type: string
-          format: password
-        confirmNewPassword:
-          type: string
-          format: password
-
-    ResetPasswordResponse:
-      allOf:
-        - $ref: '#/components/schemas/SuccessEnvelope'
-
     ErrorResponse:
       type: object
       required: [success, statusCode, message]
       properties:
-        success:
-          type: boolean
-          example: false
-        statusCode:
-          type: integer
-        message:
-          type: string
-
+        success: { type: boolean, example: false }
+        statusCode: { type: integer, example: 400 }
+        message: { type: string }
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email, example: admin@skillsmine.com }
+        password: { type: string, format: password, example: Password123 }
+    LoginResponse:
+      type: object
+      required: [accessToken, idToken, refreshToken, expiresIn, tokenType, isFirstLogin]
+      properties:
+        accessToken: { type: string }
+        idToken: { type: string }
+        refreshToken: { type: string }
+        expiresIn: { type: integer, format: int32, example: 3600 }
+        tokenType: { type: string, example: Bearer }
+        isFirstLogin: { type: boolean }
+    CandidateRegistrationRequest:
+      type: object
+      required: [firstName, lastName, email, mobileNumber, password]
+      properties:
+        firstName: { type: string }
+        lastName: { type: string }
+        email: { type: string, format: email }
+        mobileNumber: { type: string, example: "+27821234567" }
+        password: { type: string, format: password }
+        visitorId: { type: string, format: uuid }
+    VisitorConversionRequest:
+      allOf:
+        - $ref: '#/components/schemas/CandidateRegistrationRequest'
+        - type: object
+          required: [visitorId]
+    GoogleRegistrationRequest:
+      type: object
+      required: [idToken]
+      properties:
+        idToken: { type: string, description: Google OpenID Connect ID token }
+    CandidateRegistrationResponse:
+      type: object
+      required: [userId, email, role, registrationType, accountStatus]
+      properties:
+        userId: { type: string, format: uuid }
+        email: { type: string, format: email }
+        role: { type: string, enum: [JOB_SEEKER] }
+        registrationType: { type: string, enum: [SELF_SERVICE] }
+        accountStatus: { type: string, example: ACTIVE }
+    StaffRegistrationRequest:
+      type: object
+      required: [invitationToken, staffNumber, email, firstName, lastName, password]
+      properties:
+        invitationToken: { type: string, format: uuid }
+        staffNumber: { type: string }
+        email: { type: string, format: email }
+        firstName: { type: string }
+        lastName: { type: string }
+        password: { type: string, format: password }
+    StaffRegistrationResponse:
+      type: object
+      properties:
+        userId: { type: string, format: uuid }
+        staffNumber: { type: string }
+        email: { type: string, format: email }
+        role: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
+        accountStatus: { type: string, example: ACTIVE }
+    ForgotPasswordRequest:
+      type: object
+      required: [email]
+      properties:
+        email: { type: string, format: email }
+    ResetPasswordRequest:
+      type: object
+      required: [newPassword]
+      properties:
+        email: { type: string, format: email }
+        confirmationCode: { type: string }
+        currentPassword: { type: string, format: password }
+        newPassword: { type: string, format: password }
+    MessageResponse:
+      type: object
+      additionalProperties: { type: string }
+      example: { message: Password has been reset successfully. }
+    TokenValidationResponse:
+      type: object
+      required: [valid]
+      additionalProperties: { type: boolean }
+      properties:
+        valid: { type: boolean, example: true }
+    StaffProfileListDto:
+      type: object
+      required: [staffId, userId, staffNumber, primaryEmail, firstName, lastName, roleCode, registrationStatus, employmentStatus, createdAt, updatedAt]
+      properties:
+        staffId: { type: string, format: uuid }
+        userId: { type: string }
+        staffNumber: { type: string }
+        primaryEmail: { type: string, format: email }
+        firstName: { type: string }
+        lastName: { type: string }
+        roleCode: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
+        registrationStatus: { type: string, example: PENDING }
+        employmentStatus: { type: string, example: ACTIVE }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    AddStaffProfileRequest:
+      type: object
+      required: [staffNumber, primaryEmail, roleCode, firstName, lastName]
+      properties:
+        staffNumber: { type: string, maxLength: 80 }
+        primaryEmail: { type: string, format: email, maxLength: 500 }
+        roleCode: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
+        firstName: { type: string, maxLength: 120 }
+        lastName: { type: string, maxLength: 120 }
+    AddStaffProfileResponse:
+      type: object
+      properties:
+        staffId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        staffNumber: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        roleCode: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
+        employmentStatus: { type: string, example: ACTIVE }
+    SendStaffInvitationRequest:
+      type: object
+      required: [email, staffNumber]
+      properties:
+        email: { type: string, format: email }
+        staffNumber: { type: string }
+    SendStaffInvitationResponse:
+      type: object
+      properties:
+        invitationId: { type: string, format: uuid }
+        email: { type: string, format: email }
+        staffNumber: { type: string }
+        expiresAt: { type: string, format: date-time }
+        message: { type: string }
+    CurrentUserResponse:
+      type: object
+      properties:
+        userId: { type: string }
+        email: { type: string, format: email }
+        provider: { type: string, enum: [LOCAL, GOOGLE, MICROSOFT] }
+        roles:
+          type: array
+          items: { type: string, enum: [JOB_SEEKER, RECRUITER, MANCO, EXCO, ADMIN] }
+        staffProfile:
+          type: object
+          nullable: true
+          properties:
+            staffNumber: { type: string }
+            firstName: { type: string }
+            lastName: { type: string }
+            employmentStatus: { type: string }
+        candidateId: { type: string }
+        accountStatus: { type: string }
 paths:
-  /auth/login:
+  /api/auth-service/v1/users/validate:
     post:
-      tags: [Auth]
-      summary: Log in with email/password
+      tags: [Current User]
+      summary: Validate the supplied bearer token
+      operationId: validateToken
       security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
       responses:
-        '200':
-          description: Login successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '400':
-          description: Missing username or password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Invalid username or password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/login:
-    post:
-      tags: [Auth]
-      summary: Log in through the v1 identity contract
-      description: Returns a flat token response, unlike the `/auth/login` success envelope.
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/V1LoginRequest'
-      responses:
-        '200':
-          description: Login successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/V1TokenResponse'
-        '400':
-          description: email and password are required
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Invalid email or password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: Account is inactive or suspended
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /auth/register:
-    post:
-      tags: [Auth]
-      summary: Generic registration (used by the standalone /signup page)
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
-      responses:
-        '201':
-          description: Registration completed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RegisterResponse'
-        '400':
-          description: Required fields missing or passwords do not match
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '409':
-          description: Email already registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /auth/forgot-password:
-    post:
-      tags: [Auth]
-      summary: Request a password reset link
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ForgotPasswordRequest'
-      responses:
-        '200':
-          description: Reset link sent if the email is registered (always 200 to avoid user enumeration)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForgotPasswordResponse'
-        '400':
-          description: email is required
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /auth/change-password:
-    post:
-      tags: [Auth]
-      summary: Change the authenticated user's password
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChangePasswordRequest'
-      responses:
-        '200':
-          description: Password changed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChangePasswordResponse'
-        '400':
-          description: Missing fields, mismatched passwords, or password too short
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /auth/logout:
-    post:
-      tags: [Auth]
-      summary: Invalidate the current session token
-      responses:
-        '200':
-          description: Logged out successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LogoutResponse'
-
-  /auth/me:
+        '200': { description: Token validation result, content: { application/json: { schema: { $ref: '#/components/schemas/TokenValidationResponse' } } } }
+  /api/auth-service/v1/staff/profiles:
     get:
-      tags: [Auth]
-      summary: Get the current authenticated user
+      tags: [Staff Profile Management]
+      summary: List staff profiles
+      operationId: getAllStaffProfiles
       responses:
-        '200':
-          description: Current user profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CurrentUserResponse'
-        '401':
-          description: Not authenticated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/candidates/register:
+        '200': { description: Staff profiles, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/StaffProfileListDto' } } } } }
+        '403': { description: ADMIN role required, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+    post:
+      tags: [Staff Profile Management]
+      summary: Create a staff profile
+      operationId: createStaffProfile
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/AddStaffProfileRequest' } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/AddStaffProfileResponse' } } } }
+        '400': { description: Invalid request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '403': { description: ADMIN role required, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '409': { description: Staff profile exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/login:
+    post:
+      tags: [Authentication]
+      summary: Log in with email and password
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/LoginResponse' } } } }
+        '400': { description: Missing credentials, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '401': { description: Invalid credentials, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '403': { description: Account inactive, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Invalidate the current session
+      operationId: logout
+      responses:
+        '204': { description: No Content }
+  /api/auth-service/v1/auth/forgot-password:
+    post:
+      tags: [Authentication]
+      summary: Request a password reset confirmation code
+      operationId: forgotPassword
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ForgotPasswordRequest' } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/MessageResponse' } } } }
+        '400': { description: Missing email, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/reset-password:
+    post:
+      tags: [Authentication]
+      summary: Reset or change a password
+      operationId: resetPassword
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ResetPasswordRequest' } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/MessageResponse' } } } }
+        '400': { description: Invalid reset request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/candidates/register:
     post:
       tags: [Candidate Registration]
-      summary: Candidate self-service registration
+      summary: Register a candidate
+      operationId: registerCandidate
       security: []
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CandidateRegisterRequest'
+        content: { application/json: { schema: { $ref: '#/components/schemas/CandidateRegistrationRequest' } } }
       responses:
-        '201':
-          description: Candidate registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CandidateRegisterResponse'
-        '400':
-          description: Required fields missing
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '409':
-          description: Email already registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/staff/register:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/CandidateRegistrationResponse' } } } }
+        '400': { description: Invalid request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '409': { description: Email exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/candidates/register/visitor/conversion:
     post:
-      tags: [Staff Registration]
-      summary: Staff registration via invitation token
+      tags: [Candidate Registration]
+      summary: Convert a visitor into a candidate
+      operationId: registerVisitorConversion
       security: []
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StaffRegisterRequest'
+        content: { application/json: { schema: { $ref: '#/components/schemas/VisitorConversionRequest' } } }
       responses:
-        '201':
-          description: Staff member registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StaffRegisterResponse'
-        '400':
-          description: Required fields missing, or invitation invalid/expired/mismatched
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '409':
-          description: Email already registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/staff-invitations/validate:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/CandidateRegistrationResponse' } } } }
+        '400': { description: Invalid request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '404': { description: Visitor not found, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '409': { description: Email exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/candidates/register-google:
+    post:
+      tags: [Candidate Registration]
+      summary: Register a candidate with Google
+      operationId: registerGoogle
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/GoogleRegistrationRequest' } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/CandidateRegistrationResponse' } } } }
+        '400': { description: Missing ID token, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/auth/staff/register:
     post:
       tags: [Staff Invitations]
-      summary: Validate a staff invitation token before completing registration
+      summary: Register invited staff
+      operationId: registerStaff
       security: []
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StaffInvitationValidateRequest'
+        content: { application/json: { schema: { $ref: '#/components/schemas/StaffRegistrationRequest' } } }
       responses:
-        '200':
-          description: Validation result (valid=false for unknown/expired tokens, never an error status)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StaffInvitationValidateResponse'
-        '400':
-          description: invitationToken is required
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/forgot-password:
-    post:
-      tags: [Auth]
-      summary: Request a password reset link through the v1 contract
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ForgotPasswordRequest'
-      responses:
-        '200':
-          description: Reset-link request accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessEnvelope'
-        '400':
-          description: email is required
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/reset-password:
-    post:
-      tags: [Auth]
-      summary: Reset password using a reset token
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ResetPasswordRequest'
-      responses:
-        '200':
-          description: Password reset successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResetPasswordResponse'
-        '400':
-          description: Missing fields or password too short
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /api/v1/auth/logout:
-    post:
-      tags: [Auth]
-      summary: Invalidate the v1 session token
-      description: Returns no response body on success, unlike `/auth/logout`.
-      responses:
-        '204':
-          description: Session invalidated
-
-  /api/v1/admin/staff-invitations:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/StaffRegistrationResponse' } } } }
+        '400': { description: Invalid invitation or request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '409': { description: Email exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/admin/staff-invitations/send:
     post:
       tags: [Staff Invitations]
-      summary: Create a staff-registration invitation
-      description: Requires an authenticated user with the `ADMIN` role.
+      summary: Send a staff registration invitation
+      operationId: sendInvitation
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StaffInvitationCreateRequest'
+        content: { application/json: { schema: { $ref: '#/components/schemas/SendStaffInvitationRequest' } } }
       responses:
-        '201':
-          description: Invitation created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StaffInvitationCreateResponse'
-        '400':
-          description: Required fields are missing or roleCode is invalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Not authenticated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '403':
-          description: ADMIN role required
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/SendStaffInvitationResponse' } } } }
+        '400': { description: Invalid request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '403': { description: ADMIN role required, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '404': { description: Staff profile not found, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+  /api/auth-service/v1/users/me:
+    get:
+      tags: [Current User]
+      summary: Get the current authenticated user
+      operationId: getMe
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/CurrentUserResponse' } } } }
+        '401': { description: Not authenticated, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+        '404': { description: User not found, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }

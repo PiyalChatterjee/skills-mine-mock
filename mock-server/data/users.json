@@ -1,6 +1,7 @@
 [
   {
     "userId": "USR100001",
+    "candidateId": "CAND100001",
     "userType": "JOB_SEEKER",
     "firstName": "Michael",
     "lastName": "Smith",
@@ -32,6 +33,7 @@
   },
   {
     "userId": "USR100002",
+    "candidateId": "CAND100002",
     "userType": "JOB_SEEKER",
     "firstName": "Ayesha",
     "lastName": "Patel",
@@ -154,6 +156,7 @@
   },
   {
     "userId": "USR100007",
+    "candidateId": "CAND100003",
     "userType": "JOB_SEEKER",
     "firstName": "Thabo",
     "lastName": "Nkosi",
@@ -183,6 +186,7 @@
   },
   {
     "userId": "USR100008",
+    "candidateId": "CAND100004",
     "userType": "JOB_SEEKER",
     "firstName": "Zanele",
     "lastName": "Mokoena",

@@ -11,7 +11,7 @@
  * Log in as michael.smith@email.com / Password123 to obtain a token,
  * then set the MOCK_TOKEN environment variable:
  *
- *   $env:MOCK_TOKEN = "<accessToken from POST /auth/login response>"
+ *   $env:MOCK_TOKEN = "<accessToken from POST /api/auth-service/v1/auth/login response>"
  *   node --test mock-server/tests/cv-builder.test.js
  */
 
@@ -24,13 +24,13 @@ const BASE = process.env.MOCK_BASE_URL ?? 'http://localhost:4000';
 let TOKEN = process.env.MOCK_TOKEN ?? null;
 
 async function login() {
-  const res = await fetch(`${BASE}/auth/login`, {
+  const res = await fetch(`${BASE}/api/auth-service/v1/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: 'michael.smith@email.com', password: 'Password123' }),
+    body: JSON.stringify({ email: 'michael.smith@email.com', password: 'Password123' }),
   });
   const json = await res.json();
-  TOKEN = json.data?.accessToken;
+  TOKEN = json.accessToken;
   assert.ok(TOKEN, 'Login must return an accessToken');
 }
 
