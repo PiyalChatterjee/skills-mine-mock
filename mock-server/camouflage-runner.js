@@ -152,6 +152,8 @@ const PUBLIC_PATHS = [
   '/locations',
 ];
 
+const PUBLIC_GET_PATHS = ['/jobs'];
+
 // ─────────────────────────────────────────────────────────
 //  Datasets  — loaded once at startup, mutated in-memory
 // ─────────────────────────────────────────────────────────
@@ -351,7 +353,9 @@ app.use((req, _res, next) => {
 // Delay + error injection + auth guard
 app.use(async (req, res, next) => {
   const path     = req.path;
-  const isPublic = PUBLIC_PATHS.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'));
+  const matchesPublicPath = (paths) => paths.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'));
+  const isPublic = matchesPublicPath(PUBLIC_PATHS) ||
+    (req.method === 'GET' && matchesPublicPath(PUBLIC_GET_PATHS));
 
   await new Promise(r => setTimeout(r, Math.floor(Math.random() * (DELAY_MAX - DELAY_MIN + 1)) + DELAY_MIN));
 
