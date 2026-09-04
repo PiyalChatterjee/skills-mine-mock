@@ -68,17 +68,6 @@ import {
 }                                                              from './routes/auth-v3.js';
 import { usersRouter }                                         from './routes/users.js';
 import {
-  candidateDashboardRouter,
-  cvBuilderRouter,
-  applicationCvRouter,
-  candidateLandingRouter,
-  candidateSelfDashboardRouter,
-  candidateProfileRouter,
-  candidateCvBuildRouter,
-  candidateRecommendedPositionsRouter,
-  candidateSavedJobsRouter,
-  candidateAiActionsRouter,
-  candidateApplicationsRouter,
   candidateServiceV2Router,
 }                                                              from './routes/candidates.js';
 import {
@@ -97,10 +86,7 @@ import { documentsRouter }                                      from './routes/d
 import {
   aiSkillsGenerateRouter,
   aiJobSkillsGenerateRouter,
-  aiRecommendedJobsRouter,
   aiMatchScoringRouter,
-  aiCandidateMatchScoreRouter,
-  aiCandidateActionsRouter,
 }                                                                from './routes/ai.js';
 import {
   mandateServiceJobsRouter,
@@ -139,7 +125,7 @@ const PUBLIC_PATHS = [
 
 const PUBLIC_GET_PATHS = ['/jobs'];
 
-//  Datasets  â€” loaded once at startup, mutated in-memory
+//  Datasets  - loaded once at startup, mutated in-memory
 function loadDataset(name) {
   const p = join(__dirname, 'data', `${name}.json`);
   return existsSync(p) ? JSON.parse(readFileSync(p, 'utf-8')) : [];
@@ -179,7 +165,7 @@ function saveDataset(name, data) {
 //  Auth helpers  (shared with route files via injection)
 const sessions = new Map(); // accessToken â†’ user object
 
-// Pre-seeded users (map by email â€” password is always "Password123")
+// Pre-seeded users (map by email - password is always "Password123")
 const USERS = {
   'michael.smith@email.com': {
     sub: '00000001-0000-4000-8000-000000000001', userId: '00000001-0000-4000-8000-000000000001', email: 'michael.smith@email.com',
@@ -371,36 +357,21 @@ app.use(async (req, res, next) => {
 //  Route context
 const routeCtx = { DB, sessions, generateToken, saveDataset, staffInvitations };
 
-//  Auth service v3 (OpenAPI â€” /api/auth-service/v1/*)
+//  Auth service v3 (OpenAPI - /api/auth-service/v1/*)
 app.use('/api/auth-service/v1/auth', authV3Router(routeCtx));
 app.use('/api/auth-service/v1/admin', adminV3Router(routeCtx));
 app.use('/api/auth-service/v1/staff', staffProfilesV3Router(routeCtx));
 app.use('/api/auth-service/v1/users', usersV3Router(routeCtx));
 
+// Candidate Service contract paths. The /v1 mount below remains available for
+// older local clients, while this mount matches the deployed service base URL.
+app.use('/candidates', candidateServiceV2Router(routeCtx));
+
 //  Users / Profiles
 app.use('/users', usersRouter(routeCtx));
 
-//  Candidates  (new contract: /candidates/*)
-app.use('/candidates', candidateLandingRouter(routeCtx));           // GET  /candidates/landing        (public + auth-aware)
-app.use('/candidates', candidateSelfDashboardRouter(routeCtx));     // GET  /candidates/dashboard
-app.use('/candidates', candidateProfileRouter(routeCtx));           // GET  /candidates/profile/
-app.use('/candidates', candidateCvBuildRouter(routeCtx));           // GET|POST|PUT /candidates/cv-build/
-app.use('/candidates', candidateRecommendedPositionsRouter(routeCtx)); // GET /candidates/recommended-positions
-app.use('/candidates', candidateSavedJobsRouter(routeCtx));         // GET|POST /candidates/saved-jobs
-app.use('/candidates', candidateAiActionsRouter(routeCtx));         // GET  /candidates/ai-actions/
-app.use('/candidates', candidateApplicationsRouter(routeCtx));      // POST /candidates/applications
 app.use('/v1/candidates', candidateServiceV2Router(routeCtx));      // Candidate Service v2 contract
-app.use('/candidates', aiRecommendedJobsRouter(routeCtx));          // GET  /candidates/:candidateId/recommended-jobs        [AI service]
-app.use('/candidates', aiCandidateMatchScoreRouter(routeCtx));      // GET  /candidates/:candidateId/match-score/:jobProfileId [AI service]
-app.use('/candidates', aiCandidateActionsRouter(routeCtx));         // GET|POST /candidates/:candidateId/ai-actions           [AI service]
 app.use('/candidates', mandateServiceCandidatesRouter(routeCtx));   // GET  /candidates  (Mandate Service v2)
-
-//  Candidate (legacy paths: /candidate/*)
-app.use('/candidate', candidateDashboardRouter(routeCtx));
-app.use('/candidate', cvBuilderRouter(routeCtx));
-
-// Applications CV upload: POST /applications/:applicationId/cv/upload
-app.use('/applications', applicationCvRouter(routeCtx));
 
 //  Jobs  (Mandate Service v2)
 app.use('/jobs',         aiJobSkillsGenerateRouter(routeCtx));      // POST /jobs/skills/generate                   [AI service]
@@ -443,7 +414,7 @@ app.use('/api/v1/crm', crmRouter(routeCtx));
 app.use('/job-posts',     jobPostsRouter(routeCtx));
 app.use('/api/job-posts', jobPostsRouter(routeCtx));
 
-//  Documents  (document_api_v0.yaml â€” dummy S3-backed storage)
+//  Documents  (document_api_v0.yaml - dummy S3-backed storage)
 app.use('/documents', documentsRouter(routeCtx));
 
 //  Catch-all â†’ .mock file fallback

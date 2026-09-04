@@ -212,6 +212,42 @@ function toV2SavedJob(DB, profile, entry) {
 export function candidateServiceV2Router({ DB, saveDataset }) {
   const router = Router();
 
+  router.post('/by-email', (req, res) => {
+    const email = String(req.body?.email ?? '').trim().toLowerCase();
+    if (!email) return res.status(400).json({ message: 'email is required', code: 'VALIDATION_ERROR' });
+    const profile = DB.candidateProfiles.find(
+      (candidate) => candidate.personalDetails?.email?.toLowerCase() === email,
+    );
+    return res.status(200).json({ exists: Boolean(profile), candidateId: profile?.candidateId ?? null });
+  });
+
+  router.post('/apply', (req, res) => {
+    const userId = req.currentUser?.userId;
+    const profile = DB.candidateProfiles.find((candidate) => candidate.userId === userId);
+    if (!profile) return res.status(403).json({ message: 'Candidate profile is required.', code: 'FORBIDDEN' });
+    const jobProfileId = req.body?.jobProfileId;
+    const job = DB.jobs.find((candidateJob) => candidateJob.jobProfileId === jobProfileId);
+    if (!job) return res.status(404).json({ message: 'Job profile not found.', code: 'NOT_FOUND' });
+    if (job.status !== 'POSTED') return res.status(422).json({ message: 'This job is not accepting applications.', code: 'UNPROCESSABLE_ENTITY' });
+    const existing = DB.applications.find((application) => application.userId === userId && (application.jobProfileId === jobProfileId || application.jobId === jobProfileId));
+    if (existing) return res.status(409).json({ message: 'You have already applied for this job.', code: 'CONFLICT', applicationId: existing.applicationId });
+    const now = new Date().toISOString();
+    const application = {
+      applicationId: crypto.randomUUID(), userId, candidateId: profile.candidateId,
+      candidateName: [profile.personalDetails?.firstName, profile.personalDetails?.lastName].filter(Boolean).join(' '),
+      jobId: jobProfileId, jobProfileId, jobTitle: job.positionTitle,
+      company: DB.companies.find(({ clientId }) => clientId === job.clientId)?.clientName ?? '',
+      currentStage: 'Inbound', applicationStatus: 'SUBMITTED', appliedDate: now.slice(0, 10), appliedAt: now,
+      updatedAt: now, matchScore: 75, sourceChannel: req.body?.sourceChannel ?? 'direct', cvId: req.body?.cvId ?? null,
+      isGuest: false, stageHistory: [{ stage: 'Inbound', enteredAt: now, exitedAt: null }],
+    };
+    DB.applications.push(application);
+    job.applicantCount = (job.applicantCount ?? 0) + 1;
+    saveDataset?.('applications', DB.applications);
+    saveDataset?.('jobs', DB.jobs);
+    return res.status(201).json({ applicationId: application.applicationId, jobProfileId, matchScore: application.matchScore, status: 'submitted', nextStep: 'view_dashboard' });
+  });
+
   router.get('/landing', (req, res) => {
     const profile = req.currentUser
       ? DB.candidateProfiles.find(({ userId }) => userId === req.currentUser.userId)
