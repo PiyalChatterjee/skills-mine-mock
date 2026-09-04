@@ -15,6 +15,7 @@ paths:
   /jobs:
     get:
       tags: [Jobs]
+      summary: List job posts for the dashboard
       operationId: listJobs
       parameters:
         - { name: search, in: query, schema: { type: string } }
@@ -57,6 +58,7 @@ paths:
         '400': { $ref: '#/components/responses/BadRequest' }
     post:
       tags: [Jobs]
+      summary: Create a new draft job post
       operationId: createJob
       requestBody:
         required: true
@@ -76,6 +78,7 @@ paths:
       - { $ref: '#/components/parameters/jobProfileId' }
     get:
       tags: [Jobs]
+      summary: Get job profile details
       operationId: getJob
       responses:
         '200':
@@ -87,6 +90,7 @@ paths:
         '404': { $ref: '#/components/responses/NotFound' }
     patch:
       tags: [Jobs]
+      summary: Partially update a job post
       operationId: patchJob
       requestBody:
         required: true
@@ -104,6 +108,7 @@ paths:
   /jobs/{jobProfileId}/view:
     patch:
       tags: [Jobs]
+      summary: Increment the job post view count
       operationId: incrementJobViewCount
       parameters:
         - { $ref: '#/components/parameters/jobProfileId' }
@@ -121,7 +126,10 @@ paths:
         '404': { $ref: '#/components/responses/NotFound' }
     delete:
       tags: [Jobs]
+      summary: Cancel or delete a job post
       operationId: deleteJob
+      parameters:
+        - { $ref: '#/components/parameters/jobProfileId' }
       responses:
         '204': { description: Job cancelled or deleted }
         '400': { $ref: '#/components/responses/BadRequest' }
@@ -129,6 +137,7 @@ paths:
   /industries:
     get:
       tags: [Reference Data]
+      summary: List all active industries
       operationId: listIndustries
       security: []
       parameters:
@@ -144,6 +153,7 @@ paths:
   /locations:
     get:
       tags: [Reference Data]
+      summary: List distinct job locations
       operationId: listLocations
       parameters:
         - { name: search, in: query, schema: { type: string } }
@@ -158,6 +168,7 @@ paths:
   /companies:
     get:
       tags: [Reference Data]
+      summary: List companies and employers
       operationId: listCompanies
       parameters:
         - { name: search, in: query, schema: { type: string } }
@@ -172,6 +183,7 @@ paths:
   /candidates:
     get:
       tags: [Jobs]
+      summary: List candidates
       operationId: listCandidates
       parameters:
         - { name: companyName, in: query, schema: { type: string } }
@@ -225,7 +237,6 @@ components:
         normalizedKey: { type: string }
     CompanyItem:
       type: object
-      required: [clientId, clientName]
       properties:
         clientId: { type: string, format: uuid }
         clientName: { type: string }
@@ -235,7 +246,6 @@ components:
         clientRate: { type: number, format: double, nullable: true }
     Page:
       type: object
-      required: [total, page, size]
       properties:
         total: { type: integer }
         page: { type: integer }
@@ -246,10 +256,17 @@ components:
         - type: object
           properties:
             data: { type: array, items: { $ref: '#/components/schemas/CompanyItem' } }
+    DashboardSummary:
+      type: object
+      description: Recruiter dashboard snapshot counts.
+      properties:
+        cvsDue: { type: integer, example: 1 }
+        interviewsToSchedule: { type: integer, example: 0 }
+        offerLettersAcceptanceDeadlines: { type: integer, example: 0 }
     JobSkillSummary:
       type: object
       properties:
-        skillId: { type: string, format: uuid, nullable: true }
+        skillId: { type: string, format: uuid }
         originalText: { type: string, nullable: true }
         sourceType: { type: string, enum: [AI_GENERATED, RECRUITER_ENTERED] }
     JobProfileSummary:
@@ -319,7 +336,7 @@ components:
         title: { type: string }
         companyName: { type: string }
         locationText: { type: string }
-        matchPercentage: { type: number, minimum: 0, maximum: 100, nullable: true }
+        matchPercentage: { type: number, format: float, minimum: 0, maximum: 100, nullable: true }
         status: { $ref: '#/components/schemas/CandidateStatus' }
         jobProfileId: { type: string, format: uuid, nullable: true }
     CandidatePage:

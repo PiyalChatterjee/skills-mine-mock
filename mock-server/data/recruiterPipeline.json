@@ -17,7 +17,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000001",
+          "candidateId": "00000004-0000-4000-8000-000000000001",
           "visitorId": "vi000001",
           "firstName": "James",
           "lastName": "Nkosi",
@@ -51,7 +51,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000002",
+          "candidateId": "00000004-0000-4000-8000-000000000002",
           "visitorId": "vi000002",
           "firstName": "Thabo",
           "lastName": "Dlamini",
@@ -85,7 +85,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000003",
+          "candidateId": "00000004-0000-4000-8000-000000000003",
           "visitorId": "vi000003",
           "firstName": "Sipho",
           "lastName": "Mthembu",
@@ -119,7 +119,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000004",
+          "candidateId": "00000004-0000-4000-8000-000000000004",
           "visitorId": "vi000004",
           "firstName": "Lindiwe",
           "lastName": "Zulu",
@@ -153,7 +153,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000005",
+          "candidateId": "00000004-0000-4000-8000-000000000005",
           "visitorId": "vi000005",
           "firstName": "Nomsa",
           "lastName": "Khumalo",
@@ -187,7 +187,7 @@
           "status": "DRAFT"
         },
         "candidate": {
-          "candidateId": "cd000006",
+          "candidateId": "00000004-0000-4000-8000-000000000006",
           "visitorId": "vi000006",
           "firstName": "Bongani",
           "lastName": "Mokoena",
@@ -227,7 +227,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000007",
+          "candidateId": "00000004-0000-4000-8000-000000000007",
           "visitorId": "vi000007",
           "firstName": "Ayanda",
           "lastName": "Ntuli",
@@ -261,7 +261,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000008",
+          "candidateId": "00000004-0000-4000-8000-000000000008",
           "visitorId": "vi000008",
           "firstName": "Mpho",
           "lastName": "Sithole",
@@ -295,7 +295,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000009",
+          "candidateId": "00000004-0000-4000-8000-000000000009",
           "visitorId": "vi000009",
           "firstName": "Zanele",
           "lastName": "Molefe",
@@ -329,7 +329,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000010",
+          "candidateId": "00000004-0000-4000-8000-00000000000a",
           "visitorId": "vi000010",
           "firstName": "Lungelo",
           "lastName": "Shabalala",
@@ -363,7 +363,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000011",
+          "candidateId": "00000004-0000-4000-8000-00000000000b",
           "visitorId": "vi000011",
           "firstName": "Thandeka",
           "lastName": "Mchunu",
@@ -403,7 +403,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000012",
+          "candidateId": "00000004-0000-4000-8000-00000000000c",
           "visitorId": "vi000012",
           "firstName": "Siphiwe",
           "lastName": "Dube",
@@ -437,7 +437,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000013",
+          "candidateId": "00000004-0000-4000-8000-00000000000d",
           "visitorId": "vi000013",
           "firstName": "Siyanda",
           "lastName": "Gumede",
@@ -471,7 +471,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000014",
+          "candidateId": "00000004-0000-4000-8000-00000000000e",
           "visitorId": "vi000014",
           "firstName": "Kwanele",
           "lastName": "Majola",
@@ -505,7 +505,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000015",
+          "candidateId": "00000004-0000-4000-8000-00000000000f",
           "visitorId": "vi000015",
           "firstName": "Yolanda",
           "lastName": "Ndlovu",
@@ -539,7 +539,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000016",
+          "candidateId": "00000004-0000-4000-8000-000000000010",
           "visitorId": "vi000016",
           "firstName": "Nkululeko",
           "lastName": "Zwane",
@@ -579,7 +579,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000017",
+          "candidateId": "00000004-0000-4000-8000-000000000011",
           "visitorId": "vi000017",
           "firstName": "Musa",
           "lastName": "Hadebe",
@@ -613,7 +613,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000018",
+          "candidateId": "00000004-0000-4000-8000-000000000012",
           "visitorId": "vi000018",
           "firstName": "Portia",
           "lastName": "Mahlangu",
@@ -647,7 +647,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000019",
+          "candidateId": "00000004-0000-4000-8000-000000000013",
           "visitorId": "vi000019",
           "firstName": "Sibusiso",
           "lastName": "Ngcobo",
@@ -681,7 +681,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000020",
+          "candidateId": "00000004-0000-4000-8000-000000000014",
           "visitorId": "vi000020",
           "firstName": "Sandile",
           "lastName": "Buthelezi",
@@ -715,7 +715,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000021",
+          "candidateId": "00000004-0000-4000-8000-000000000015",
           "visitorId": "vi000021",
           "firstName": "Ntombi",
           "lastName": "Cele",
@@ -755,7 +755,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000022",
+          "candidateId": "00000004-0000-4000-8000-000000000016",
           "visitorId": "vi000022",
           "firstName": "Lethiwe",
           "lastName": "Nxumalo",
@@ -789,7 +789,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000023",
+          "candidateId": "00000004-0000-4000-8000-000000000017",
           "visitorId": "vi000023",
           "firstName": "Nokuthula",
           "lastName": "Mbatha",
@@ -823,7 +823,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000024",
+          "candidateId": "00000004-0000-4000-8000-000000000018",
           "visitorId": "vi000024",
           "firstName": "Palesa",
           "lastName": "Sithole",
@@ -863,7 +863,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000025",
+          "candidateId": "00000004-0000-4000-8000-000000000019",
           "visitorId": "vi000025",
           "firstName": "Dineo",
           "lastName": "Ramaphosa",
@@ -904,7 +904,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000026",
+          "candidateId": "00000004-0000-4000-8000-00000000001a",
           "visitorId": "vi000026",
           "firstName": "Nhlanhla",
           "lastName": "Msomi",
@@ -945,7 +945,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000027",
+          "candidateId": "00000004-0000-4000-8000-00000000001b",
           "visitorId": "vi000027",
           "firstName": "Lungisa",
           "lastName": "Mthethwa",
@@ -986,7 +986,7 @@
           "status": "ACTIVE"
         },
         "candidate": {
-          "candidateId": "cd000028",
+          "candidateId": "00000004-0000-4000-8000-00000000001c",
           "visitorId": "vi000028",
           "firstName": "Samkelo",
           "lastName": "Khoza",
@@ -1038,7 +1038,7 @@
           "status": "CLOSED"
         },
         "candidate": {
-          "candidateId": "cd000029",
+          "candidateId": "00000004-0000-4000-8000-00000000001d",
           "visitorId": "vi000029",
           "firstName": "Zinhle",
           "lastName": "Msweli",
@@ -1079,7 +1079,7 @@
           "status": "CLOSED"
         },
         "candidate": {
-          "candidateId": "cd000030",
+          "candidateId": "00000004-0000-4000-8000-00000000001e",
           "visitorId": "vi000030",
           "firstName": "Mandla",
           "lastName": "Nkosi",
