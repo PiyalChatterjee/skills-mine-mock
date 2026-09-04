@@ -68,6 +68,7 @@ import {
 }                                                              from './routes/auth-v3.js';
 import { usersRouter }                                         from './routes/users.js';
 import {
+  candidateLandingRouter,
   candidateServiceV2Router,
 }                                                              from './routes/candidates.js';
 import {
@@ -231,6 +232,22 @@ function generateToken(user) {
   return `${header}.${payload}.${sig}`;
 }
 
+function restoreMockSession(token) {
+  try {
+    const [, encodedPayload] = token.split('.');
+    if (!encodedPayload) return null;
+    const payload = JSON.parse(Buffer.from(encodedPayload, 'base64url').toString('utf8'));
+    if (!payload.exp || payload.exp <= Math.floor(Date.now() / 1000)) return null;
+    const userId = payload.userId ?? payload.sub;
+    const user = DB.users.find((candidate) => candidate.userId === userId);
+    if (!user) return null;
+    sessions.set(token, user);
+    return user;
+  } catch {
+    return null;
+  }
+}
+
 //  Handlebars helpers  (for .mock file templates)
 Handlebars.registerHelper('randomInt',     (min, max) => Math.floor(Math.random() * (max - min + 1)) + min);
 Handlebars.registerHelper('eq',            (a, b) => a === b);
@@ -333,21 +350,22 @@ app.use(async (req, res, next) => {
   if (!isPublic) {
     const raw   = req.headers['authorization'] ?? '';
     const token = raw.startsWith('Bearer ') ? raw.slice(7) : null;
-    if (!token || !sessions.has(token))
+    const session = token ? sessions.get(token) ?? restoreMockSession(token) : null;
+    if (!session)
       return res.status(401).json({
         success: false,
         statusCode: 401,
         message: 'Not authenticated. Please login first.',
       });
-    req.currentUser = sessions.get(token);
+    req.currentUser = session;
   } else {
     // Public routes don't require auth, but still resolve the caller's
     // identity when a valid token is supplied (e.g. /candidates/landing
     // returns candidate-specific data for logged-in requests).
     const raw   = req.headers['authorization'] ?? '';
     const token = raw.startsWith('Bearer ') ? raw.slice(7) : null;
-    if (token && sessions.has(token)) {
-      req.currentUser = sessions.get(token);
+    if (token) {
+      req.currentUser = sessions.get(token) ?? restoreMockSession(token) ?? undefined;
     }
   }
 
@@ -363,14 +381,16 @@ app.use('/api/auth-service/v1/admin', adminV3Router(routeCtx));
 app.use('/api/auth-service/v1/staff', staffProfilesV3Router(routeCtx));
 app.use('/api/auth-service/v1/users', usersV3Router(routeCtx));
 
-// Candidate Service contract paths. The /v1 mount below remains available for
-// older local clients, while this mount matches the deployed service base URL.
+// Public landing data is mounted before the protected Candidate Service routes.
+app.use('/candidates', candidateLandingRouter(routeCtx));
+// Candidate Service contract paths. The /v1 mount remains available for older
+// local clients, while the primary mount matches the deployed service base URL.
 app.use('/candidates', candidateServiceV2Router(routeCtx));
+app.use('/v1/candidates', candidateServiceV2Router(routeCtx));
 
 //  Users / Profiles
 app.use('/users', usersRouter(routeCtx));
 
-app.use('/v1/candidates', candidateServiceV2Router(routeCtx));      // Candidate Service v2 contract
 app.use('/candidates', mandateServiceCandidatesRouter(routeCtx));   // GET  /candidates  (Mandate Service v2)
 
 //  Jobs  (Mandate Service v2)

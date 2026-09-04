@@ -50,40 +50,26 @@
         {
           "institution": "University of the Witwatersrand",
           "qualification": "BSc Computer Science",
-          "fieldOfStudy": "Computer Science",
           "yearCompleted": 2016
         }
       ]
     },
     "experience": [
       {
-        "experienceId": "exp-001",
         "company": "Accenture",
         "jobTitle": "Senior Software Engineer",
         "startDate": "2020-03",
-        "endDate": null,
+        "endDate": "Present",
         "current": true,
-        "responsibilities": "Lead frontend development for enterprise clients using React and Node.js.",
-        "skills": [
-          "React",
-          "Node.js",
-          "TypeScript",
-          "AWS"
-        ]
+        "responsibilities": "Lead frontend development for enterprise clients using React and Node.js."
       },
       {
-        "experienceId": "exp-002",
         "company": "Standard Bank",
         "jobTitle": "Software Engineer",
         "startDate": "2017-01",
         "endDate": "2020-02",
         "current": false,
-        "responsibilities": "Built and maintained banking web applications.",
-        "skills": [
-          "Angular",
-          "Java",
-          "SQL"
-        ]
+        "responsibilities": "Built and maintained banking web applications."
       }
     ],
     "skills": [
@@ -98,7 +84,7 @@
     "languages": [
       {
         "language": "English",
-        "proficiency": "Native"
+        "proficiency": "Conversational"
       },
       {
         "language": "Zulu",
@@ -426,5 +412,3 @@
     "applications": []
   }
 ]
-
-

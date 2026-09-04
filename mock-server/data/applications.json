@@ -1717,7 +1717,31 @@
         "exitedAt": null
       }
     ]
+  },
+  {
+    "applicationId": "1fececf7-ff6a-4bcf-9006-085eb420df12",
+    "userId": "00000001-0000-4000-8000-000000000001",
+    "candidateId": "00000004-0000-4000-8000-000000000001",
+    "candidateName": "Michael Smith",
+    "jobId": "00000003-0000-4000-8000-000000000002",
+    "jobProfileId": "00000003-0000-4000-8000-000000000002",
+    "jobTitle": "Data Engineer",
+    "company": "FNB",
+    "currentStage": "Inbound",
+    "applicationStatus": "SUBMITTED",
+    "appliedDate": "2026-09-04",
+    "appliedAt": "2026-09-04T18:37:25.817Z",
+    "updatedAt": "2026-09-04T18:37:25.817Z",
+    "matchScore": 75,
+    "sourceChannel": "job-details",
+    "cvId": null,
+    "isGuest": false,
+    "stageHistory": [
+      {
+        "stage": "Inbound",
+        "enteredAt": "2026-09-04T18:37:25.817Z",
+        "exitedAt": null
+      }
+    ]
   }
 ]
-
-

@@ -337,7 +337,23 @@ export function candidateServiceV2Router({ DB, saveDataset }) {
       currentPosition: details.current_position ?? profile.personalDetails?.currentPosition ?? '',
       noticePeriod: details.notice_period ?? profile.personalDetails?.noticePeriod ?? '',
     };
+    if (body.career_history !== undefined) {
+      profile.experience = body.career_history.map((entry) => ({
+        company: entry.company_name ?? '',
+        jobTitle: entry.position_held ?? '',
+        startDate: entry.start_date ?? '',
+        endDate: entry.end_date ?? null,
+        current: !entry.end_date || String(entry.end_date).toLowerCase() === 'present',
+        responsibilities: entry.responsibilities ?? '',
+      }));
+    }
     if (body.skills !== undefined) profile.skills = body.skills.map((skill) => typeof skill === 'string' ? skill : skill.skill_name).filter(Boolean);
+    if (body.education !== undefined) {
+      profile.education = {
+        secondaryEducation: body.education.secondary ?? body.education.secondaryEducation ?? [],
+        tertiaryEducation: body.education.tertiary ?? body.education.tertiaryEducation ?? [],
+      };
+    }
     if (body.languages !== undefined) profile.languages = body.languages;
     saveDataset?.('candidate-profiles', DB.candidateProfiles);
     return res.status(201).json({ candidate_id: profile.candidateId, personal_details: toV2PersonalDetails(profile), career_history: toV2CareerHistory(profile), skills: profile.skills ?? [], education: toV2Education(profile.education), languages: profile.languages ?? [] });
@@ -385,7 +401,12 @@ export function candidateServiceV2Router({ DB, saveDataset }) {
     const page = Math.max(1, Number(req.query.page ?? 1));
     const size = Math.min(50, Math.max(1, Number(req.query.size ?? 10)));
     const saved = new Set((profile.savedJobs ?? []).map(savedJobProfileId));
-    const jobs = DB.jobs.filter((job) => job.status === 'POSTED').map((job) => ({ job_profile_id: job.jobProfileId, job_title: job.positionTitle, job_description: job.jobDescription ?? '', location: job.locationText ?? '', status: job.status, industry: DB.industries.find(({ industryId }) => industryId === job.industryId)?.industryName ?? null, current_stage_code: null, is_saved: saved.has(job.jobProfileId) }));
+    const jobs = DB.jobs
+      .filter((job) => job.status === 'POSTED')
+      .map((job) => toCandidateJob(DB, job, {
+        isSaved: saved.has(job.jobProfileId),
+        currentStageCode: null,
+      }));
     return res.status(200).json({ candidate_id: profile.candidateId, recommended_positions: jobs.slice((page - 1) * size, page * size), pagination: { current_page: page, page_size: size, total_items: jobs.length, total_pages: Math.max(1, Math.ceil(jobs.length / size)) } });
   });
 
