@@ -20,7 +20,7 @@
     "priority": "HIGH",
     "openDate": "2024-10-15",
     "targetCloseDate": "2024-12-15",
-    "salaryBand": "R70,000 – R95,000",
+    "salaryBand": "R70,000 â€“ R95,000",
     "salaryMin": 70000,
     "salaryMax": 95000,
     "location": "Johannesburg, Gauteng",
@@ -31,25 +31,25 @@
     "eeRequirement": "African Female preferred",
     "jobDescription": "We are looking for a Senior React Developer to join the digital banking team at Standard Bank. You will lead the development of modern, scalable front-end solutions that serve millions of customers.",
     "requirements": [
-      "• 5+ years of experience in front-end development",
-      "• Strong proficiency in React and TypeScript",
-      "• Experience with Redux or similar state management",
-      "• Familiarity with GraphQL and REST APIs",
-      "• Ability to write clean, testable code"
+      "â€¢ 5+ years of experience in front-end development",
+      "â€¢ Strong proficiency in React and TypeScript",
+      "â€¢ Experience with Redux or similar state management",
+      "â€¢ Familiarity with GraphQL and REST APIs",
+      "â€¢ Ability to write clean, testable code"
     ],
     "responsibilities": [
-      "• Architect and develop high-performance React applications",
-      "• Collaborate with design and product teams to deliver features",
-      "• Conduct code reviews and mentor junior developers",
-      "• Optimise applications for maximum speed and scalability",
-      "• Maintain and improve CI/CD pipelines"
+      "â€¢ Architect and develop high-performance React applications",
+      "â€¢ Collaborate with design and product teams to deliver features",
+      "â€¢ Conduct code reviews and mentor junior developers",
+      "â€¢ Optimise applications for maximum speed and scalability",
+      "â€¢ Maintain and improve CI/CD pipelines"
     ],
     "benefits": [
-      "• Competitive salary package",
-      "• Medical aid contribution",
-      "• Flexible hybrid working model",
-      "• Annual performance bonus",
-      "• Learning and development budget"
+      "â€¢ Competitive salary package",
+      "â€¢ Medical aid contribution",
+      "â€¢ Flexible hybrid working model",
+      "â€¢ Annual performance bonus",
+      "â€¢ Learning and development budget"
     ],
     "skills": [
       "React",
@@ -66,7 +66,7 @@
     "interviewCount": 3,
     "topCandidates": [
       {
-        "candidateId": "CAND100001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "matchScore": 92,
         "currentStage": "Interview"
@@ -104,7 +104,7 @@
     "priority": "MEDIUM",
     "openDate": "2024-10-18",
     "targetCloseDate": "2024-12-20",
-    "salaryBand": "R55,000 – R75,000",
+    "salaryBand": "R55,000 â€“ R75,000",
     "salaryMin": 55000,
     "salaryMax": 75000,
     "location": "Johannesburg, Gauteng",
@@ -115,25 +115,25 @@
     "eeRequirement": "African or Coloured",
     "jobDescription": "FNB is seeking a skilled Data Engineer to design and build scalable data pipelines that power our analytics and reporting platforms.",
     "requirements": [
-      "• 3+ years of experience in data engineering",
-      "• Proficiency in Python and SQL",
-      "• Hands-on experience with Spark and dbt",
-      "• Familiarity with cloud data warehouses such as Snowflake",
-      "• Understanding of data modelling best practices"
+      "â€¢ 3+ years of experience in data engineering",
+      "â€¢ Proficiency in Python and SQL",
+      "â€¢ Hands-on experience with Spark and dbt",
+      "â€¢ Familiarity with cloud data warehouses such as Snowflake",
+      "â€¢ Understanding of data modelling best practices"
     ],
     "responsibilities": [
-      "• Design, build and maintain robust ETL/ELT pipelines",
-      "• Collaborate with data analysts and scientists to deliver data products",
-      "• Optimise query performance and data storage costs",
-      "• Ensure data quality and reliability across pipelines",
-      "• Document data flows and line"
+      "â€¢ Design, build and maintain robust ETL/ELT pipelines",
+      "â€¢ Collaborate with data analysts and scientists to deliver data products",
+      "â€¢ Optimise query performance and data storage costs",
+      "â€¢ Ensure data quality and reliability across pipelines",
+      "â€¢ Document data flows and line"
     ],
     "benefits": [
-      "• Remote-first working arrangement",
-      "• Medical aid and retirement fund",
-      "• 13th cheque",
-      "• Professional certification sponsorship",
-      "• Wellness programme"
+      "â€¢ Remote-first working arrangement",
+      "â€¢ Medical aid and retirement fund",
+      "â€¢ 13th cheque",
+      "â€¢ Professional certification sponsorship",
+      "â€¢ Wellness programme"
     ],
     "skills": [
       "Python",
@@ -163,7 +163,7 @@
   {
     "mandateId": "MND003",
     "jobId": "j003",
-    "title": "Product Manager – Digital Payments",
+    "title": "Product Manager â€“ Digital Payments",
     "client": "TymeBank",
     "clientId": "cl004",
     "clientRate": "15%",
@@ -180,7 +180,7 @@
     "priority": "HIGH",
     "openDate": "2024-10-20",
     "targetCloseDate": "2024-12-10",
-    "salaryBand": "R65 000 – R85 000",
+    "salaryBand": "R65 000 â€“ R85 000",
     "salaryMin": 65000,
     "salaryMax": 85000,
     "location": "Cape Town, Western Cape",
@@ -254,7 +254,7 @@
     "priority": "CRITICAL",
     "openDate": "2024-10-22",
     "targetCloseDate": "2024-12-05",
-    "salaryBand": "R90 000 – R130 000",
+    "salaryBand": "R90 000 â€“ R130 000",
     "salaryMin": 90000,
     "salaryMax": 130000,
     "location": "Johannesburg, Gauteng",
@@ -302,7 +302,7 @@
     "interviewCount": 3,
     "topCandidates": [
       {
-        "candidateId": "CAND100001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "matchScore": 87,
         "currentStage": "Screening"
@@ -338,7 +338,7 @@
     "priority": "MEDIUM",
     "openDate": "2024-11-01",
     "targetCloseDate": "2025-01-15",
-    "salaryBand": "R45 000 – R65 000",
+    "salaryBand": "R45 000 â€“ R65 000",
     "salaryMin": 45000,
     "salaryMax": 65000,
     "location": "Cape Town, Western Cape",
@@ -412,7 +412,7 @@
     "priority": "MEDIUM",
     "openDate": "2024-10-28",
     "targetCloseDate": "2024-12-28",
-    "salaryBand": "R50 000 – R70 000",
+    "salaryBand": "R50 000 â€“ R70 000",
     "salaryMin": 50000,
     "salaryMax": 70000,
     "location": "Johannesburg, Gauteng",
@@ -460,7 +460,7 @@
     "interviewCount": 1,
     "topCandidates": [
       {
-        "candidateId": "CAND100001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "matchScore": 84,
         "currentStage": "Shortlisted"
@@ -497,7 +497,7 @@
     "priority": "MEDIUM",
     "openDate": "2026-08-12",
     "targetCloseDate": "2026-08-14",
-    "salaryBand": "R757,575 – R879,879,868",
+    "salaryBand": "R757,575 â€“ R879,879,868",
     "salaryMin": 757575,
     "salaryMax": 879879868,
     "location": "uyguy",
@@ -508,13 +508,13 @@
     "eeRequirement": "",
     "jobDescription": "hghg",
     "requirements": [
-      "• ytfytf"
+      "â€¢ ytfytf"
     ],
     "responsibilities": [
-      "• resresre"
+      "â€¢ resresre"
     ],
     "benefits": [
-      "• iututuyt"
+      "â€¢ iututuyt"
     ],
     "skills": [
       "tfyt",
@@ -534,3 +534,5 @@
     "pipeline": {}
   }
 ]
+
+

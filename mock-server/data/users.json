@@ -1,7 +1,7 @@
 [
   {
-    "userId": "USR100001",
-    "candidateId": "CAND100001",
+    "userId": "00000001-0000-4000-8000-000000000001",
+    "candidateId": "00000004-0000-4000-8000-000000000001",
     "userType": "JOB_SEEKER",
     "firstName": "Michael",
     "lastName": "Smith",
@@ -32,8 +32,8 @@
     "createdAt": "2024-01-15T08:00:00Z"
   },
   {
-    "userId": "USR100002",
-    "candidateId": "CAND100002",
+    "userId": "00000001-0000-4000-8000-000000000002",
+    "candidateId": "00000004-0000-4000-8000-000000000002",
     "userType": "JOB_SEEKER",
     "firstName": "Ayesha",
     "lastName": "Patel",
@@ -63,7 +63,7 @@
     "createdAt": "2024-02-20T08:00:00Z"
   },
   {
-    "userId": "USR100003",
+    "userId": "00000001-0000-4000-8000-000000000003",
     "userType": "RECRUITER",
     "firstName": "Sarah",
     "lastName": "Johnson",
@@ -87,7 +87,7 @@
     "createdAt": "2023-01-15T08:00:00Z"
   },
   {
-    "userId": "USR100004",
+    "userId": "00000001-0000-4000-8000-000000000004",
     "userType": "RECRUITER",
     "firstName": "Bongani",
     "lastName": "Cele",
@@ -111,7 +111,7 @@
     "createdAt": "2023-02-01T08:00:00Z"
   },
   {
-    "userId": "USR100005",
+    "userId": "00000001-0000-4000-8000-000000000005",
     "userType": "MANCO",
     "firstName": "David",
     "lastName": "Botha",
@@ -133,7 +133,7 @@
     "createdAt": "2023-01-01T08:00:00Z"
   },
   {
-    "userId": "USR100006",
+    "userId": "00000001-0000-4000-8000-000000000006",
     "userType": "ADMIN",
     "firstName": "Admin",
     "lastName": "User",
@@ -155,8 +155,8 @@
     "createdAt": "2023-01-01T08:00:00Z"
   },
   {
-    "userId": "USR100007",
-    "candidateId": "CAND100003",
+    "userId": "00000001-0000-4000-8000-000000000007",
+    "candidateId": "00000004-0000-4000-8000-000000000003",
     "userType": "JOB_SEEKER",
     "firstName": "Thabo",
     "lastName": "Nkosi",
@@ -185,8 +185,8 @@
     "createdAt": "2024-03-10T08:00:00Z"
   },
   {
-    "userId": "USR100008",
-    "candidateId": "CAND100004",
+    "userId": "00000001-0000-4000-8000-000000000008",
+    "candidateId": "00000004-0000-4000-8000-000000000004",
     "userType": "JOB_SEEKER",
     "firstName": "Zanele",
     "lastName": "Mokoena",
@@ -213,7 +213,7 @@
     "createdAt": "2024-04-05T08:00:00Z"
   },
   {
-    "userId": "USR100009",
+    "userId": "00000001-0000-4000-8000-000000000009",
     "userType": "EXCO",
     "firstName": "Nomsa",
     "lastName": "Dlamini",
@@ -235,3 +235,5 @@
     "createdAt": "2023-01-01T08:00:00Z"
   }
 ]
+
+

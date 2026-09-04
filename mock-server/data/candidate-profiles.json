@@ -1,7 +1,7 @@
 [
   {
-    "userId": "USR100001",
-    "candidateId": "CAND100001",
+    "userId": "00000001-0000-4000-8000-000000000001",
+    "candidateId": "00000004-0000-4000-8000-000000000001",
     "personalDetails": {
       "firstName": "Michael",
       "lastName": "Smith",
@@ -17,8 +17,8 @@
       "noticePeriod": "1 month",
       "idNumber": "9001015800086",
       "eeStatus": "African Male",
-      "profileImageUrl": "https://mock-cdn.skillsmine.com/profiles/USR100001/photo.jpg",
-      "thumbnailUrl": "https://mock-cdn.skillsmine.com/profiles/USR100001/thumb.jpg",
+      "profileImageUrl": "https://mock-cdn.skillsmine.com/profiles/00000001-0000-4000-8000-000000000001/photo.jpg",
+      "thumbnailUrl": "https://mock-cdn.skillsmine.com/profiles/00000001-0000-4000-8000-000000000001/thumb.jpg",
       "linkedinUrl": "https://linkedin.com/in/michael-smith-dev",
       "portfolioUrl": ""
     },
@@ -108,8 +108,8 @@
     "applications": [
       {
         "applicationId": "00000008-0000-4000-8000-000000000001",
-        "userId": "USR100001",
-        "candidateId": "CAND100001",
+        "userId": "00000001-0000-4000-8000-000000000001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "jobId": "00000003-0000-4000-8000-00000000000e",
         "mandateId": "MND001",
@@ -146,8 +146,8 @@
       },
       {
         "applicationId": "00000008-0000-4000-8000-000000000002",
-        "userId": "USR100001",
-        "candidateId": "CAND100001",
+        "userId": "00000001-0000-4000-8000-000000000001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "jobId": "00000003-0000-4000-8000-000000000014",
         "mandateId": "MND004",
@@ -179,8 +179,8 @@
       },
       {
         "applicationId": "00000008-0000-4000-8000-000000000003",
-        "userId": "USR100001",
-        "candidateId": "CAND100001",
+        "userId": "00000001-0000-4000-8000-000000000001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "jobId": "00000003-0000-4000-8000-00000000001a",
         "mandateId": "MND006",
@@ -217,8 +217,8 @@
       },
       {
         "applicationId": "00000008-0000-4000-8000-000000000067",
-        "userId": "USR100001",
-        "candidateId": "CAND100001",
+        "userId": "00000001-0000-4000-8000-000000000001",
+        "candidateId": "00000004-0000-4000-8000-000000000001",
         "candidateName": "Michael Smith",
         "jobId": "00000003-0000-4000-8000-000000000008",
         "jobProfileId": "00000003-0000-4000-8000-000000000008",
@@ -255,8 +255,8 @@
     "candidateUuid": "c0000-0000-4000-8000-000000000001"
   },
   {
-    "userId": "USR100002",
-    "candidateId": "CAND100002",
+    "userId": "00000001-0000-4000-8000-000000000002",
+    "candidateId": "00000004-0000-4000-8000-000000000002",
     "personalDetails": {
       "firstName": "Ayesha",
       "lastName": "Patel",
@@ -266,8 +266,8 @@
       "nationality": "South African",
       "idNumber": "9205240123087",
       "eeStatus": "Indian Female",
-      "profileImageUrl": "https://mock-cdn.skillsmine.com/profiles/USR100002/photo.jpg",
-      "thumbnailUrl": "https://mock-cdn.skillsmine.com/profiles/USR100002/thumb.jpg",
+      "profileImageUrl": "https://mock-cdn.skillsmine.com/profiles/00000001-0000-4000-8000-000000000002/photo.jpg",
+      "thumbnailUrl": "https://mock-cdn.skillsmine.com/profiles/00000001-0000-4000-8000-000000000002/thumb.jpg",
       "linkedinUrl": "https://linkedin.com/in/ayesha-patel-pm",
       "portfolioUrl": "https://ayeshapatel.co.za"
     },
@@ -302,7 +302,7 @@
       {
         "experienceId": "exp-003",
         "company": "TymeBank",
-        "jobTitle": "Product Manager – Digital Payments",
+        "jobTitle": "Product Manager â€“ Digital Payments",
         "startDate": "2021-06",
         "endDate": null,
         "current": true,
@@ -342,8 +342,8 @@
     "applications": []
   },
   {
-    "userId": "USR100007",
-    "candidateId": "CAND100003",
+    "userId": "00000001-0000-4000-8000-000000000007",
+    "candidateId": "00000004-0000-4000-8000-000000000003",
     "personalDetails": {
       "firstName": "Thabo",
       "lastName": "Nkosi",
@@ -426,3 +426,5 @@
     "applications": []
   }
 ]
+
+

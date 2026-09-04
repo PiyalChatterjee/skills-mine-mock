@@ -12,11 +12,22 @@ servers:
 security:
   - BearerAuth: []
 tags:
-  - name: Authentication
-  - name: Candidate Registration
+  - name: authentication-controller
+    description: Authentication and login operations
+  - name: candidate-registration-controller
+    description: Candidate registration operations
+  - name: current-user-controller
+    description: Current-user and token validation operations
+  - name: logout-controller
+    description: Session logout operations
+  - name: password-recovery-controller
+    description: Password recovery operations
+  - name: staff-invitation-controller
+    description: Staff invitation operations
+  - name: staff-registration-controller
+    description: Staff registration operations
   - name: Staff Profile Management
-  - name: Staff Invitations
-  - name: Current User
+    description: APIs for managing staff profiles and role assignments
 components:
   securitySchemes:
     BearerAuth:
@@ -35,17 +46,16 @@ components:
       type: object
       required: [email, password]
       properties:
-        email: { type: string, format: email, example: admin@skillsmine.com }
-        password: { type: string, format: password, example: Password123 }
+        email: { type: string }
+        password: { type: string }
     LoginResponse:
       type: object
-      required: [accessToken, idToken, refreshToken, expiresIn, tokenType, isFirstLogin]
       properties:
         accessToken: { type: string }
         idToken: { type: string }
         refreshToken: { type: string }
-        expiresIn: { type: integer, format: int32, example: 3600 }
-        tokenType: { type: string, example: Bearer }
+        expiresIn: { type: integer, format: int32 }
+        tokenType: { type: string }
         isFirstLogin: { type: boolean }
     CandidateRegistrationRequest:
       type: object
@@ -53,15 +63,20 @@ components:
       properties:
         firstName: { type: string }
         lastName: { type: string }
-        email: { type: string, format: email }
-        mobileNumber: { type: string, example: "+27821234567" }
-        password: { type: string, format: password }
+        email: { type: string }
+        mobileNumber: { type: string }
+        password: { type: string }
         visitorId: { type: string, format: uuid }
     VisitorConversionRequest:
-      allOf:
-        - $ref: '#/components/schemas/CandidateRegistrationRequest'
-        - type: object
-          required: [visitorId]
+      type: object
+      required: [email, firstName, lastName, mobileNumber, password, visitorId]
+      properties:
+        visitorId: { type: string, format: uuid }
+        firstName: { type: string, minLength: 0, maxLength: 120 }
+        lastName: { type: string, minLength: 0, maxLength: 120 }
+        email: { type: string }
+        mobileNumber: { type: string, minLength: 0, maxLength: 20 }
+        password: { type: string }
     GoogleRegistrationRequest:
       type: object
       required: [idToken]
@@ -69,67 +84,64 @@ components:
         idToken: { type: string, description: Google OpenID Connect ID token }
     CandidateRegistrationResponse:
       type: object
-      required: [userId, email, role, registrationType, accountStatus]
       properties:
         userId: { type: string, format: uuid }
-        email: { type: string, format: email }
-        role: { type: string, enum: [JOB_SEEKER] }
-        registrationType: { type: string, enum: [SELF_SERVICE] }
-        accountStatus: { type: string, example: ACTIVE }
+        email: { type: string }
+        role: { type: string }
+        registrationType: { type: string }
+        accountStatus: { type: string }
     StaffRegistrationRequest:
       type: object
       required: [invitationToken, staffNumber, email, firstName, lastName, password]
       properties:
-        invitationToken: { type: string, format: uuid }
+        invitationToken: { type: string }
         staffNumber: { type: string }
-        email: { type: string, format: email }
+        email: { type: string }
         firstName: { type: string }
         lastName: { type: string }
-        password: { type: string, format: password }
+        password: { type: string }
     StaffRegistrationResponse:
       type: object
       properties:
         userId: { type: string, format: uuid }
         staffNumber: { type: string }
-        email: { type: string, format: email }
-        role: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
-        accountStatus: { type: string, example: ACTIVE }
+        email: { type: string }
+        role: { type: string }
+        accountStatus: { type: string }
     ForgotPasswordRequest:
       type: object
       required: [email]
       properties:
-        email: { type: string, format: email }
+        email: { type: string }
     ResetPasswordRequest:
       type: object
       required: [newPassword]
       properties:
         email: { type: string, format: email }
         confirmationCode: { type: string }
-        currentPassword: { type: string, format: password }
-        newPassword: { type: string, format: password }
+        currentPassword: { type: string }
+        newPassword: { type: string }
     MessageResponse:
       type: object
       additionalProperties: { type: string }
       example: { message: Password has been reset successfully. }
     TokenValidationResponse:
       type: object
-      required: [valid]
       additionalProperties: { type: boolean }
       properties:
         valid: { type: boolean, example: true }
     StaffProfileListDto:
       type: object
-      required: [staffId, userId, staffNumber, primaryEmail, firstName, lastName, roleCode, registrationStatus, employmentStatus, createdAt, updatedAt]
       properties:
         staffId: { type: string, format: uuid }
-        userId: { type: string }
+        userId: { type: string, format: uuid }
         staffNumber: { type: string }
-        primaryEmail: { type: string, format: email }
+        primaryEmail: { type: string }
         firstName: { type: string }
         lastName: { type: string }
-        roleCode: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
-        registrationStatus: { type: string, example: PENDING }
-        employmentStatus: { type: string, example: ACTIVE }
+        roleCode: { type: string }
+        registrationStatus: { type: string }
+        employmentStatus: { type: string }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
     AddStaffProfileRequest:
@@ -137,8 +149,8 @@ components:
       required: [staffNumber, primaryEmail, roleCode, firstName, lastName]
       properties:
         staffNumber: { type: string, maxLength: 80 }
-        primaryEmail: { type: string, format: email, maxLength: 500 }
-        roleCode: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
+        primaryEmail: { type: string, maxLength: 500 }
+        roleCode: { type: string }
         firstName: { type: string, maxLength: 120 }
         lastName: { type: string, maxLength: 120 }
     AddStaffProfileResponse:
@@ -149,19 +161,19 @@ components:
         staffNumber: { type: string }
         firstName: { type: string }
         lastName: { type: string }
-        roleCode: { type: string, enum: [RECRUITER, MANCO, EXCO, ADMIN] }
-        employmentStatus: { type: string, example: ACTIVE }
+        roleCode: { type: string }
+        employmentStatus: { type: string }
     SendStaffInvitationRequest:
       type: object
       required: [email, staffNumber]
       properties:
-        email: { type: string, format: email }
+        email: { type: string }
         staffNumber: { type: string }
     SendStaffInvitationResponse:
       type: object
       properties:
         invitationId: { type: string, format: uuid }
-        email: { type: string, format: email }
+        email: { type: string }
         staffNumber: { type: string }
         expiresAt: { type: string, format: date-time }
         message: { type: string }
@@ -170,24 +182,24 @@ components:
       properties:
         userId: { type: string }
         email: { type: string, format: email }
-        provider: { type: string, enum: [LOCAL, GOOGLE, MICROSOFT] }
+        provider: { type: string }
         roles:
           type: array
-          items: { type: string, enum: [JOB_SEEKER, RECRUITER, MANCO, EXCO, ADMIN] }
-        staffProfile:
-          type: object
-          nullable: true
-          properties:
-            staffNumber: { type: string }
-            firstName: { type: string }
-            lastName: { type: string }
-            employmentStatus: { type: string }
-        candidateId: { type: string }
+          items: { type: string }
+        staffProfile: { $ref: '#/components/schemas/StaffProfileDto' }
+        candidateId: { type: string, format: uuid }
         accountStatus: { type: string }
+    StaffProfileDto:
+      type: object
+      properties:
+        staffNumber: { type: string }
+        firstName: { type: string }
+        lastName: { type: string }
+        employmentStatus: { type: string }
 paths:
   /api/auth-service/v1/users/validate:
     post:
-      tags: [Current User]
+      tags: [current-user-controller]
       summary: Validate the supplied bearer token
       operationId: validateToken
       security: []
@@ -215,7 +227,7 @@ paths:
         '409': { description: Staff profile exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/login:
     post:
-      tags: [Authentication]
+      tags: [authentication-controller]
       summary: Log in with email and password
       operationId: login
       security: []
@@ -229,14 +241,14 @@ paths:
         '403': { description: Account inactive, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/logout:
     post:
-      tags: [Authentication]
+      tags: [logout-controller]
       summary: Invalidate the current session
       operationId: logout
       responses:
         '204': { description: No Content }
   /api/auth-service/v1/auth/forgot-password:
     post:
-      tags: [Authentication]
+      tags: [password-recovery-controller]
       summary: Request a password reset confirmation code
       operationId: forgotPassword
       security: []
@@ -248,7 +260,7 @@ paths:
         '400': { description: Missing email, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/reset-password:
     post:
-      tags: [Authentication]
+      tags: [password-recovery-controller]
       summary: Reset or change a password
       operationId: resetPassword
       security: []
@@ -260,9 +272,9 @@ paths:
         '400': { description: Invalid reset request, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/candidates/register:
     post:
-      tags: [Candidate Registration]
+      tags: [candidate-registration-controller]
       summary: Register a candidate
-      operationId: registerCandidate
+      operationId: register_1
       security: []
       requestBody:
         required: true
@@ -273,7 +285,7 @@ paths:
         '409': { description: Email exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/candidates/register/visitor/conversion:
     post:
-      tags: [Candidate Registration]
+      tags: [candidate-registration-controller]
       summary: Convert a visitor into a candidate
       operationId: registerVisitorConversion
       security: []
@@ -287,7 +299,7 @@ paths:
         '409': { description: Email exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/candidates/register-google:
     post:
-      tags: [Candidate Registration]
+      tags: [candidate-registration-controller]
       summary: Register a candidate with Google
       operationId: registerGoogle
       security: []
@@ -299,9 +311,9 @@ paths:
         '400': { description: Missing ID token, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/auth/staff/register:
     post:
-      tags: [Staff Invitations]
+      tags: [staff-registration-controller]
       summary: Register invited staff
-      operationId: registerStaff
+      operationId: register
       security: []
       requestBody:
         required: true
@@ -312,7 +324,7 @@ paths:
         '409': { description: Email exists, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/admin/staff-invitations/send:
     post:
-      tags: [Staff Invitations]
+      tags: [staff-invitation-controller]
       summary: Send a staff registration invitation
       operationId: sendInvitation
       requestBody:
@@ -325,7 +337,7 @@ paths:
         '404': { description: Staff profile not found, content: { application/json: { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
   /api/auth-service/v1/users/me:
     get:
-      tags: [Current User]
+      tags: [current-user-controller]
       summary: Get the current authenticated user
       operationId: getMe
       responses:

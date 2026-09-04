@@ -1,9 +1,9 @@
 [
   {
     "resumeId": "RES100001",
-    "userId": "USR100001",
-    "candidateId": "CAND100001",
-    "title": "Michael Smith – Senior Software Engineer CV",
+    "userId": "00000001-0000-4000-8000-000000000001",
+    "candidateId": "00000004-0000-4000-8000-000000000001",
+    "title": "Michael Smith â€“ Senior Software Engineer CV",
     "status": "PUBLISHED",
     "createdAt": "2024-10-15T09:00:00Z",
     "updatedAt": "2024-11-01T14:30:00Z",
@@ -59,9 +59,9 @@
   },
   {
     "resumeId": "RES100002",
-    "userId": "USR100002",
-    "candidateId": "CAND100002",
-    "title": "Ayesha Patel – Product Manager CV",
+    "userId": "00000001-0000-4000-8000-000000000002",
+    "candidateId": "00000004-0000-4000-8000-000000000002",
+    "title": "Ayesha Patel â€“ Product Manager CV",
     "status": "PUBLISHED",
     "createdAt": "2024-09-20T09:00:00Z",
     "updatedAt": "2024-10-15T11:00:00Z",
@@ -78,7 +78,7 @@
     "careerHistory": [
       {
         "company": "TymeBank",
-        "jobTitle": "Product Manager – Digital Payments",
+        "jobTitle": "Product Manager â€“ Digital Payments",
         "startDate": "2021-06",
         "endDate": "Present",
         "responsibilities": "Own product roadmap for digital payments, driving feature delivery and stakeholder alignment."
@@ -103,3 +103,5 @@
     "summary": "Strategic product manager with 4 years in FinTech, specialising in payments and digital banking products."
   }
 ]
+
+

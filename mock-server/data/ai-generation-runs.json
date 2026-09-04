@@ -4,7 +4,7 @@
     "useCaseCode": "CANDIDATE_SKILL_GENERATION",
     "subjectType": "CANDIDATE",
     "subjectId": "c0000000-0000-4000-8000-000000000001",
-    "candidateId": "CAND100001",
+    "candidateId": "00000004-0000-4000-8000-000000000001",
     "inputSource": "PROFILE",
     "inputHash": "5f2b6a8e9c1d4a3b7e0f9c2d1a8b6e4f3c9d2a1b7e6f5c4d3a2b1e0f9c8d7a6b",
     "suggestedSkills": [
@@ -20,7 +20,7 @@
     "useCaseCode": "CANDIDATE_SKILL_GENERATION",
     "subjectType": "CANDIDATE",
     "subjectId": "c0000000-0000-4000-8000-000000000003",
-    "candidateId": "CAND100003",
+    "candidateId": "00000004-0000-4000-8000-000000000003",
     "inputSource": "PROFILE",
     "inputHash": "8c1d4a3b7e0f9c2d1a8b6e4f3c9d2a1b7e6f5c4d3a2b1e0f9c8d7a6b5f2b6a8e",
     "suggestedSkills": [
@@ -63,3 +63,5 @@
     "generatedAt": "2026-08-05T10:05:00Z"
   }
 ]
+
+
