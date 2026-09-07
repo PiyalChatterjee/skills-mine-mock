@@ -34,6 +34,7 @@
  *                             GET  /industries | /companies | /candidates
  *   routes/recruiter.js       GET  /recruiter/dashboard
  *                             GET  /recruiter/mandates
+ *                             GET  /recruiter/pipeline
  *                             PUT  /recruiter/applications/:applicationId/stage
  *                             GET  /recruiter/candidates/search
  *                             GET  /mandates/:mandateId
@@ -96,6 +97,8 @@ import {
   applicationStageRouter,
   recruiterCandidateProfileRouter,
   recruiterTourRouter,
+  recruiterPipelineRouter,
+  pipelinesJobStageRouter,
 }                                                              from './routes/recruiter.js';
 import { pipelineRouter }                                      from './routes/pipeline.js';
 import { skillsRouter }                                        from './routes/skills.js';
@@ -175,6 +178,7 @@ const DB = {
   candidateAiActions: loadDataset('candidate-ai-actions'),
   companies:         loadDataset('companies'),
   dashboardSummary:  loadDataset('dashboard-summary'),
+  recruiterPipeline: loadDataset('recruiterPipeline'),
 };
 
 // Staff invitations — created via POST /api/v1/admin/staff-invitations, validated in-memory
@@ -455,6 +459,8 @@ app.use('/companies',  mandateServiceCompaniesRouter(routeCtx));
 //  Recruiter
 // ─────────────────────────────────────────────────────────
 app.use('/recruiter',     recruiterRouter(routeCtx));
+app.use('/recruiter',     recruiterPipelineRouter(routeCtx));
+app.use('/pipelines',     pipelinesJobStageRouter(routeCtx));   // PUT /pipelines/jobs/:jobId/stage
 app.use('/mandates',      mandatesRouter(routeCtx));
 app.use('/applications',  applicationStageRouter(routeCtx));
 
