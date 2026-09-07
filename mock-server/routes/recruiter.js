@@ -398,3 +398,106 @@ export function recruiterTourRouter({ DB }) {
 
   return router;
 }
+
+// ─── Recruiter pipeline  (GET /recruiter/pipeline) ────────────────────────────
+export function recruiterPipelineRouter({ DB }) {
+  const router = Router();
+
+  // GET /recruiter/pipeline
+  router.get('/pipeline', (req, res) => {
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Recruiter pipeline retrieved.',
+      data: DB.recruiterPipeline,
+    });
+  });
+
+  return router;
+}
+
+// ─── Bulk-move pipeline stage  (PUT /pipelines/jobs/:jobId/stage) ─────────────
+export function pipelinesJobStageRouter({ DB }) {
+  const router = Router();
+
+  /**
+   * PUT /pipelines/jobs/:jobId/stage
+   *
+   * Body: { applicationIds: string[], targetStage: string, notes?: string }
+   *
+   * Moves one or more applications belonging to the same job profile to a new
+   * pipeline stage.  Partial success is supported — the response lists which
+   * applicationIds succeeded and which failed.
+   */
+  router.put('/jobs/:jobId/stage', (req, res) => {
+    const { jobId } = req.params;
+    const { applicationIds, targetStage, notes } = req.body ?? {};
+
+    if (!targetStage)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'targetStage is required.' });
+    if (!Array.isArray(applicationIds) || applicationIds.length === 0)
+      return res.status(400).json({ success: false, statusCode: 400, message: 'applicationIds must be a non-empty array.' });
+
+    const now = new Date().toISOString();
+    const succeeded = [];
+    const failed    = [];
+
+    for (const applicationId of applicationIds) {
+      const app = DB.applications.find(a => a.applicationId === applicationId);
+      if (!app) {
+        failed.push({ applicationId, reason: 'Application not found.' });
+        continue;
+      }
+      if (app.jobId !== jobId) {
+        failed.push({ applicationId, reason: 'Application does not belong to the specified job.' });
+        continue;
+      }
+      const previousStage  = app.currentStage;
+      app.currentStage     = targetStage;
+      app.updatedAt        = now;
+
+      // Mirror the move in the recruiterPipeline in-memory store so GET /recruiter/pipeline
+      // reflects the new state immediately without a server restart.
+      if (Array.isArray(DB.recruiterPipeline)) {
+        for (const stageGroup of DB.recruiterPipeline) {
+          const idx = stageGroup.cards.findIndex(c => c.applicationId === applicationId);
+          if (idx !== -1) {
+            const [card] = stageGroup.cards.splice(idx, 1);
+            card.stage = targetStage;
+            card.currentStageCode = targetStage;
+            const target = DB.recruiterPipeline.find(sg => sg.label === targetStage);
+            if (target) target.cards.push(card);
+            break;
+          }
+        }
+      }
+
+      succeeded.push({
+        applicationId,
+        previousStage,
+        currentStage: targetStage,
+        updatedAt: now,
+        stageHistoryEntry: {
+          stage: targetStage,
+          enteredAt: now,
+          notes: notes ?? '',
+          changedBy: 'recruiter',
+        },
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: `Stage update complete. ${succeeded.length} succeeded, ${failed.length} failed.`,
+      data: {
+        jobId,
+        targetStage,
+        succeeded,
+        failed,
+      },
+    });
+  });
+
+  return router;
+}
