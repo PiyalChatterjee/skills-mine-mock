@@ -110,6 +110,7 @@ const MOCKS_DIR = join(__dirname, config.server.mocksDir.replace('./mock-server/
 const DELAY_MIN = config.delay.min   ?? 300;
 const DELAY_MAX = config.delay.max   ?? 900;
 const ERR_RATE  = config.errorSimulation.enabled ? (config.errorSimulation.rate ?? 0.02) : 0;
+const AUTH_ENABLED = config.auth.enabled ?? true;
 
 const PUBLIC_PATHS = [
   '/api/auth-service/v1/auth/login',
@@ -352,7 +353,12 @@ app.use(async (req, res, next) => {
     });
   }
 
-  if (!isPublic) {
+  if (!AUTH_ENABLED) {
+    req.currentUser = {
+      userId: '00000001-0000-4000-8000-000000000001',
+      roles: ['JOB_SEEKER'],
+    };
+  } else if (!isPublic) {
     const raw   = req.headers['authorization'] ?? '';
     const token = raw.startsWith('Bearer ') ? raw.slice(7) : null;
     const session = token ? sessions.get(token) ?? restoreMockSession(token) : null;

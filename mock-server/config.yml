@@ -22,7 +22,7 @@ cors:
   methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS"
 
 auth:
-  enabled: true
+  enabled: false
   publicPaths:
     - /api/auth-service/v1/auth/login
     - /api/auth-service/v1/auth/candidates/register
