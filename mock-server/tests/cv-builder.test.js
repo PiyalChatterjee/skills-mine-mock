@@ -1,7 +1,7 @@
 /**
  * CV Builder endpoint tests
  *
- * Tests the GET / POST / PUT /candidate/buildmycv contract.
+ * Tests the GET / POST / PUT /candidates/cv-build/ contract.
  * Uses Node's built-in test runner (node:test) — no external deps required.
  *
  * Run:
@@ -18,7 +18,7 @@
 import { test, describe, before } from 'node:test';
 import assert from 'node:assert/strict';
 
-const BASE = 'http://localhost:4000';
+const BASE = process.env.MOCK_BASE_URL ?? 'http://localhost:4000';
 
 // ─── Auth helper ────────────────────────────────────────────────────────────
 let TOKEN = process.env.MOCK_TOKEN ?? null;
@@ -55,12 +55,19 @@ async function fetchWithRetry(url, options = {}, expectedStatus = 200, retries =
 }
 
 async function getCv() {
-  return fetchWithRetry(`${BASE}/candidate/buildmycv`, { headers: authHeaders() });
+  return fetchWithRetry(`${BASE}/candidates/cv-build/`, { headers: authHeaders() });
+}
+
+async function postCv(body) {
+  return fetchWithRetry(
+    `${BASE}/candidates/cv-build/`,
+    { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) },
+  );
 }
 
 async function putCv(body) {
   return fetchWithRetry(
-    `${BASE}/candidate/buildmycv`,
+    `${BASE}/candidates/cv-build/`,
     { method: 'PUT', headers: authHeaders(), body: JSON.stringify(body) },
   );
 }
@@ -72,7 +79,7 @@ describe('CV Builder endpoints', () => {
   });
 
   // ── GET ───────────────────────────────────────────────────────────────────
-  describe('GET /candidate/buildmycv', () => {
+  describe('GET /candidates/cv-build/', () => {
     test('returns 200 with correct envelope', async () => {
       const json = await getCv();
       assert.equal(json.success, true);
@@ -94,6 +101,11 @@ describe('CV Builder endpoints', () => {
     test('source is always "BuildCV"', async () => {
       const { data } = await getCv();
       assert.equal(data.source, 'BuildCV');
+    });
+
+    test('preserves the seeded resumeId', async () => {
+      const { data } = await getCv();
+      assert.equal(data.resumeId, 'RES100001');
     });
 
     test('extractionStatus is a known enum value', async () => {
@@ -121,8 +133,15 @@ describe('CV Builder endpoints', () => {
     });
   });
 
+  describe('POST /candidates/cv-build/', () => {
+    test('returns a resumeId for a completed CV', async () => {
+      const { data } = await postCv({ skills: ['React'] });
+      assert.ok(data.resumeId, 'data.resumeId must be present');
+    });
+  });
+
   // ── PUT – skills only ─────────────────────────────────────────────────────
-  describe('PUT /candidate/buildmycv – update skills only', () => {
+  describe('PUT /candidates/cv-build/ - update skills only', () => {
     const newSkills = [
       { name: 'Java', level: 'ADVANCED' },
       { name: 'Spring Boot', level: 'INTERMEDIATE' },
@@ -193,7 +212,7 @@ describe('CV Builder endpoints', () => {
   });
 
   // ── PUT – education only ──────────────────────────────────────────────────
-  describe('PUT /candidate/buildmycv – update education only', () => {
+  describe('PUT /candidates/cv-build/ - update education only', () => {
     const newTertiary = [
       {
         institution: 'University of Cape Town',
@@ -261,7 +280,7 @@ describe('CV Builder endpoints', () => {
   });
 
   // ── PUT – explicit empty overwrite ────────────────────────────────────────
-  describe('PUT /candidate/buildmycv – explicit empty clears section', () => {
+  describe('PUT /candidates/cv-build/ - explicit empty clears section', () => {
     test('sending skills: [] clears the skills array', async () => {
       await putCv({ skills: [{ name: 'React', level: 'ADVANCED' }] });
       await putCv({ skills: [] });

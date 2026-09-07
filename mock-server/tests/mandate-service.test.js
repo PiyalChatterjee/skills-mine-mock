@@ -8,6 +8,7 @@ import {
   mandateServiceCandidatesRouter,
   mandateServiceCompaniesRouter,
   mandateServiceIndustriesRouter,
+  mandateServiceLocationsRouter,
   mandateServiceJobsRouter,
 } from "../routes/mandateService.js";
 
@@ -25,6 +26,7 @@ const app = express();
 app.use(express.json());
 app.use("/", mandateServiceJobsRouter({ DB }));
 app.use("/industries", mandateServiceIndustriesRouter({ DB }));
+app.use("/locations", mandateServiceLocationsRouter({ DB }));
 app.use("/companies", mandateServiceCompaniesRouter({ DB }));
 app.use("/candidates", mandateServiceCandidatesRouter({ DB }));
 
@@ -71,19 +73,13 @@ test("seed volumes, enum coverage and relationships satisfy the migration requir
   assert.deepEqual(new Set(DB.candidates.map(({ status }) => status)), new Set(["SUBMITTED", "ACTIVE", "ON_HOLD", "CLOSED", "CANCELLED", "REJECTED", "APPLIED"]));
 });
 
-test("GET /dashboard/summary returns generated metrics", async () => {
-  const { response, body } = await request("/dashboard/summary");
-  assert.equal(response.status, 200);
-  assert.deepEqual(body, DB.dashboardSummary);
-});
-
 test("GET /jobs supports paging and every declared filter", async () => {
   const sample = DB.jobs.find(({ status }) => status === "POSTED");
   const query = new URLSearchParams({
     search: sample.positionTitle.split(" ").at(-1),
-    industryId: sample.industryId,
-    locationText: sample.locationText.split(",")[0],
-    jobType: sample.employmentType,
+    "industryId": sample.industryId,
+    "locationText": sample.locationText.split(",")[0],
+    "jobType": sample.employmentType,
     clientId: sample.clientId,
     status: sample.status,
     page: "0",
@@ -100,6 +96,13 @@ test("GET /jobs supports paging and every declared filter", async () => {
   const recent = await request("/jobs?datePosted=LAST_30_DAYS&size=100");
   assert.equal(recent.response.status, 200);
   assert.ok(recent.body.data.every(({ publishedAt }) => publishedAt !== null));
+
+  const arrayFiltered = await request(`/jobs?industryId=${DB.industries[0].industryId}&industryId=${DB.industries[1].industryId}&locationText=Johannesburg&locationText=Cape%20Town&jobType=FULL_TIME&jobType=PART_TIME&size=100`);
+  assert.equal(arrayFiltered.response.status, 200);
+  assert.ok(arrayFiltered.body.data.every((job) =>
+    [DB.industries[0].industryId, DB.industries[1].industryId].includes(job.industry.industryId) &&
+    ["FULL_TIME", "PART_TIME"].includes(job.employmentType) &&
+    ["Johannesburg", "Cape Town"].some((location) => job.locationText.includes(location))));
 });
 
 test("list endpoints reject invalid enums and pagination", async () => {
@@ -111,7 +114,7 @@ test("list endpoints reject invalid enums and pagination", async () => {
   assert.equal((await request("/candidates?status=INTERVIEW")).response.status, 400);
 });
 
-test("GET detail, industries, companies and candidates match v2 response shapes", async () => {
+test("GET detail, industries, locations, companies and candidates match v3 response shapes", async () => {
   const job = DB.jobs[0];
   const detail = await request(`/jobs/${job.jobProfileId}`);
   assert.equal(detail.response.status, 200);
@@ -123,6 +126,11 @@ test("GET detail, industries, companies and candidates match v2 response shapes"
   assert.equal(industries.response.status, 200);
   assert.ok(Array.isArray(industries.body));
   assert.ok(industries.body.every(({ industryName }) => industryName.toLowerCase().includes("tech")));
+
+  const locations = await request("/locations?search=cape");
+  assert.equal(locations.response.status, 200);
+  assert.ok(locations.body.every((location) => location.toLowerCase().includes("cape")));
+  assert.deepEqual([...locations.body].sort(), locations.body);
 
   const companies = await request("/companies?page=1&size=10");
   assert.equal(companies.response.status, 200);
@@ -136,11 +144,15 @@ test("GET detail, industries, companies and candidates match v2 response shapes"
   assert.ok(candidates.body.data.every((row) => row.jobProfileId === candidate.jobProfileId && !("clientId" in row)));
 });
 
-test("POST and PUT /jobs enforce request schema and optimistic locking", async () => {
+test("POST and PATCH /jobs enforce v3 request schema", async () => {
   assert.equal((await request("/jobs", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" })).response.status, 400);
 
   const createPayload = {
     companyName: "Contract Test Labs",
+    contactName: "Test Contact",
+    contactEmail: "contact@example.com",
+    contactPhoneNumber: "+27110000000",
+    clientRate: 10,
     positionTitle: "Integration Engineer",
     fillByDate: "2027-12-01",
     workType: "HYBRID",
@@ -157,27 +169,32 @@ test("POST and PUT /jobs enforce request schema and optimistic locking", async (
   assert.equal(created.response.status, 201);
   assert.equal(created.body.status, "DRAFT");
 
-  const conflict = await request(`/jobs/${created.body.jobProfileId}`, {
-    method: "PUT",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ positionTitle: "Integration Engineer", fillByDate: "2027-12-01", versionNo: 99 }),
-  });
-  assert.equal(conflict.response.status, 409);
-
   const updated = await request(`/jobs/${created.body.jobProfileId}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ positionTitle: "Principal Integration Engineer", fillByDate: "2027-12-01", versionNo: 1 }),
+    body: JSON.stringify({ jobDescription: "Updated description" }),
   });
   assert.equal(updated.response.status, 200);
   assert.equal(updated.body.versionNo, 2);
+  assert.equal(updated.body.jobDescription, "Updated description");
+  assert.ok(Array.isArray(updated.body.skills));
+});
+
+test("PATCH /jobs/:jobProfileId/view increments and persists view count", async () => {
+  const job = DB.jobs[0];
+  const before = job.viewCount ?? 0;
+  const viewed = await request(`/jobs/${job.jobProfileId}/view`, { method: "PATCH" });
+  assert.equal(viewed.response.status, 200);
+  assert.equal(viewed.body.viewCount, before + 1);
+  assert.equal(DB.jobs[0].viewCount, before + 1);
+  assert.equal((await request("/jobs/not-a-uuid")).response.status, 400);
 });
 
 test("DELETE /jobs/:jobProfileId returns 204", async () => {
   const created = await request("/jobs", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ companyName: DB.companies[0].clientName, positionTitle: "Temporary Test Role", fillByDate: "2027-12-01" }),
+    body: JSON.stringify({ companyName: DB.companies[0].clientName, contactName: "Test Contact", contactEmail: "contact@example.com", contactPhoneNumber: "+27110000000", clientRate: 10, positionTitle: "Temporary Test Role", fillByDate: "2027-12-01" }),
   });
   const deleted = await request(`/jobs/${created.body.jobProfileId}`, { method: "DELETE" });
   assert.equal(deleted.response.status, 204);
